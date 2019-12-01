@@ -34,6 +34,7 @@ public class Donut extends Circle {
 	
 		
 		
+        
 		g.fillOval(this.getCenter().getX() - this.innerRadius, this.getCenter().getY() - this.getInnerRadius(), this.getInnerRadius()*2, this.innerRadius*2);
 		if(secondOuterColor!=null)
 		{

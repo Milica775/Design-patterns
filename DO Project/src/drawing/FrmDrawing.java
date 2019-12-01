@@ -32,6 +32,7 @@ public class FrmDrawing extends JFrame {
 	JToggleButton tglbtnSelection;
 	JToggleButton tglbtnModify;
 	JToggleButton tglbtnDelete;
+    JToggleButton tglbtnHexagon;
 
 
 	public FrmDrawing() {
@@ -63,12 +64,6 @@ public class FrmDrawing extends JFrame {
 		buttonGroup.add(tglbtnLine);
 		
 		tglbtnRectangle = new JToggleButton("Rectangle");
-		tglbtnRectangle.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				//view.setStartPoint(null);
-			}
-		});
 		toolBar.add(tglbtnRectangle);
 		buttonGroup.add(tglbtnRectangle);
 		
@@ -79,6 +74,10 @@ public class FrmDrawing extends JFrame {
 		tglbtnDonut = new JToggleButton("Donut");
 		toolBar.add(tglbtnDonut);
 		buttonGroup.add(tglbtnDonut);
+		
+		tglbtnHexagon = new JToggleButton("Hexagon");
+		toolBar.add(tglbtnHexagon);
+		buttonGroup.add(tglbtnHexagon);
 		
 		tglbtnSelection = new JToggleButton("Selection");
 		toolBar.add(tglbtnSelection);
@@ -152,6 +151,10 @@ public class FrmDrawing extends JFrame {
 	public void setController(DrawingController controller2) {
 		controller=controller2;
 		
+	}
+
+	public boolean getTglbtnHexagon() {
+		return tglbtnHexagon.isSelected();
 	}
 
 }

@@ -1,12 +1,18 @@
 package drawing;
 
+import java.awt.Color;
 import java.awt.event.MouseEvent;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import hexagon.DlgHexagon;
+import hexagon.Hexagon;
+import hexagon.HexagonAdapter;
 
 public class DrawingController {
 	
@@ -24,12 +30,12 @@ public class DrawingController {
 	public void mouseClicked(MouseEvent e) {
 		
 		if(mainFrame.getTglbtnSelection()) {
-			model.setSelectedShapes(null); //ponistava se trenutna selekcija
+			//model.setSelectedShapes(null); //ponistava se trenutna selekcija
 			Point p=new Point(e.getX(),e.getY()); //koordinate klika
 			Iterator <Shape> it=model.getShapes().iterator();
 			while(it.hasNext()) {
 				Shape shape=it.next();
-				shape.setSelected(false);
+				//shape.setSelected(false);
 				if((shape.contains(p)) && shape.isSelected()==false)
 				{
 					model.setSelectedShapes(shape);
@@ -165,6 +171,40 @@ public class DrawingController {
 			
 			
 		}
+		else if(mainFrame.getTglbtnHexagon()) {		
+			Point center=new Point(e.getX(),e.getY());
+			DlgHexagon dlgH=new DlgHexagon();
+			dlgH.setTxtCenterXEditable(false);
+			dlgH.setTxtCenterYEditable(false);
+			dlgH.setTxtCenterX(Integer.toString(center.getX()));
+			dlgH.setTxtCenterY(Integer.toString(center.getY()));
+			dlgH.setVisible(true);
+			try
+		{
+				
+
+			if(dlgH.isOk())
+		{
+
+				int radius=Integer.parseInt(dlgH.getTxtRadius());
+				HexagonAdapter h=new HexagonAdapter(center.getX(),center.getY(),radius);
+				h.setOuterColor(dlgH.getExterCol());
+			    h.setInterColor(dlgH.getInterCol());
+				model.add(h);
+		
+		}
+			}
+			catch(NumberFormatException ex)
+			{
+				JOptionPane.showMessageDialog(new JFrame(), "Popunite sva polja ili provjerite tip podataka koji ste unijeli!", "Greška", JOptionPane.WARNING_MESSAGE);
+				
+				
+			} catch (Exception e1) {
+				
+				JOptionPane.showMessageDialog(new JFrame(), "Poluprecnik mora biti pozitivan!", "Greška", JOptionPane.WARNING_MESSAGE);
+			}
+
+		}
 		else if(model.getSelectedShapes()!=null)
 		{
 			model.getSelectedShapes().setSelected(true);
@@ -174,9 +214,9 @@ public class DrawingController {
 		if(model.getShapes()!=null) 
 			mainFrame.repaint();
 			
-			
-		
-	}
+}			
+
+
 
 	public void mouseClickedModify(MouseEvent e) {
 		int index=model.getShapes().indexOf(model.getSelectedShapes());
@@ -330,6 +370,39 @@ public class DrawingController {
 					JOptionPane.showMessageDialog(new JFrame(), "Visina i sirina moraju biti pozitivne!", "Greška", JOptionPane.WARNING_MESSAGE);
 				}
 			}
+		
+		else if(modifyShape instanceof HexagonAdapter)
+		{
+
+			DlgHexagon dc=new DlgHexagon();
+			dc.setTxtCenterX(Integer.toString((((HexagonAdapter)modifyShape).getX())));
+			dc.setTxtCenterY(Integer.toString((((HexagonAdapter)modifyShape).getY())));
+			dc.setTxtRadius(Integer.toString((((HexagonAdapter)modifyShape).getRadius())));
+			dc.setInterCol((((HexagonAdapter)modifyShape).getInterColor()));
+			dc.setExterCol((((HexagonAdapter)modifyShape).getOuterColor()));
+			dc.setVisible(true);
+			try
+			{
+				if(dc.isOk())
+				{
+
+					((HexagonAdapter)modifyShape).setCenterX(Integer.parseInt(dc.getTxtCenterX()));
+					((HexagonAdapter)modifyShape).setCenterY(Integer.parseInt(dc.getTxtCenterY()));
+					((HexagonAdapter)modifyShape).setRadius(Integer.parseInt(dc.getTxtRadius()));
+					((HexagonAdapter)modifyShape).setOuterColor(dc.getExterCol());
+					((HexagonAdapter)modifyShape).setInterColor(dc.getInterCol());
+			          mainFrame.repaint();
+				}
+			}
+			catch(NumberFormatException ex)
+			{
+				JOptionPane.showMessageDialog(new JFrame(), "Popunite sva polja ili provjerite tip podataka koji ste unijeli!", "Greška", JOptionPane.WARNING_MESSAGE);
+			}
+			catch(Exception ex)
+			{
+				JOptionPane.showMessageDialog(new JFrame(), "Visina i sirina moraju biti pozitivne!", "Greška", JOptionPane.WARNING_MESSAGE);
+			}
+		}
 		}
 		else
 		{
