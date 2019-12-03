@@ -7,16 +7,17 @@ public class CmdAddPoint implements Command {
 	
 	private Point point;
 	private DrawingModel drawModel;
-	
+
 	public CmdAddPoint(Point point, DrawingModel model)
 	{
-		point=point;
+		this.point=point;
 	    drawModel=model;
 	}
 
 	@Override
 	public void execute() {
 		drawModel.add(point);
+		
 		
 	}
 
@@ -25,5 +26,7 @@ public class CmdAddPoint implements Command {
 		drawModel.remove(point);
 		
 	}
+
+
 
 }

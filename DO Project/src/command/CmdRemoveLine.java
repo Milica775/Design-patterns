@@ -25,4 +25,6 @@ public class CmdRemoveLine implements Command{
 			drawModel.add(line);
 			
 		}
+
+		
 }

@@ -10,7 +10,7 @@ public class CmdRemovePoint implements Command {
 		
 		public CmdRemovePoint(Point point, DrawingModel model)
 		{
-			point=point;
+			this.point=point;
 		    drawModel=model;
 		}
 
@@ -25,5 +25,7 @@ public class CmdRemovePoint implements Command {
 			drawModel.add(point);
 			
 		}
+
+	
 
 }

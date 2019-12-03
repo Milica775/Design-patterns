@@ -34,4 +34,6 @@ public class CmdModifyPoint implements Command {
 		
 	}
 
+	
+
 }

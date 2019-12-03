@@ -2,18 +2,22 @@ package drawing;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+
+
+
+
 import javax.swing.JToolBar;
 import javax.swing.JToggleButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -33,6 +37,10 @@ public class FrmDrawing extends JFrame {
 	JToggleButton tglbtnModify;
 	JToggleButton tglbtnDelete;
     JToggleButton tglbtnHexagon;
+    JToggleButton tglbtnUndo;
+    JToggleButton tglbtnRedo;
+    private JToolBar toolBar_1;
+ 
 
 
 	public FrmDrawing() {
@@ -54,15 +62,49 @@ public class FrmDrawing extends JFrame {
 				controller.mouseClicked(e);
 			}
 		});
+		
+		toolBar_1 = new JToolBar(JToolBar.VERTICAL);
+		contentPane.add(toolBar_1, BorderLayout.WEST);
+		
+		tglbtnUndo = new JToggleButton("Undo");
+		tglbtnUndo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				controller.undo();
+			}
+		});
+	
+		
+		toolBar_1.add(tglbtnUndo);
+		buttonGroup.add(tglbtnUndo);
+		
+		
+		
+		tglbtnRedo = new JToggleButton("Redo");
+		tglbtnRedo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.redo();
+			}
+		});
+		
+		toolBar_1.add(tglbtnRedo);
+		
+		
+		
+		
+		
+		
 		contentPane.add(view, BorderLayout.CENTER);
-		tglbtnPoint = new JToggleButton("Point");
+		
+		tglbtnPoint=new JToggleButton("Point");
+		
+		
 		toolBar.add(tglbtnPoint);
 		buttonGroup.add(tglbtnPoint);
 		
 		tglbtnLine = new JToggleButton("Line");
 		toolBar.add(tglbtnLine);
 		buttonGroup.add(tglbtnLine);
-		
 		tglbtnRectangle = new JToggleButton("Rectangle");
 		toolBar.add(tglbtnRectangle);
 		buttonGroup.add(tglbtnRectangle);
@@ -155,6 +197,10 @@ public class FrmDrawing extends JFrame {
 
 	public boolean getTglbtnHexagon() {
 		return tglbtnHexagon.isSelected();
+	}
+	
+	public boolean getTglbtnUndo() {
+		return tglbtnUndo.isSelected();
 	}
 
 }

@@ -26,4 +26,7 @@ public class CmdRemoveCircle implements Command{
 			drawModel.add(circle);
 			
 		}
+
+
+		
 }

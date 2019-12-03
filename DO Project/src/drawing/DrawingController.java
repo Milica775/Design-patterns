@@ -1,15 +1,33 @@
 package drawing;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.Stack;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import command.CmdAddCircle;
+import command.CmdAddDonut;
+import command.CmdAddLine;
+import command.CmdAddPoint;
+import command.CmdAddRectangle;
+import command.CmdModifyCircle;
+import command.CmdModifyDonut;
+import command.CmdModifyLine;
+import command.CmdModifyPoint;
+import command.CmdModifyRectangle;
+import command.CmdRemoveCircle;
+import command.CmdRemoveDonut;
+import command.CmdRemoveLine;
+import command.CmdRemovePoint;
+import command.CmdRemoveRectangle;
+import command.Command;
 import hexagon.DlgHexagon;
 import hexagon.Hexagon;
 import hexagon.HexagonAdapter;
@@ -21,6 +39,9 @@ public class DrawingController {
 	private FrmDrawing mainFrame;
 	//javlja null exception kad ga stavim u model
 	private Point startPoint; 
+	
+	
+	
 
 	public DrawingController(DrawingModel model2, FrmDrawing frame2) {
 		model=model2;
@@ -28,14 +49,16 @@ public class DrawingController {
 	}
 
 	public void mouseClicked(MouseEvent e) {
+		 
+		Command cmdAdd = null;
 		
 		if(mainFrame.getTglbtnSelection()) {
-			//model.setSelectedShapes(null); //ponistava se trenutna selekcija
+			model.setSelectedShapes(null); //ponistava se trenutna selekcija
 			Point p=new Point(e.getX(),e.getY()); //koordinate klika
 			Iterator <Shape> it=model.getShapes().iterator();
 			while(it.hasNext()) {
 				Shape shape=it.next();
-				//shape.setSelected(false);
+				shape.setSelected(false);
 				if((shape.contains(p)) && shape.isSelected()==false)
 				{
 					model.setSelectedShapes(shape);
@@ -45,6 +68,8 @@ public class DrawingController {
 		}
 		if(mainFrame.getTglbtnPoint()) {
 			Point p=new Point(e.getX(),e.getY()); //klik
+			
+			
 			DlgPoint dlgP=new DlgPoint();
 			dlgP.setTxtXEditable(false); //onemogucavam izmjenu
 			dlgP.setTxtYEditable(false);
@@ -54,7 +79,9 @@ public class DrawingController {
 			if(dlgP.isOk())
 			{
 			    p.setOuterColor(dlgP.getCol());
-			    model.add(p);
+			    cmdAdd=new CmdAddPoint(p,model);
+			    
+			   
 			}
 		}
 		else if(mainFrame.getTglbtnLine()) {
@@ -77,7 +104,8 @@ public class DrawingController {
 			if(dlgL.isOk())
 			{
 				l.setOuterColor(dlgL.getCol());
-				model.add(l);
+				 cmdAdd=new CmdAddLine(l,model);
+				   
 			    startPoint=null;
 			}
 			    }
@@ -98,7 +126,9 @@ public class DrawingController {
 			    Rectangle r=new Rectangle(p,h,w);
 			    r.setOuterColor(dlgR.getExterCol());
 			    r.setInnerColor(dlgR.getInterCol());
-			    model.add(r);
+			    cmdAdd=new CmdAddRectangle(r,model);
+			  
+			   
 			}
 			}
 			catch(NumberFormatException ex)
@@ -126,7 +156,8 @@ public class DrawingController {
 				Circle c=new Circle(center,radius);
 				c.setOuterColor(dlgC.getExterCol());
 				c.setInnerColor(dlgC.getInterCol());
-				model.add(c);
+				 cmdAdd=new CmdAddCircle(c,model);
+				    
 			
 			}
 			}
@@ -158,7 +189,8 @@ public class DrawingController {
 				d.setOuterColor(dlgD.getExterCol());
 				d.setInnerColor(dlgD.getInterCol());
 				d.setSecondOuterColor(dlgD.getExterCol());
-				model.add(d);
+				cmdAdd=new CmdAddDonut(d,model);
+				   
 			}
 			}
 			catch(NumberFormatException ex)
@@ -209,6 +241,7 @@ public class DrawingController {
 		{
 			model.getSelectedShapes().setSelected(true);
 		}
+		execute(cmdAdd);
 		
 		//kad stavim getView prikazuje i dijaloge
 		if(model.getShapes()!=null) 
@@ -221,6 +254,10 @@ public class DrawingController {
 	public void mouseClickedModify(MouseEvent e) {
 		int index=model.getShapes().indexOf(model.getSelectedShapes());
 		Shape modifyShape=model.get(index);
+		Shape newState;
+		Command cmdModify=null;
+		
+		
 		
 		if(modifyShape!=null) {	
 			if(modifyShape instanceof Point)
@@ -235,12 +272,13 @@ public class DrawingController {
 				{	
 				     if(dp.isOk())
 				     {
-				          ((Point) modifyShape).setX(Integer.parseInt(dp.getTxtX()));
-				          ((Point) modifyShape).setY(Integer.parseInt(dp.getTxtY()));
-				          ((Point) modifyShape).setOuterColor(dp.getCol());
-				          mainFrame.repaint();
+				    	  newState=new Point();
+				          ((Point) newState).setX(Integer.parseInt(dp.getTxtX()));
+				          ((Point) newState).setY(Integer.parseInt(dp.getTxtY()));
+				          ((Point) newState).setOuterColor(dp.getCol());
+				          cmdModify=new CmdModifyPoint((Point)modifyShape,(Point)newState);
 				          
-				          
+				          mainFrame.repaint();          
 				}
 				}
 				catch(NumberFormatException ex)
@@ -264,9 +302,19 @@ public class DrawingController {
 				{
 					if(dl.isOk())
 					{
-						((Line) modifyShape).setStartPoint(new Point((Integer.parseInt(dl.getTxtStartPointX())),(Integer.parseInt(dl.getTxtStartPointY()))));
-						((Line) modifyShape).setEndPoint(new Point((Integer.parseInt(dl.getTxtEndPointX())),(Integer.parseInt(dl.getTxtEndPointY()))));
-						((Line) modifyShape).setOuterColor(dl.getCol());
+						newState=new Line();
+						/*
+						((Line)newState).getStartPoint().setX(Integer.parseInt(dl.getTxtStartPointX()));
+						((Line)newState).getStartPoint().setY(Integer.parseInt(dl.getTxtStartPointY()));
+						((Line)newState).getEndPoint().setX(Integer.parseInt(dl.getTxtEndPointX()));
+						((Line)newState).getEndPoint().setY(Integer.parseInt(dl.getTxtEndPointY()));
+						*/
+
+						((Line) newState).setStartPoint(new Point((Integer.parseInt(dl.getTxtStartPointX())),(Integer.parseInt(dl.getTxtStartPointY()))));
+						((Line) newState).setEndPoint(new Point((Integer.parseInt(dl.getTxtEndPointX())),(Integer.parseInt(dl.getTxtEndPointY()))));
+						((Line) newState).setOuterColor(dl.getCol());
+				          cmdModify=new CmdModifyLine((Line)modifyShape,(Line)newState);
+				         
 				          mainFrame.repaint();
 					}
 				}
@@ -289,11 +337,14 @@ public class DrawingController {
 				{
 					if(dr.isOk())
 					{
-						((Rectangle)modifyShape).setUpperLeftPoint(new Point(Integer.parseInt(dr.getTxtUpperLeftPointX()),Integer.parseInt(dr.getTxtUpperLeftPointY())));
-						((Rectangle)modifyShape).setHeight(Integer.parseInt(dr.getTxtHeight()));
-						((Rectangle)modifyShape).setWidth(Integer.parseInt(dr.getTxtWidth()));
-						((Rectangle)modifyShape).setOuterColor(dr.getExterCol());
-						((Rectangle)modifyShape).setInnerColor(dr.getInterCol());
+						newState=new Rectangle();
+						((Rectangle)newState).setUpperLeftPoint(new Point(Integer.parseInt(dr.getTxtUpperLeftPointX()),Integer.parseInt(dr.getTxtUpperLeftPointY())));
+						((Rectangle)newState).setHeight(Integer.parseInt(dr.getTxtHeight()));
+						((Rectangle)newState).setWidth(Integer.parseInt(dr.getTxtWidth()));
+						((Rectangle)newState).setOuterColor(dr.getExterCol());
+						((Rectangle)newState).setInnerColor(dr.getInterCol());				          
+			          cmdModify=new CmdModifyRectangle((Rectangle)modifyShape,(Rectangle)newState);
+
 				          mainFrame.repaint();
 					}
 				}
@@ -320,11 +371,13 @@ public class DrawingController {
 				{
 					if(dc.isOk())
 					{
+                         newState=new Circle();
+						((Circle)newState).setCenter(new Point(Integer.parseInt(dc.getTxtCenterX()),Integer.parseInt(dc.getTxtCenterY())));
+						((Circle)newState).setRadius(Integer.parseInt(dc.getTxtRadius()));
+						((Circle)newState).setOuterColor(dc.getExterCol());
+						((Circle)newState).setInnerColor(dc.getInterCol());
+				          cmdModify=new CmdModifyCircle((Circle)modifyShape,(Circle)newState);
 
-						((Circle)modifyShape).setCenter(new Point(Integer.parseInt(dc.getTxtCenterX()),Integer.parseInt(dc.getTxtCenterY())));
-						((Circle)modifyShape).setRadius(Integer.parseInt(dc.getTxtRadius()));
-						((Circle)modifyShape).setOuterColor(dc.getExterCol());
-						((Circle)modifyShape).setInnerColor(dc.getInterCol());
 				          mainFrame.repaint();
 					}
 				}
@@ -351,13 +404,15 @@ public class DrawingController {
 				{
 					if(dd.isOk())
 					{
+                        newState=new Donut();
+						((Donut)newState).setCenter(new Point(Integer.parseInt(dd.getTxtCenterX()),Integer.parseInt(dd.getTxtCenterY())));
+						((Donut)newState).setInnerRadius(Integer.parseInt(dd.getTxtInnerRadius()));
+						((Donut)newState).setRadius(Integer.parseInt(dd.getTxtRadius()));
+						((Donut)newState).setOuterColor(dd.getExterCol());
+						((Donut)newState).setSecondOuterColor(dd.getExterCol());
+						((Donut)newState).setInnerColor(dd.getInterCol());
+				          cmdModify=new CmdModifyDonut((Donut)modifyShape,(Donut)newState);
 
-						((Donut)modifyShape).setCenter(new Point(Integer.parseInt(dd.getTxtCenterX()),Integer.parseInt(dd.getTxtCenterY())));
-						((Donut)modifyShape).setInnerRadius(Integer.parseInt(dd.getTxtInnerRadius()));
-						((Donut)modifyShape).setRadius(Integer.parseInt(dd.getTxtRadius()));
-						((Donut)modifyShape).setOuterColor(dd.getExterCol());
-						((Donut)modifyShape).setSecondOuterColor(dd.getExterCol());
-						((Donut)modifyShape).setInnerColor(dd.getInterCol());
 				          mainFrame.repaint();
 					}
 				}
@@ -403,6 +458,7 @@ public class DrawingController {
 				JOptionPane.showMessageDialog(new JFrame(), "Visina i sirina moraju biti pozitivne!", "Greška", JOptionPane.WARNING_MESSAGE);
 			}
 		}
+			  execute(cmdModify);
 		}
 		else
 		{
@@ -413,18 +469,41 @@ public class DrawingController {
 		
 	}
 
-	public void mouseClickedDelete(MouseEvent e) {
-		
-		
-		
+	public void mouseClickedDelete(MouseEvent e) {	
 		if(model.getSelectedShapes()!=null)
 		{
+			Command cmdRmv = null;
 			int index1=model.getShapes().indexOf(model.getSelectedShapes());
 			Shape deleteShape=model.get(index1);
-		int answer=JOptionPane.showConfirmDialog(new JFrame(), "Da li ste sigurni da zelite da obrisete oblik?", "Brisanje oblika", JOptionPane.YES_NO_OPTION);
+		
+			int answer=JOptionPane.showConfirmDialog(new JFrame(), "Da li ste sigurni da zelite da obrisete oblik?", "Brisanje oblika", JOptionPane.YES_NO_OPTION);
 		if( answer==JOptionPane.YES_OPTION)
 		{
-			model.remove(deleteShape);
+			if(deleteShape instanceof Point)
+			{
+				cmdRmv=new CmdRemovePoint((Point)deleteShape,model);
+			}
+			else if(deleteShape instanceof Line)
+			{
+				cmdRmv=new CmdRemoveLine((Line)deleteShape,model);
+				
+			}
+			else if(deleteShape instanceof Rectangle)
+			{
+				 cmdRmv=new CmdRemoveRectangle((Rectangle)deleteShape,model);
+				
+			}
+			else if(deleteShape instanceof Circle)
+			{
+				cmdRmv=new CmdRemoveCircle((Circle)deleteShape,model);
+				
+			}
+			else if(deleteShape instanceof Donut)
+			{
+				cmdRmv=new CmdRemoveDonut((Donut)deleteShape,model);
+	
+			}
+			execute(cmdRmv);
 			model.setSelectedShapes(null);
 			mainFrame.repaint();
 		}
@@ -438,6 +517,47 @@ public class DrawingController {
 
 		
   }
+	public void execute(Command command) {
+		 deleteElementsAfterPointer(model.getUndoRedoPointer());
+		    command.execute();
+
+		    model.getCommandStack().push(command);
+		    model.setUndoRedoPointer(model.getUndoRedoPointer()+1);
+		    
+	}
+	public void deleteElementsAfterPointer(int undoRedoPointer)
+	{
+	    if(model.getCommandStack().size()<1)
+	    	return;
+	    for(int i = model.getCommandStack().size()-1; i > undoRedoPointer; i--)
+	    {
+	    	model.getCommandStack().remove(i);
+	    }
+	}
+
+	
+	public void undo() {
+		
+		Command command = model.getCommandStack().get(model.getUndoRedoPointer());
+		
+			
+	    command.unexecute();
+
+	    model.setUndoRedoPointer(model.getUndoRedoPointer()-1);
+		mainFrame.repaint();
+	
+	}
+
+	public void redo() {
+		
+		    if(model.getUndoRedoPointer() == model.getCommandStack().size() - 1)
+		        return;
+		    model.setUndoRedoPointer(model.getUndoRedoPointer()+1);
+		    Command command = model.getCommandStack().get(model.getUndoRedoPointer());
+		    command.execute();
+		    mainFrame.repaint();
+		
+	}
 
 	
 		

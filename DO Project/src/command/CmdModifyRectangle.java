@@ -73,5 +73,7 @@ public class CmdModifyRectangle implements Command {
 		
 	}
 
+	
+
 
 }
