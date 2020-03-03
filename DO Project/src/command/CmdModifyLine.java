@@ -1,37 +1,33 @@
 package command;
 
+import drawing.DrawingModel;
 import drawing.Line;
+import drawing.Point;
 
 public class CmdModifyLine implements Command {
 	
 	private Line oldValue;
 	private Line newValue;
 	private Line originalValue = new Line();
+	private DrawingModel model;
 	
-	public CmdModifyLine(Line oldValue, Line newValue) {
+	public CmdModifyLine(Line oldValue, Line newValue, DrawingModel model) {
 		this.oldValue = oldValue;
 		this.newValue = newValue;
+		this.model=model;
 	}
 
 	@Override
 	public void execute() {
 		
-		originalValue.setStartPoint(oldValue.getStartPoint());
-		originalValue.setEndPoint(oldValue.getEndPoint());
-		originalValue.setOuterColor(oldValue.getOuterColor());
+		originalValue=(Line) oldValue.clone();
 		
 		oldValue.setStartPoint(newValue.getStartPoint());
 		oldValue.setEndPoint(newValue.getEndPoint());
 		oldValue.setOuterColor(newValue.getOuterColor());
-		/*
-		originalValue.getStartPoint().setX(oldValue.getStartPoint().getX());
-		originalValue.getStartPoint().setY(oldValue.getStartPoint().getY());
-		originalValue.getStartPoint().setOuterColor(oldValue.getStartPoint().getOuterColor());
+		model.log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+
 		
-		oldValue.getStartPoint().setX(newValue.getStartPoint().getX());
-		oldValue.getStartPoint().setY(newValue.getStartPoint().getY());
-		oldValue.getStartPoint().setOuterColor(newValue.getStartPoint().getOuterColor());
-		*/
 	}
 
 	@Override
@@ -39,11 +35,8 @@ public class CmdModifyLine implements Command {
 		oldValue.setStartPoint(originalValue.getStartPoint());
 		oldValue.setEndPoint(originalValue.getEndPoint());
 		oldValue.setOuterColor(originalValue.getOuterColor());
-		/*
-		oldValue.getStartPoint().setX(originalValue.getStartPoint().getX());
-		oldValue.getStartPoint().setY(originalValue.getStartPoint().getY());
-		oldValue.getStartPoint().setOuterColor(originalValue.getStartPoint().getOuterColor());
-		*/
+		model.log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+
 	}
 
 	

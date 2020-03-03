@@ -12,10 +12,10 @@ import java.awt.geom.Ellipse2D;
 import java.awt.Graphics2D;
 
 
-public class Donut extends Circle {
+public class Donut extends Circle  {
 	
 	private int innerRadius;
-	private Color secondOuterColor;
+	
 	
 	
 	
@@ -33,6 +33,11 @@ public class Donut extends Circle {
 	public Donut(Point center, int radius, int innerRadius, boolean selected) throws Exception {
 		this(center, radius, innerRadius);
 		setSelected(selected);
+	}
+	public Donut(Point center, int radius,int innerRadius,Color innerCol,Color outerCol) throws Exception  {
+		this(center, radius,innerRadius);
+		setInnerColor(innerCol);
+		setOuterColor(outerCol);
 	}
 	
 	public void draw(Graphics g) {
@@ -84,14 +89,22 @@ public class Donut extends Circle {
 			throw new Exception();
 	}
 	
-	public Color getSecondOuterColor() {
-		return secondOuterColor;
+	
+	public String toString() {
+		return  "(" + "CenterX=" + super.getCenter().getX() + "," + "CenterY=" + super.getCenter().getY()
+		+ "," + "Radius=" + super.getRadius() + "," + "InnerRadius=" +innerRadius + ","
+				+ "OuterColor="+Integer.toString(getOuterColor().getRGB()) + "," + "InnerColor="+Integer.toString(getInnerColor().getRGB()) + ")";		
 	}
 
-	public void setSecondOuterColor(Color secondOuterColor) {
-		this.secondOuterColor = secondOuterColor;
+	public Donut clone() {			
+		Donut donut= null;
+		try {
+			donut = new Donut(this.getCenter(), this.getRadius(),this.getInnerRadius(),this.getInnerColor(),this.getOuterColor());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		return donut;
 	}
-	
-	
 
 }

@@ -28,7 +28,7 @@ public class DlgLine extends JDialog {
 	private JTextField txtStartPointY;
 	private JTextField txtEndPointX;
 	private JTextField txtEndPointY;
-	private Color col;
+	private Color col=Color.CYAN;
 	private boolean ok;
 	
 	
@@ -116,7 +116,9 @@ public class DlgLine extends JDialog {
 		JButton btnColor = new JButton("Color");
 		btnColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				col=JColorChooser.showDialog(null, "Odaberite boju linije", null);				
+				col=JColorChooser.showDialog(null, "Odaberite boju linije", null);	
+				btnColor.setBackground(col);
+
 			}
 		});
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);

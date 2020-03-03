@@ -2,8 +2,9 @@ package drawing;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 
-public abstract class Shape {
+public abstract class Shape implements Serializable{
 	
 	private boolean selected;
 	private Color outerColor;

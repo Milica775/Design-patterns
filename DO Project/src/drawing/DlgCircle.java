@@ -27,8 +27,8 @@ public class DlgCircle extends JDialog {
 	private JTextField txtCenterX;
 	private JTextField txtCenterY;
 	private JTextField txtRadius;
-	private Color interCol;
-	private Color exterCol;
+	private Color interCol=Color.MAGENTA;
+	private Color exterCol=Color.CYAN;
 	private boolean ok;
 	
 	/**
@@ -92,6 +92,7 @@ public class DlgCircle extends JDialog {
 		btnInteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				interCol=JColorChooser.showDialog(null, "Odaberite boju unutrasnjosti kruga", null);
+			    btnInteriorColor.setBackground(interCol);
 			}
 		});
 		
@@ -99,6 +100,7 @@ public class DlgCircle extends JDialog {
 		btnExteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exterCol=JColorChooser.showDialog(null, "Odaberite boju ivica kruga", null);
+			    btnExteriorColor.setBackground(exterCol);
 			}
 		});
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);

@@ -18,12 +18,16 @@ public class CmdRemoveRectangle implements Command {
 		@Override
 		public void execute() {
 			drawModel.remove(rectangle);
+			drawModel.log("Execute : Remove Rectangle" , rectangle.toString() + "\r\n");
+
 			
 		}
 
 		@Override
 		public void unexecute() {
 			drawModel.add(rectangle);
+			drawModel.log("Unexecute : Remove Rectangle" , rectangle.toString() + "\r\n");
+
 			
 		}
 

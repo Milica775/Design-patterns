@@ -4,6 +4,6 @@ import java.util.ArrayList;
 
 public interface Import {
 	
-	ArrayList<String> importLog(String path);
+	ArrayList<Object> importLogDraw(String path);
 
 }

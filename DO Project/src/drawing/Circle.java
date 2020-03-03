@@ -3,7 +3,7 @@ package drawing;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Circle extends AreaShape {
+public class Circle extends AreaShape implements Movable,Cloneable {
 	
 	private Point center;
 	private int radius;
@@ -23,7 +23,11 @@ public class Circle extends AreaShape {
 		this(center, radius);
 		setSelected(selected);
 	}
-	
+	public Circle(Point center, int radius, Color innerCol,Color outerCol) throws Exception  {
+		this(center, radius);
+		setInnerColor(innerCol);
+		setOuterColor(outerCol);
+	}
 	@Override
 	public boolean contains(Point p) {
 		return center.distance(p.getX(), p.getY()) <= radius;
@@ -48,8 +52,7 @@ public class Circle extends AreaShape {
 		fill(g);
 		if(getOuterColor()!=null)
 		    g.setColor(getOuterColor());
-		else
-			g.setColor(Color.BLACK);
+		
 		
 		g.drawOval(this.getCenter().getX() - this.radius, getCenter().getY() - getRadius(), this.getRadius()*2, this.getRadius()*2);
 		
@@ -66,6 +69,7 @@ public class Circle extends AreaShape {
 		}
 		
 	}
+
 	
 	//metode pristupa
 	public Point getCenter() {
@@ -82,6 +86,37 @@ public class Circle extends AreaShape {
 		this.radius = radius;
 		else
 			throw new Exception();
+	}
+
+	@Override
+	public void moveOn(int x, int y) {
+		center.setX(x);
+		center.setY(y);
+		
+	}
+
+	@Override
+	public void moveBy(int x, int y) {
+		center.setX(center.getX() + x);
+		center.setY(center.getY() + y);
+		
+	}
+	public String toString() {
+		return  "(" + "CenterX=" + center.getX() + "," + "CenterY=" + center.getY()
+		+ "," + "Radius=" + radius + "," 
+				+ "OuterColor="+Integer.toString(getOuterColor().getRGB()) + "," + "InnerColor="+Integer.toString(getInnerColor().getRGB()) + ")";
+	}
+
+
+	public Shape clone() {			
+		Circle circle= null;
+		try {
+			circle = new Circle(this.center, radius, getInnerColor(),getOuterColor());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		return circle;
 	}
 	
 	

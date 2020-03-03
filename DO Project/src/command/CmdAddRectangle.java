@@ -18,13 +18,15 @@ public class CmdAddRectangle implements Command {
 	@Override
 	public void execute() {
 		drawModel.add(rectangle);
+		drawModel.log("Execute : Add Rectangle" , rectangle.toString() + "\r\n");		
 		
 	}
 
 	@Override
 	public void unexecute() {
 		drawModel.remove(rectangle);
-		
+		drawModel.log("Unexecute : Add Rectangle" , rectangle.toString() + "\r\n");		
+
 	}
 
 

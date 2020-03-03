@@ -3,10 +3,12 @@ package drawing;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Line extends Shape {
+public class Line extends Shape implements Movable,Cloneable {
 	
 	private Point startPoint;
 	private Point endPoint;
+	
+	
 	
 	
 	//konstruktori
@@ -22,6 +24,10 @@ public class Line extends Shape {
 	public Line(Point startPoint, Point endPoint, boolean selected) {
 		this(startPoint, endPoint);
 		setSelected(selected);
+	}
+	public Line(Point startPoint, Point endPoint, Color col) {
+		this(startPoint, endPoint);
+		setOuterColor(col);
 	}
 	
 	
@@ -41,9 +47,9 @@ public class Line extends Shape {
 	public void draw(Graphics g) {
 		
 		if(getOuterColor()!=null)
+		   
 			g.setColor(getOuterColor());
-		else
-			g.setColor(Color.GREEN);
+	
 		
 		g.drawLine(this.getStartPoint().getX(), getStartPoint().getY(), this.getEndPoint().getX(), this.getEndPoint().getY());
 		
@@ -65,6 +71,8 @@ public class Line extends Shape {
 		return p;
 	}
 	
+	
+	
 	//metode pristupa
 	public Point getStartPoint() {
 		return startPoint;
@@ -78,6 +86,34 @@ public class Line extends Shape {
 	public void setEndPoint(Point endPoint) {
 		this.endPoint = endPoint;
 	}
+
+	@Override
+	public void moveOn(int x, int y) {
+		int middleByX = (this.getStartPoint().getX() + this.getEndPoint().getX()) / 2;
+		int middleByY = (this.getStartPoint().getY() + this.getEndPoint().getY()) / 2;
+		int dx=x-middleByX;
+		int dy=y-middleByY;
+		this.startPoint.moveBy(dx, dy);
+		this.endPoint.moveBy(dx, dy);
+		
+		
+	}
+
+	@Override
+	public void moveBy(int x, int y) {
+		this.startPoint.moveOn(this.startPoint.getX()+x, this.startPoint.getY()+y);
+		this.endPoint.moveOn(this.endPoint.getX()+x, this.endPoint.getY()+y);
+	}
+	
+	public String toString() {
+		return  "(" + "StartPointX=" + startPoint.getX() + "," + "StartPointY=" + startPoint.getY()
+		+ "," +"EndPointX=" + endPoint.getX() + "," + "EndPointY=" + endPoint.getY() + "," + "Color="+Integer.toString(getOuterColor().getRGB()) + ")";
+	}
+	public Shape clone() {			
+		Line line = new Line(this.startPoint, endPoint, getOuterColor());		
+		return line;
+	}
+
 	
 	
 

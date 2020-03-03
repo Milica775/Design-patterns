@@ -100,4 +100,6 @@ public class Hexagon implements Serializable
     public void setSelected(final boolean selected) {
         this.selected = selected;
     }
+
+	
 }

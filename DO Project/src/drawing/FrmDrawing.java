@@ -2,10 +2,14 @@ package drawing;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -17,15 +21,34 @@ import javax.swing.JToolBar;
 import javax.swing.JToggleButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
-public class FrmDrawing extends JFrame {
+public class FrmDrawing extends JFrame  {
 	
 	private DrawingController controller;
 	private DrawingView view=new DrawingView();
+	private static DefaultListModel<String> dlm=new DefaultListModel<>();
 
+	
+	
+   
+
+
+	public static DefaultListModel<String> getDlm() {
+		return dlm;
+	}
+
+	public void setDlm(DefaultListModel<String> dlm) {
+		this.dlm = dlm;
+	}
 
 	private JPanel contentPane;
 	JToggleButton tglbtnPoint;
@@ -34,12 +57,24 @@ public class FrmDrawing extends JFrame {
 	JToggleButton tglbtnCircle;
 	JToggleButton tglbtnDonut;
 	JToggleButton tglbtnSelection;
-	JToggleButton tglbtnModify;
-	JToggleButton tglbtnDelete;
+	JButton tglbtnModify;
+	JButton tglbtnDelete;
     JToggleButton tglbtnHexagon;
-    JToggleButton tglbtnUndo;
+    JButton tglbtnUndo;
     JToggleButton tglbtnRedo;
     private JToolBar toolBar_1;
+     JToggleButton tglbtnTofront;
+	 JToggleButton tglbtnToback;
+     JToggleButton tglbtnBringToBack;
+    JToggleButton tglbtnBringToFront;
+    private JScrollPane scrollPane;
+    JToggleButton tglbtnExportToLog;
+    JToggleButton tglbtnImportFromLog;
+    JToggleButton tglbtnExportToDrawFile;
+    JToggleButton tglbtnImportFromDraw;
+    JToggleButton tglbtnExecuteLog;
+     JButton tglbtnInnerColor;
+     JButton tglbtnOuterColor;
  
 
 
@@ -50,7 +85,9 @@ public class FrmDrawing extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		contentPane.setBackground(Color.gray);
+		
 
+		
 		ButtonGroup buttonGroup=new ButtonGroup();
 		
 		JToolBar toolBar = new JToolBar();
@@ -66,7 +103,8 @@ public class FrmDrawing extends JFrame {
 		toolBar_1 = new JToolBar(JToolBar.VERTICAL);
 		contentPane.add(toolBar_1, BorderLayout.WEST);
 		
-		tglbtnUndo = new JToggleButton("Undo");
+		tglbtnUndo = new JButton("Undo");
+		tglbtnUndo.setEnabled(false);
 		tglbtnUndo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -80,7 +118,9 @@ public class FrmDrawing extends JFrame {
 		
 		
 		
+		
 		tglbtnRedo = new JToggleButton("Redo");
+		tglbtnRedo.setEnabled(false);
 		tglbtnRedo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.redo();
@@ -88,6 +128,116 @@ public class FrmDrawing extends JFrame {
 		});
 		
 		toolBar_1.add(tglbtnRedo);
+		
+		tglbtnToback = new JToggleButton("To Back");
+		tglbtnToback.setEnabled(false);
+		tglbtnToback.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				controller.toBack();
+			}
+		});
+		
+		toolBar_1.add(tglbtnToback);
+		
+		tglbtnTofront = new JToggleButton("To Front");
+		tglbtnTofront.setEnabled(false);
+		tglbtnTofront.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				controller.toFront();
+			}
+		});
+		
+		toolBar_1.add(tglbtnTofront);
+		
+		tglbtnBringToFront = new JToggleButton("Bring To Front");
+		tglbtnBringToFront.setEnabled(false);
+		tglbtnBringToFront.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				controller.bringToFront();
+			}
+		});
+	
+		toolBar_1.add(tglbtnBringToFront);
+		
+		tglbtnBringToBack = new JToggleButton("Bring To Back");
+		tglbtnBringToBack.setEnabled(false);
+		tglbtnBringToBack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				controller.bringToBack();
+			}
+		});
+	
+		toolBar_1.add(tglbtnBringToBack);
+		
+		tglbtnExportToLog = new JToggleButton("Export To Log");
+		tglbtnExportToLog.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				controller.exportToLog();
+			}
+		});
+		toolBar_1.add(tglbtnExportToLog);
+		
+		tglbtnImportFromLog = new JToggleButton("Import From Log");
+		tglbtnImportFromLog.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				controller.importFromLog();
+			}
+		});
+		toolBar_1.add(tglbtnImportFromLog);
+		
+		tglbtnExportToDrawFile = new JToggleButton("Export To Draw File");
+		tglbtnExportToDrawFile.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				controller.exportToDraw();
+			}
+		});
+		toolBar_1.add(tglbtnExportToDrawFile);
+		
+		tglbtnImportFromDraw = new JToggleButton("Import From Draw ");
+		tglbtnImportFromDraw.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				controller.importFromDraw();
+			}
+		});
+		toolBar_1.add(tglbtnImportFromDraw);
+	
+		
+		tglbtnExecuteLog = new JToggleButton("Execute log");
+		tglbtnExecuteLog.setEnabled(false);
+		tglbtnExecuteLog.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				controller.executeLog();
+			}
+		});
+		toolBar_1.add(tglbtnExecuteLog);
+		
+		tglbtnInnerColor = new JButton("Inner Color");
+		tglbtnInnerColor.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				controller.addInnerColor();
+			}
+		});
+		toolBar_1.add(tglbtnInnerColor);
+		
+		tglbtnOuterColor = new JButton("Outer Color");
+		tglbtnOuterColor.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				controller.addOuterColor();
+			}
+		});
+		toolBar_1.add(tglbtnOuterColor);
+		
 		
 		
 		
@@ -106,7 +256,7 @@ public class FrmDrawing extends JFrame {
 		toolBar.add(tglbtnLine);
 		buttonGroup.add(tglbtnLine);
 		tglbtnRectangle = new JToggleButton("Rectangle");
-		toolBar.add(tglbtnRectangle);
+	toolBar.add(tglbtnRectangle);
 		buttonGroup.add(tglbtnRectangle);
 		
 		tglbtnCircle = new JToggleButton("Circle");
@@ -122,14 +272,22 @@ public class FrmDrawing extends JFrame {
 		buttonGroup.add(tglbtnHexagon);
 		
 		tglbtnSelection = new JToggleButton("Selection");
+		tglbtnSelection.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				controller.clickSelect(e);
+			}
+		});
+	
 		toolBar.add(tglbtnSelection);
 		buttonGroup.add(tglbtnSelection);
 		
-		tglbtnModify = new JToggleButton("Modify");
+		tglbtnModify = new JButton("Modify");
+		tglbtnModify.setEnabled(false);
 		tglbtnModify.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				controller.mouseClickedModify(e);
+			
+             controller.mouseClickedModify(e);
 				
 		};
 		});
@@ -138,16 +296,28 @@ public class FrmDrawing extends JFrame {
 		toolBar.add(tglbtnModify);
 		buttonGroup.add(tglbtnModify);
 		
-		tglbtnDelete = new JToggleButton("Delete");	
+		tglbtnDelete = new JButton("Delete");	
+		tglbtnDelete.setEnabled(false);
 		tglbtnDelete.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				controller.mouseClickedDelete(e);
+			
 				
 		};
 		});
 		toolBar.add(tglbtnDelete);
 		buttonGroup.add(tglbtnDelete);
+		
+		scrollPane = new JScrollPane();
+		contentPane.add(scrollPane, BorderLayout.EAST);
+		JList list = new JList();
+		
+		list.setModel(dlm);
+		scrollPane.setViewportView(list);
+		
+		
+		scrollPane.setBounds(586, 452, 784, 461);
 	}
 
 	public boolean getTglbtnPoint() {
@@ -202,5 +372,25 @@ public class FrmDrawing extends JFrame {
 	public boolean getTglbtnUndo() {
 		return tglbtnUndo.isSelected();
 	}
+	public boolean getTglbtnTofront() {
+			return tglbtnTofront.isSelected();
+	}
+
+	public boolean getTglbtnToback() {
+			return tglbtnToback.isSelected();
+	}
+
+	public boolean getTglbtnBringToBack() {
+			return tglbtnBringToBack.isSelected();
+	}
+
+	public boolean getTglbtnBringToFront() {
+			return tglbtnBringToFront.isSelected();
+	}
+	
+	
+
+
+	
 
 }

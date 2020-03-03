@@ -11,91 +11,238 @@ import drawing.FrmDrawing;
 import drawing.Line;
 import drawing.Point;
 import drawing.Rectangle;
+import drawing.Shape;
 import hexagon.HexagonAdapter;
 
 public class CommandManager {
 
-	public Command parse(String command, DrawingModel model) {
+	public Command parse(String command, DrawingModel model,FrmDrawing frame) {
 		
-		String type=command.split("\\(")[0];
-		System.out.println(type);
-			
+		String type=parseCommand(command);
+		
+		if(!type.contains("Modify"))
+		{
+		Shape shape=buildShape(command);
+	
+		int index=model.getIndexOfShape(shape);
+	
+		
+		
+		
 		
 		if(type.contains("Add")) {
+			
+			
+		
+			
 			if(type.contains("Point")) {
 				
-				Point p=buildPoint(command);
-				return new CmdAddPoint(p,model);
+				return new CmdAddPoint((Point) shape,model);
 							
 			}
             if(type.contains("Line")) {
 				
-				Line l=buildLine(command);
-				return new CmdAddLine(l,model);
+				
+				return new CmdAddLine((Line) shape,model);
 								
 			}	
             if(type.contains("Rectangle")) {
 				
-				Rectangle r=buildRectangle(command);
-				return new CmdAddRectangle(r,model);		
+			
+				return new CmdAddRectangle((Rectangle) shape,model);		
 			}
             if(type.contains("Circle")) {
 				
-				Circle c=buildCircle(command);
-				return new CmdAddCircle(c,model);
+				
+				return new CmdAddCircle((Circle) shape,model);
 							
 			}
              if(type.contains("Donut")) {
-				
-				Donut d=buildDonut(command);
-				return new CmdAddDonut(d,model);
+			
+				return new CmdAddDonut((Donut) shape,model);
 								
 			}
              if(type.contains("Hexagon")) {
  				
- 				HexagonAdapter h=buildHexagon(command);
- 				return new CmdAddHexagon(h,model);
+ 				
+ 				return new CmdAddHexagon((HexagonAdapter) shape,model);
  								
  			}
 		}
-		//ne radi
+		if(type.contains("Selection")) {
+			
+			
+			//samo sa ovim radi ali nema smisla
+			//model.add(shape);
+			return new CmdSelection(shape,model,frame);
+			
+		}
+		if(type.contains("Bring To Front")) {
+			
+			
+			return new CmdBringToFront(model,shape,index);
+			
+		}
+		if(type.contains("Bring To Back")) {
+			
+			
+			return new CmdBringToBack(model,shape,index);
+			
+		}
+        if(type.contains("To Back")) {
+        	
+        	return new CmdToBack(model,shape,index);
+			
+		}
+        if(type.contains("To Front")) {
+			
+        	return new CmdToFront(model,shape,index);
+		}
+        
 		if(type.contains("Remove")) {
-			System.out.println("Remove");
+		
+			
 			if(type.contains("Point")) {
-				System.out.println("Point");
 				
-				Point p=buildPoint(command);
-				return new CmdRemovePoint(p,model);
+				
+				
+				return new CmdRemovePoint((Point) shape,model);
 							
 			}
             if(type.contains("Line")) {
 				
-				Line l=buildLine(command);
-				return new CmdRemoveLine(l,model);
+				
+				return new CmdRemoveLine((Line) shape,model);
 								
 			}	
             if(type.contains("Rectangle")) {
 				
-				Rectangle r=buildRectangle(command);
-				return new CmdRemoveRectangle(r,model);		
+				
+				return new CmdRemoveRectangle((Rectangle) shape,model);		
 			}
             if(type.contains("Circle")) {
 				
-				Circle c=buildCircle(command);
-				return new CmdRemoveCircle(c,model);
+			
+				return new CmdRemoveCircle((Circle) shape,model);
 							
 			}
              if(type.contains("Donut")) {
 				
-				Donut d=buildDonut(command);
-				return new CmdRemoveDonut(d,model);
+			
+				return new CmdRemoveDonut((Donut) shape,model);
 								
 			}
+             if(type.contains("Hexagon")) {
+ 				
+     			
+ 				return new CmdRemoveHexagon((HexagonAdapter) shape,model);
+ 								
+ 			}
+            
 		}
+		}
+		if(type.contains("Modify")) {
+			String s= command.split("->")[0];
+    		String s1=command.split("->")[1];
+    		
+    		Shape oldShape=buildShape(s);
+    		Shape newShape;
+    		
+        	if(type.contains("Point")) {
+        		newShape=buildPoint(s1);
+        		
+        		//model.add(newShape);
+        		return new CmdModifyPoint((Point)oldShape,(Point)newShape,model);
+        	}
+        	if(type.contains("Line")) {
+        		newShape=buildLine(s1);
+        	
+        		return new CmdModifyLine((Line)oldShape,(Line)newShape,model);
+        	}
+        	if(type.contains("Rectangle")) {
+        		newShape=buildRectangle(s1);
+        	
+        		return new CmdModifyRectangle((Rectangle)oldShape,(Rectangle)newShape,model);
+        	}
+        	if(type.contains("Circle")) {
+        		newShape=buildCircle(s1);
+        		
+        		return new CmdModifyCircle((Circle)oldShape,(Circle)newShape,model);
+        	}
+        	if(type.contains("Donut")) {
+        		newShape=buildDonut(s1);
+        		
+        		return new CmdModifyDonut((Donut)oldShape,(Donut)newShape,model);
+        	}
+        	if(type.contains("Hexagon")) {
+        		newShape=buildHexagon(s1);
+        	
+        		return new CmdModifyHexagon((HexagonAdapter)oldShape,(HexagonAdapter)newShape,model);
+        	}
+        }
 		return null;
 	}
 	
 	
+
+
+
+
+
+	private String parseCommand(String command) {
+		return command.split("\\(")[0];
+		
+	}
+
+
+
+
+
+
+
+	private Shape buildShape(String command) {
+		
+		Shape shape = null;
+		String type=parseCommand(command);
+		if(type.contains("Point")) {
+			
+			shape=buildPoint(command);
+			
+						
+		}
+        if(type.contains("Line")) {
+			
+        	shape=buildLine(command);
+			
+							
+		}	
+        if(type.contains("Rectangle")) {
+			
+        	shape=buildRectangle(command);
+					
+		}
+        if(type.contains("Circle")) {
+			
+        	shape=buildCircle(command);
+		
+						
+		}
+         if(type.contains("Donut")) {
+			
+        	 shape=buildDonut(command);
+			
+							
+		}
+         if(type.contains("Hexagon")) {
+				
+        	 shape=buildHexagon(command);
+				
+								
+			}
+         return shape;
+	}
+
+
 
 
 
@@ -173,8 +320,8 @@ public class CommandManager {
 		int X=Integer.parseInt(parseHex.get("x"));
 		int Y=Integer.parseInt(parseHex.get("y"));
 		int radius=Integer.parseInt(parseHex.get("radius"));
-		Color outerCol=new Color(Integer.parseInt(parseHex.get("BorderColor")));
-		Color innerCol=new Color(Integer.parseInt(parseHex.get("AreaColor")));
+		Color outerCol=new Color(Integer.parseInt(parseHex.get("OuterColor")));	
+		Color innerCol=new Color(Integer.parseInt(parseHex.get("InnerColor")));	
 		try {
 			return new HexagonAdapter(X,Y,radius,innerCol,outerCol);
 		} catch (Exception e) {
@@ -194,9 +341,9 @@ public class CommandManager {
 		
 			
 		for(String s: cast.split(",")) {
-			System.out.println(s);
+		
 		    String [] ss=s.split("=");	
-		    System.out.println(ss);
+		
 			helpMap.put(ss[0],ss[1]);
 		
 		}

@@ -26,8 +26,9 @@ public class DlgPoint extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtX;
 	private JTextField txtY;
+
 	private boolean ok;
-	private Color col;
+	private Color col=Color.green;
 	/**
 	 * Launch the application.
 	 */
@@ -88,6 +89,8 @@ public class DlgPoint extends JDialog {
 		btnColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				col=JColorChooser.showDialog(null, "Odaberite boju tacke", null);
+				btnColor.setBackground(col);
+			
 			}
 		});
 		

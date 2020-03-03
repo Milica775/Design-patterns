@@ -1,5 +1,7 @@
 package command;
 
+import drawing.DrawingModel;
+import drawing.Point;
 import drawing.Rectangle;
 
 public class CmdModifyRectangle implements Command {
@@ -7,30 +9,19 @@ public class CmdModifyRectangle implements Command {
 	private Rectangle oldValue;
 	private Rectangle newValue;
 	private Rectangle originalValue = new Rectangle();
+	private DrawingModel model;
 	
-	public CmdModifyRectangle(Rectangle oldValue, Rectangle newValue) {
+	public CmdModifyRectangle(Rectangle oldValue, Rectangle newValue,DrawingModel model) {
 		this.oldValue = oldValue;
 		this.newValue = newValue;
+		this.model=model;
 	}
 
 	@Override
 	public void execute() { 
-		originalValue.getUpperLeftPoint().setX(oldValue.getUpperLeftPoint().getX());
-		originalValue.getUpperLeftPoint().setY(oldValue.getUpperLeftPoint().getY());
-		try {
-			originalValue.setHeight(oldValue.getHeight());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			originalValue.setWidth(oldValue.getWidth());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		originalValue.setOuterColor(oldValue.getOuterColor());
-		originalValue.setInnerColor(oldValue.getInnerColor());
+		
+		originalValue=(Rectangle) oldValue.clone();
+		
 		
 		oldValue.getUpperLeftPoint().setX(newValue.getUpperLeftPoint().getX());
 		oldValue.getUpperLeftPoint().setY(newValue.getUpperLeftPoint().getY());
@@ -48,7 +39,8 @@ public class CmdModifyRectangle implements Command {
 		}
 		oldValue.setOuterColor(newValue.getOuterColor());
 		oldValue.setInnerColor(newValue.getInnerColor());
-		
+		model.log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+
 	}
 
 	@Override
@@ -70,7 +62,8 @@ public class CmdModifyRectangle implements Command {
 		}
 		oldValue.setOuterColor(originalValue.getOuterColor());
 		oldValue.setInnerColor(originalValue.getInnerColor());
-		
+		model.log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+
 	}
 
 	

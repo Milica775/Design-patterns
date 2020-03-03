@@ -3,7 +3,7 @@ package drawing;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Rectangle extends AreaShape {
+public class Rectangle extends AreaShape implements Movable,Cloneable{
 	
 	private Point upperLeftPoint;
 	private int width;
@@ -24,6 +24,12 @@ public class Rectangle extends AreaShape {
 	public Rectangle(Point upperLeftPoint, int height, int width, boolean selected) throws Exception {
 		this(upperLeftPoint, height, width);
 		setSelected(selected);
+	}
+	
+	public Rectangle(Point upperLeftPoint, int height, int width, Color innerCol, Color outerCol) throws Exception {
+		this(upperLeftPoint, height, width);
+		setInnerColor(innerCol);
+		setOuterColor(outerCol);
 	}
 	
 	@Override
@@ -99,6 +105,36 @@ public class Rectangle extends AreaShape {
 		else
 			throw new Exception();
 	}
+
+	@Override
+	public void moveOn(int x, int y) {
+		upperLeftPoint.setX(x);
+		upperLeftPoint.setY(y);
+		
+	}
+
+	@Override
+	public void moveBy(int x, int y) {
+		upperLeftPoint.setX(upperLeftPoint.getX() + x);
+		upperLeftPoint.setY(upperLeftPoint.getY() + y);
+	}
+	public String toString() {
+		return  "(" + "UpperLeftPointX=" + upperLeftPoint.getX() + "," + "UpperLeftPointY=" + upperLeftPoint.getY()
+		+ "," + "Height=" + height + "," + "Width=" +width + "," 
+				+ "OuterColor="+Integer.toString(getOuterColor().getRGB()) + "," + "InnerColor="+Integer.toString(getInnerColor().getRGB()) + ")";
+	}
+
+	public Shape clone() {			
+		Rectangle rectangle = null;
+		try {
+			rectangle = new Rectangle(this.upperLeftPoint, height,width, getInnerColor(),getOuterColor());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		return rectangle;
+	}
+
 	
 	
 

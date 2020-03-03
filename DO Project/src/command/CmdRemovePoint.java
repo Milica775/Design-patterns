@@ -17,13 +17,16 @@ public class CmdRemovePoint implements Command {
 		@Override
 		public void execute() {
 			drawModel.remove(point);
+			drawModel.log("Execute : Remove Point" , point.toString() + "\r\n");
+
 			
 		}
 
 		@Override
 		public void unexecute() {
 			drawModel.add(point);
-			
+			drawModel.log("Unexecute : Remove Point" , point.toString() + "\r\n");
+
 		}
 
 	

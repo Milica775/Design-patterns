@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public class OpenLogFile implements Import {
 
 	@Override
-	public ArrayList<String> importLog(String path) {
+	public ArrayList<Object> importLogDraw(String path) {
 		
 		
 		File file = new File(path);
@@ -27,7 +27,7 @@ public class OpenLogFile implements Import {
 		BufferedReader br = new BufferedReader(fr);
 		String line;
 		try {
-			 ArrayList<String> logLine=new ArrayList<String>();
+			 ArrayList<Object> logLine=new ArrayList<Object>();
 			while((line = br.readLine()) != null){
 			    
 			   

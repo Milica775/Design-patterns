@@ -9,24 +9,31 @@ public class CmdBringToFront implements Command{
 	
 	private DrawingModel drawModel;
 	private Shape selectedShape;
-	
+	private int indexBefore;
 
-	public CmdBringToFront(DrawingModel drawModel,Shape selectedShape) {
+
+	public CmdBringToFront(DrawingModel drawModel,Shape selectedShape,int selectedIndex) {
 		
 		this.drawModel=drawModel;
 	    this.selectedShape=selectedShape;	
+	    indexBefore=selectedIndex;
 	}
 
 	@Override
 	public void execute() {
        drawModel.getShapes().remove(selectedShape);
        drawModel.getShapes().add(selectedShape);
+    
+       drawModel.log("Execute : Bring To Front" +" " + selectedShape.getClass().getSimpleName(),selectedShape.toString());
 	}
 
 	@Override
 	public void unexecute() {
-		// TODO Auto-generated method stub
-		
+
+	   drawModel.getShapes().remove(selectedShape);
+	   drawModel.getShapes().add(indexBefore, selectedShape);
+       drawModel.log("Unexecute : Bring To Front" +" " + selectedShape.getClass().getSimpleName(),selectedShape.toString());
+
 	}
 
 }

@@ -1,31 +1,25 @@
 package command;
 
 import drawing.Circle;
+import drawing.DrawingModel;
+import drawing.Point;
 
 public class CmdModifyCircle implements Command {
 	
 	private Circle oldValue;
 	private Circle newValue;
 	private Circle originalValue = new Circle();
+	private DrawingModel model;
 	
-	public CmdModifyCircle(Circle oldValue, Circle newValue) {
+	public CmdModifyCircle(Circle oldValue, Circle newValue,DrawingModel model) {
 		this.oldValue = oldValue;
 		this.newValue = newValue;
+		this.model=model;
 	}
 
 	@Override
 	public void execute() { 
-		originalValue.getCenter().setX(oldValue.getCenter().getX());
-		originalValue.getCenter().setY(oldValue.getCenter().getY());
-		try {
-			originalValue.setRadius(oldValue.getRadius());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		originalValue.setOuterColor(oldValue.getOuterColor());
-		originalValue.setInnerColor(oldValue.getInnerColor());
-		
+		originalValue=(Circle) oldValue.clone();
 		oldValue.getCenter().setX(newValue.getCenter().getX());
 		oldValue.getCenter().setY(newValue.getCenter().getY());
 		try {
@@ -36,6 +30,8 @@ public class CmdModifyCircle implements Command {
 		}
 		oldValue.setOuterColor(newValue.getOuterColor());
 		oldValue.setInnerColor(newValue.getInnerColor());
+		model.log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+
 		
 	}
 
@@ -53,7 +49,8 @@ public class CmdModifyCircle implements Command {
 		
 		oldValue.setOuterColor(originalValue.getOuterColor());
 		oldValue.setInnerColor(originalValue.getInnerColor());
-		
+		model.log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+
 	}
 
 	

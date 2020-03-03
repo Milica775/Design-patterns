@@ -1,6 +1,7 @@
 package command;
 
 import drawing.Circle;
+import drawing.DrawingModel;
 import hexagon.HexagonAdapter;
 
 public class CmdModifyHexagon implements Command{
@@ -8,10 +9,12 @@ public class CmdModifyHexagon implements Command{
 	private HexagonAdapter oldValue;
 	private HexagonAdapter newValue;
 	private HexagonAdapter originalValue = new HexagonAdapter();
+	private DrawingModel model;
 	
-	public CmdModifyHexagon(HexagonAdapter oldValue, HexagonAdapter newValue) {
+	public CmdModifyHexagon(HexagonAdapter oldValue, HexagonAdapter newValue,DrawingModel model) {
 		this.oldValue = oldValue;
 		this.newValue = newValue;
+		this.model=model;
 	}
 
 
@@ -28,7 +31,8 @@ public class CmdModifyHexagon implements Command{
 		}
 		oldValue.setOuterColor(newValue.getOuterColor());
 		oldValue.setInterColor(newValue.getInterColor());
-		
+		model.log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+
 	}
 
 	@Override
@@ -44,7 +48,8 @@ public class CmdModifyHexagon implements Command{
 		
 		oldValue.setOuterColor(originalValue.getOuterColor());
 		oldValue.setInterColor(originalValue.getInterColor());
-		
+		model.log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+
 	}
 
 }

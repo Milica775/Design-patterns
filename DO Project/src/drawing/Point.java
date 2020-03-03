@@ -4,11 +4,11 @@ import java.awt.Color;
 
 import java.awt.Graphics;
 
-public class Point extends Shape {
+public class Point extends Shape implements Movable,Cloneable{
 	
 	private int x;
 	private int y;
-	
+
 	
 	//konstruktori
     public Point() {
@@ -24,7 +24,10 @@ public class Point extends Shape {
 		this(x, y);
 		setSelected(selected);
 	}
-	
+	public Point(int x, int y, Color col) {
+		this(x, y);
+		setOuterColor(col);
+	}
 	
 	public double distance(int x2, int y2) {
 		double dx = this.x - x2;
@@ -42,10 +45,12 @@ public class Point extends Shape {
 
 	@Override
 	public void draw(Graphics g) {
+		
+		
 		if(getOuterColor()!=null)
-			g.setColor(getOuterColor());
-		else
-			g.setColor(Color.GREEN);
+		    g.setColor(getOuterColor());
+			
+		
 		
 		g.drawLine(this.x-2, this.y, this.x+2, this.y);
 		g.drawLine(this.x, this.y-2, this.x, this.y+2);
@@ -54,10 +59,19 @@ public class Point extends Shape {
 		if (isSelected()) {
 			g.setColor(Color.RED);
 			g.drawRect(this.x-3, this.y-3, 6, 6);
+		
 			
 		}
 		
+		
 	}
+	
+
+	public Shape clone() {			
+		Point point = new Point(this.getX(), this.getY(), getOuterColor());		
+		return point;
+	}
+
 	
 	
 	//metode pristupa
@@ -76,6 +90,38 @@ public class Point extends Shape {
 	public void setY(int y) {
 		this.y = y;
 	}
+
+	@Override
+	public void moveOn(int x, int y) {
+		this.x=x;
+		this.y=y;
+		
+	}
+
+	@Override
+	public void moveBy(int x, int y) {
+		this.x += x;
+		this.y += y;
+		
+	}
+	public String toString() {
+		
+		return  "(" + "x=" + x + "," + "y=" + y  + "," + "Color="+Integer.toString(getOuterColor().getRGB()) + ")";
+		
+	
+	}
+	public boolean equals(Object obj){
+		if(obj instanceof Point){
+			Point extraPoint=(Point) obj;
+			if(x==extraPoint.getX() && y==extraPoint.getY() && getOuterColor().equals(extraPoint.getOuterColor()))
+				return true;
+			else
+				return false;
+		}
+		else 
+			return false;
+	}
+	
 
 	
 	

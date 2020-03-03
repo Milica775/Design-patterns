@@ -92,6 +92,7 @@ public class DlgHexagon extends JDialog {
 		btnInteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				interCol=JColorChooser.showDialog(null, "Odaberite boju unutrasnjosti sestougla", null);
+			    btnInteriorColor.setBackground(interCol);
 			}
 		});
 		
@@ -99,6 +100,7 @@ public class DlgHexagon extends JDialog {
 		btnExteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exterCol=JColorChooser.showDialog(null, "Odaberite boju ivica sestougla", null);
+			    btnExteriorColor.setBackground(exterCol);
 			}
 		});
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
@@ -153,6 +155,7 @@ public class DlgHexagon extends JDialog {
 						{
 						setOk(true);
 						dispose();
+						
 						}
 						catch(NumberFormatException ex)
 						{

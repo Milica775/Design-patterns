@@ -17,13 +17,16 @@ public class CmdRemoveDonut implements Command {
 		@Override
 		public void execute() {
 			drawModel.remove(donut);
+			drawModel.log("Execute : Remove Donut" , donut.toString() + "\r\n");
+
 			
 		}
 
 		@Override
 		public void unexecute() {
 			drawModel.add(donut);
-			
+			drawModel.log("Unexecute : Remove Donut" , donut.toString() + "\r\n");
+
 		}
 
 		
