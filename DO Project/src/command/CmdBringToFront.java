@@ -12,19 +12,20 @@ public class CmdBringToFront implements Command{
 	private int indexBefore;
 
 
-	public CmdBringToFront(DrawingModel drawModel,Shape selectedShape,int selectedIndex) {
+	public CmdBringToFront(DrawingModel drawModel,Shape selectedShape) {
 		
 		this.drawModel=drawModel;
 	    this.selectedShape=selectedShape;	
-	    indexBefore=selectedIndex;
+	   
 	}
 
 	@Override
 	public void execute() {
+		indexBefore=drawModel.getSelectedShapeIndex();
        drawModel.getShapes().remove(selectedShape);
        drawModel.getShapes().add(selectedShape);
     
-       drawModel.log("Execute : Bring To Front" +" " + selectedShape.getClass().getSimpleName(),selectedShape.toString());
+       DrawingModel.getInstanceLazy().log("Execute : Bring To Front" +" " + selectedShape.getClass().getSimpleName(),selectedShape.toString()+ "\r\n");
 	}
 
 	@Override
@@ -32,7 +33,7 @@ public class CmdBringToFront implements Command{
 
 	   drawModel.getShapes().remove(selectedShape);
 	   drawModel.getShapes().add(indexBefore, selectedShape);
-       drawModel.log("Unexecute : Bring To Front" +" " + selectedShape.getClass().getSimpleName(),selectedShape.toString());
+	   DrawingModel.getInstanceLazy().log("Unexecute : Bring To Front" +" " + selectedShape.getClass().getSimpleName(),selectedShape.toString()+ "\r\n");
 
 	}
 

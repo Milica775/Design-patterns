@@ -17,13 +17,13 @@ public class CmdAddLine implements Command{
 	@Override
 	public void execute() {
 		drawModel.add(line);
-		drawModel.log("Execute : Add Line" , line.toString() + "\r\n");		
+		DrawingModel.getInstanceLazy().log("Execute : Add Line" , line.toString() + "\r\n");		
 	}
 
 	@Override
 	public void unexecute() {
 		drawModel.remove(line);
-		drawModel.log("Unexecute : Add Line" , line.toString() + "\r\n");		
+		DrawingModel.getInstanceLazy().log("Unexecute : Add Line" , line.toString() + "\r\n");		
 
 	}
 

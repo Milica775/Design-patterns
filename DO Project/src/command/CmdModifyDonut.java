@@ -9,12 +9,12 @@ public class CmdModifyDonut implements Command {
 	private Donut oldValue;
 	private Donut newValue;
 	private Donut originalValue = new Donut();
-	private DrawingModel model;
 	
-	public CmdModifyDonut(Donut oldValue, Donut newValue,DrawingModel model) {
+	
+	public CmdModifyDonut(Donut oldValue, Donut newValue) {
 		this.oldValue = oldValue;
 		this.newValue = newValue;
-		this.model=model;
+		
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class CmdModifyDonut implements Command {
 		}
 		oldValue.setOuterColor(newValue.getOuterColor());
 		oldValue.setInnerColor(newValue.getInnerColor());
-		model.log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+		DrawingModel.getInstanceLazy().log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
 
 		
 	}
@@ -65,7 +65,7 @@ public class CmdModifyDonut implements Command {
 		
 		oldValue.setOuterColor(originalValue.getOuterColor());
 		oldValue.setInnerColor(originalValue.getInnerColor());
-		model.log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+		DrawingModel.getInstanceLazy().log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
 
 		
 	}

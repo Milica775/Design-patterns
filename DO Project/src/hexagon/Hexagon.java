@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.io.Serializable;
 
+import drawing.Circle;
+
 public class Hexagon implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -100,6 +102,5 @@ public class Hexagon implements Serializable
     public void setSelected(final boolean selected) {
         this.selected = selected;
     }
-
 	
 }

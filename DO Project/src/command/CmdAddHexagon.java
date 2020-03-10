@@ -18,13 +18,13 @@ public class CmdAddHexagon implements Command {
 	@Override
 	public void execute() {
 		drawModel.add(hex);
-		drawModel.log("Execute : Add Hexagon" , hex.toString() + "\r\n");		
+		DrawingModel.getInstanceLazy().log("Execute : Add Hexagon" , hex.toString() + "\r\n");		
 	}
 
 	@Override
 	public void unexecute() {
 		drawModel.remove(hex);
-		drawModel.log("Unexecute : Add Hexagon" , hex.toString() + "\r\n");		
+		DrawingModel.getInstanceLazy().log("Unexecute : Add Hexagon" , hex.toString() + "\r\n");		
 
 	}
 

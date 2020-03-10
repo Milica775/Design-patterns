@@ -135,7 +135,18 @@ public class Rectangle extends AreaShape implements Movable,Cloneable{
 		return rectangle;
 	}
 
-	
+	public boolean equals(Object obj){
+		if(obj instanceof Rectangle){
+			Rectangle r=(Rectangle) obj;
+			if(upperLeftPoint.getX()==r.getUpperLeftPoint().getX() && upperLeftPoint.getY()==r.getUpperLeftPoint().getY() && height==r.getHeight()
+				&&	width==r.getWidth() && getOuterColor().equals(r.getOuterColor()) && getInnerColor().equals(r.getInnerColor()))
+				return true;
+			else
+				return false;
+		}
+		else 
+			return false;
+	}
 	
 
 	

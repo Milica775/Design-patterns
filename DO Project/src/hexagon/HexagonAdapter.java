@@ -106,7 +106,17 @@ public class HexagonAdapter extends AreaShape implements Cloneable{
 		// TODO Auto-generated method stub
 		
 	}
-
+	public boolean equals(Object obj){
+	if(obj instanceof HexagonAdapter){
+		HexagonAdapter h=(HexagonAdapter) obj;
+		if(this.getX()==h.getX() && this.getY()==h.getY() && this.getRadius()==h.getRadius())
+			return true;
+		else
+			return false;
+	}
+	else 
+		return false;
+	}
 	
 
 }

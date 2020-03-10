@@ -2,19 +2,19 @@ package command;
 
 import drawing.Circle;
 import drawing.DrawingModel;
-import drawing.Point;
+
 
 public class CmdModifyCircle implements Command {
 	
 	private Circle oldValue;
 	private Circle newValue;
 	private Circle originalValue = new Circle();
-	private DrawingModel model;
 	
-	public CmdModifyCircle(Circle oldValue, Circle newValue,DrawingModel model) {
+	
+	public CmdModifyCircle(Circle oldValue, Circle newValue) {
 		this.oldValue = oldValue;
 		this.newValue = newValue;
-		this.model=model;
+		
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class CmdModifyCircle implements Command {
 		}
 		oldValue.setOuterColor(newValue.getOuterColor());
 		oldValue.setInnerColor(newValue.getInnerColor());
-		model.log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+		DrawingModel.getInstanceLazy().log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
 
 		
 	}
@@ -49,7 +49,7 @@ public class CmdModifyCircle implements Command {
 		
 		oldValue.setOuterColor(originalValue.getOuterColor());
 		oldValue.setInnerColor(originalValue.getInnerColor());
-		model.log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+		DrawingModel.getInstanceLazy().log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
 
 	}
 

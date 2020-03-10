@@ -25,6 +25,8 @@ public abstract class Shape implements Serializable{
 
 	public void setSelected(boolean selected) {
 		this.selected = selected;
+		//DrawingModel.getInstanceLazy().log("Selection",":"+ "\r\n");
+
 	}
 	
 	public Color getOuterColor() {

@@ -10,11 +10,11 @@ public class CmdToFront implements Command {
 	
 
 	private DrawingModel drawModel;
-	private int index;
 	private Shape s;
+	private int index;
 	
-	public CmdToFront(DrawingModel drawModel,Shape s,int index) {
-		this.index=index;
+	public CmdToFront(DrawingModel drawModel,Shape s) {
+		
 		this.drawModel=drawModel;
 		this.s=s;
 		
@@ -22,19 +22,21 @@ public class CmdToFront implements Command {
 
 	@Override
 	public void execute() {
-		if(drawModel.getSelectedShapeIndex()!=drawModel.getShapes().size()-1)
+		index=drawModel.getIndexOfShape(s);
+		
+		if(index!=drawModel.getShapes().size()-1)
 		{
 		Collections.swap(drawModel.getShapes(), index+1, index);
 		}
-	    drawModel.log("Execute : To Front"+" " + s.getClass().getSimpleName(),s.toString() + "\r\n");
+		DrawingModel.getInstanceLazy().log("Execute : To Front"+" " + s.getClass().getSimpleName(),s.toString() + "\r\n");
 
 		
 	}
 
 	@Override
 	public void unexecute() {
-		Collections.swap(drawModel.getShapes(), drawModel.getSelectedShapeIndex()-1, drawModel.getSelectedShapeIndex());
-	    drawModel.log("Unexecute : To Front",drawModel.getSelectedShape().toString()+ "\r\n");
+		Collections.swap(drawModel.getShapes(), index-1, index);
+		DrawingModel.getInstanceLazy().log("Unexecute : To Front",s.toString()+ "\r\n");
 
 	}
 

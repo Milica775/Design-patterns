@@ -27,8 +27,8 @@ public class DlgHexagon extends JDialog {
 	private JTextField txtCenterX;
 	private JTextField txtCenterY;
 	private JTextField txtRadius;
-	private Color interCol;
-	private Color exterCol;
+	private Color interCol=Color.MAGENTA;
+	private Color exterCol=Color.BLUE;
 	private boolean ok;
 	
 	/**
@@ -89,6 +89,7 @@ public class DlgHexagon extends JDialog {
 		txtRadius.setColumns(10);
 		
 		JButton btnInteriorColor = new JButton("Interior color");
+		btnInteriorColor.setBackground(interCol);
 		btnInteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				interCol=JColorChooser.showDialog(null, "Odaberite boju unutrasnjosti sestougla", null);
@@ -97,6 +98,7 @@ public class DlgHexagon extends JDialog {
 		});
 		
 		JButton btnExteriorColor = new JButton("Exterior color");
+		btnExteriorColor.setBackground(exterCol);
 		btnExteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exterCol=JColorChooser.showDialog(null, "Odaberite boju ivica sestougla", null);

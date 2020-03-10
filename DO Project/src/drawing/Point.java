@@ -68,7 +68,8 @@ public class Point extends Shape implements Movable,Cloneable{
 	
 
 	public Shape clone() {			
-		Point point = new Point(this.getX(), this.getY(), getOuterColor());		
+		Point point = new Point(this.getX(), this.getY(), getOuterColor());	
+		point.setSelected(this.isSelected());
 		return point;
 	}
 
@@ -110,10 +111,11 @@ public class Point extends Shape implements Movable,Cloneable{
 		
 	
 	}
+	
 	public boolean equals(Object obj){
 		if(obj instanceof Point){
-			Point extraPoint=(Point) obj;
-			if(x==extraPoint.getX() && y==extraPoint.getY() && getOuterColor().equals(extraPoint.getOuterColor()))
+			Point p=(Point) obj;
+			if(x==p.getX() && y==p.getY() && getOuterColor().equals(p.getOuterColor()))
 				return true;
 			else
 				return false;

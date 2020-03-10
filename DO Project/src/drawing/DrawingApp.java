@@ -15,7 +15,7 @@ public class DrawingApp {
 		model.addPropertyChangeListener(controller);
 		frame.getView().setModel(model);
 		frame.setController(controller);
-		//frame.getDlm().addElement(model.peek());
+	
 
 	
 		frame.setBounds(500, 500, 750, 500);

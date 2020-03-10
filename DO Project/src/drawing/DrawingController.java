@@ -1,6 +1,7 @@
 package drawing;
 
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseEvent;
@@ -44,7 +45,6 @@ import command.CmdRemoveHexagon;
 import command.CmdRemoveLine;
 import command.CmdRemovePoint;
 import command.CmdRemoveRectangle;
-import command.CmdSelection;
 import command.CmdToBack;
 import command.CmdToFront;
 import command.Command;
@@ -54,7 +54,6 @@ import export.FileHelp;
 import export.SaveToDrawFile;
 import export.SaveToLogFile;
 import hexagon.DlgHexagon;
-import hexagon.Hexagon;
 import hexagon.HexagonAdapter;
 import importt.ImportManager;
 import importt.OpenDrawFile;
@@ -66,16 +65,14 @@ public class DrawingController implements PropertyChangeListener{
 	private DrawingModel model;
 	private FrmDrawing mainFrame;
 	//javlja null exception kad ga stavim u model
-	private Point startPoint;
-	private ArrayList<Object> log;
-	private int numberOfLine;
+	private Point startPoint;	
 	private LineNumberReader lineNumberReader;
 
 	
 	public DrawingController(DrawingModel model2, FrmDrawing frame2) {
 		model=model2;
 		mainFrame=frame2;
-		//model.addPropertyChangeListener(mainFrame);
+		
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -88,7 +85,6 @@ public class DrawingController implements PropertyChangeListener{
 		if(mainFrame.getTglbtnSelection()) {
 			
 				boolean notFoundShape=true;
-				CmdSelection cmdSelection;
 				Point p=new Point(e.getX(),e.getY()); //koordinate klika
 				Iterator <Shape> it=model.getShapes().iterator();
 				while(it.hasNext()) {
@@ -98,13 +94,14 @@ public class DrawingController implements PropertyChangeListener{
 						notFoundShape=false;
 					if( !shape.isSelected())
 					{
-						cmdSelection=new CmdSelection(shape,model,mainFrame);
-						execute(cmdSelection);	
-					
+						model.setSelection(shape,true);
+						DrawingModel.getInstanceLazy().log("Selection", shape.toString()+ "\r\n");
+
 					}
 					else 
 					{
 						model.setSelection(shape,false);	
+
 					}
 					}			
 				}
@@ -136,6 +133,7 @@ public class DrawingController implements PropertyChangeListener{
 			    cmdAdd=new CmdAddPoint(p,model);
 			
 			    execute(cmdAdd);
+
 			    
 			   
 			}
@@ -302,14 +300,7 @@ public class DrawingController implements PropertyChangeListener{
 				JOptionPane.showMessageDialog(new JFrame(), "Poluprecnik mora biti pozitivan!", "Greška", JOptionPane.WARNING_MESSAGE);
 			}
 
-		}/*
-		else if(model.getSelectedShapes()!=null)
-		{
-			for (Shape s : model.getSelectedShapes()) {
-			 s.setSelected(true);
-			}
-		}*/
-		
+		}
 		
 		//kad stavim getView prikazuje i dijaloge
 		if(model.getShapes()!=null) 
@@ -344,7 +335,7 @@ public class DrawingController implements PropertyChangeListener{
 				          ((Point) newState).setX(Integer.parseInt(dp.getTxtX()));
 				          ((Point) newState).setY(Integer.parseInt(dp.getTxtY()));
 				          ((Point) newState).setOuterColor(dp.getCol());
-				          cmdModify=new CmdModifyPoint((Point)modifyShape,(Point)newState,model);
+				          cmdModify=new CmdModifyPoint((Point)modifyShape,(Point)newState);
 				          
 				          mainFrame.repaint();          
 				}
@@ -376,7 +367,7 @@ public class DrawingController implements PropertyChangeListener{
 						((Line) newState).setStartPoint(new Point((Integer.parseInt(dl.getTxtStartPointX())),(Integer.parseInt(dl.getTxtStartPointY()))));
 						((Line) newState).setEndPoint(new Point((Integer.parseInt(dl.getTxtEndPointX())),(Integer.parseInt(dl.getTxtEndPointY()))));
 						((Line) newState).setOuterColor(dl.getCol());
-				          cmdModify=new CmdModifyLine((Line)modifyShape,(Line)newState,model);
+				          cmdModify=new CmdModifyLine((Line)modifyShape,(Line)newState);
 				         
 				          mainFrame.repaint();
 					}
@@ -406,7 +397,7 @@ public class DrawingController implements PropertyChangeListener{
 						((Rectangle)newState).setWidth(Integer.parseInt(dr.getTxtWidth()));
 						((Rectangle)newState).setOuterColor(dr.getExterCol());
 						((Rectangle)newState).setInnerColor(dr.getInterCol());				          
-			          cmdModify=new CmdModifyRectangle((Rectangle)modifyShape,(Rectangle)newState,model);
+			          cmdModify=new CmdModifyRectangle((Rectangle)modifyShape,(Rectangle)newState);
 
 				          mainFrame.repaint();
 					}
@@ -437,18 +428,14 @@ public class DrawingController implements PropertyChangeListener{
 					if(dd.isOk())
 					{
                         newState=new Donut();
-						((Donut)newState).setCenter(new Point(Integer.parseInt(dd.getTxtCenterX()),Integer.parseInt(dd.getTxtCenterY())));
-						
-						((Donut)newState).setRadius(Integer.parseInt(dd.getTxtRadius()));
-						
-						((Donut)newState).setInnerRadius(Integer.parseInt(dd.getTxtInnerRadius()));
-						
+						((Donut)newState).setCenter(new Point(Integer.parseInt(dd.getTxtCenterX()),Integer.parseInt(dd.getTxtCenterY())));					
+						((Donut)newState).setRadius(Integer.parseInt(dd.getTxtRadius()));					
+						((Donut)newState).setInnerRadius(Integer.parseInt(dd.getTxtInnerRadius()));		
 						((Donut)newState).setInnerColor(dd.getInterCol());
-					
 						((Donut)newState).setOuterColor(dd.getExterCol());
 				
 				
-				          cmdModify=new CmdModifyDonut((Donut)modifyShape,(Donut)newState,model);
+				          cmdModify=new CmdModifyDonut((Donut)modifyShape,(Donut)newState);
 
 				          mainFrame.repaint();
 					}
@@ -482,7 +469,7 @@ public class DrawingController implements PropertyChangeListener{
 						((Circle)newState).setRadius(Integer.parseInt(dc.getTxtRadius()));
 						((Circle)newState).setOuterColor(dc.getExterCol());
 						((Circle)newState).setInnerColor(dc.getInterCol());
-				          cmdModify=new CmdModifyCircle((Circle)modifyShape,(Circle)newState,model);
+				          cmdModify=new CmdModifyCircle((Circle)modifyShape,(Circle)newState);
 
 				          mainFrame.repaint();
 					}
@@ -526,7 +513,7 @@ public class DrawingController implements PropertyChangeListener{
 					  Color cI=dh.getInterCol();
 					  newState=new HexagonAdapter(x,y,radius,cI,cO);
 					  
-				          cmdModify=new CmdModifyHexagon((HexagonAdapter)modifyShape,(HexagonAdapter)newState,model);
+				          cmdModify=new CmdModifyHexagon((HexagonAdapter)modifyShape,(HexagonAdapter)newState);
 				          
 				          mainFrame.repaint();
 				}
@@ -548,14 +535,21 @@ public class DrawingController implements PropertyChangeListener{
 		
 	}
 
-	public void mouseClickedDelete(MouseEvent e) {			
+	public void mouseClickedDelete(MouseEvent e) {	
+		if (model.getSelectedShapes().size() == 0)
+			return;
+		ArrayList<Shape> shapesForDelete=new ArrayList<Shape>();
+		for(Shape s: model.getSelectedShapes()) {
+			shapesForDelete.add(s);
+			
+		}
 			Command cmdRmv = null;
-			if (model.getSelectedShapes().size() == 0)
-				return;
-			int answer=JOptionPane.showConfirmDialog(new JFrame(), "Da li ste sigurni da zelite da obrisete oblik?", "Brisanje oblika", JOptionPane.YES_NO_OPTION);
+			
+		int answer=JOptionPane.showConfirmDialog(new JFrame(), "Da li ste sigurni da zelite da obrisete oblik?", "Brisanje oblika", JOptionPane.YES_NO_OPTION);
 		if( answer==JOptionPane.YES_OPTION)
 		{
-			for (Shape deleteShape : model.getSelectedShapes()) {
+			for (Shape deleteShape : shapesForDelete) {
+				
 
 			if(deleteShape instanceof Point)
 			{
@@ -588,13 +582,15 @@ public class DrawingController implements PropertyChangeListener{
 	
 			}
 			
+
+			
 			execute(cmdRmv);
+			model.setSelection(deleteShape, false);
 					
 			}
 			
 			mainFrame.repaint();
-			//da obrise indekse
-			model.getSelectedShapes().clear();
+			
 			
 		
             
@@ -635,6 +631,7 @@ public class DrawingController implements PropertyChangeListener{
 	    model.setUndoRedoPointer(model.getUndoRedoPointer()-1);
 		mainFrame.repaint();
 	
+	
 	}
 
 	public void redo() {
@@ -643,8 +640,12 @@ public class DrawingController implements PropertyChangeListener{
 		        return;
 		    model.setUndoRedoPointer(model.getUndoRedoPointer()+1);
 		    Command command = model.getCommandStack().get(model.getUndoRedoPointer());
+		    DrawingModel.getInstanceLazy().log("Redo:","");
+
 		    command.execute();
+
 		    mainFrame.repaint();
+			
 		
 	}
 	
@@ -677,10 +678,10 @@ public class DrawingController implements PropertyChangeListener{
 		if (model.getSelectedShapes().size() != 1)
 			return;
 		Shape s=model.getSelectedShape();
-		int selectedIndex=model.getSelectedShapeIndex();
+	
 
 		System.out.println(model.getSelectedShapeIndex());
-		CmdBringToFront cmdBToF=new CmdBringToFront(model,s,selectedIndex);
+		CmdBringToFront cmdBToF=new CmdBringToFront(model,s);
 		execute(cmdBToF);
 		System.out.println(model.getSelectedShapeIndex());
 		
@@ -690,10 +691,10 @@ public class DrawingController implements PropertyChangeListener{
 		if (model.getSelectedShapes().size() != 1)
 			return;
 		Shape s=model.getSelectedShape();
-		int selectedIndex=model.getSelectedShapeIndex();
+		
 
 		System.out.println(model.getSelectedShapeIndex());
-		CmdBringToBack cmdBToB=new CmdBringToBack(model,s,selectedIndex);
+		CmdBringToBack cmdBToB=new CmdBringToBack(model,s);
 		execute(cmdBToB);
 		System.out.println(model.getSelectedShapeIndex());
 		
@@ -703,9 +704,9 @@ public class DrawingController implements PropertyChangeListener{
 		if (model.getSelectedShapes().size() != 1)
 			return;
 		Shape s=model.getSelectedShape();
-		int index=model.getSelectedShapeIndex();
+		
 		System.out.println(model.getSelectedShapeIndex());
-		CmdToBack cmdToB=new CmdToBack(model,s,index);
+		CmdToBack cmdToB=new CmdToBack(model,s);
 		execute(cmdToB);
 		System.out.println(model.getSelectedShapeIndex());		
 	}
@@ -714,23 +715,22 @@ public class DrawingController implements PropertyChangeListener{
 		if (model.getSelectedShapes().size() != 1)
 			return;
 		Shape s=model.getSelectedShape();
-		int index=model.getSelectedShapeIndex();
-		System.out.println(model.getSelectedShapeIndex());
-		CmdToFront cmdToF=new CmdToFront(model,s,index);
+		
+		CmdToFront cmdToF=new CmdToFront(model,s);
 		execute(cmdToF);
 		System.out.println(model.getSelectedShapeIndex());
 		
 	}
 
 	public void exportToLog() {
+		
 		ArrayList<Object> helpList=new ArrayList<Object>();
-		helpList.add(model.getLogs());
+		helpList.add(DrawingModel.getInstanceLazy().getLogs());
 		ExportManager exportManager=new ExportManager(new SaveToLogFile());
 		String path=FileHelp.showFileDialogSave("log");
 		if(path!=null) {
 			exportManager.export(helpList, path);
 		}
-		
 	}
 
 	public void importFromLog() {
@@ -739,7 +739,7 @@ public class DrawingController implements PropertyChangeListener{
 		String path=FileHelp.showFileDialogOpen("log");
 		if(path!=null) {
 			ArrayList<Object> log=importManager.importLogDraw(path);
-			mainFrame.tglbtnExecuteLog.setEnabled(log!=null);
+			
 			try {
 				lineNumberReader=new LineNumberReader(new FileReader(path));
 			
@@ -747,23 +747,27 @@ public class DrawingController implements PropertyChangeListener{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			for(Object l: log)
-			{
-			mainFrame.getDlm().addElement((String) l);
-			
-
-			}						
+			model.log("Imported log file from:", path);
+			mainFrame.tglbtnExecuteLog.setEnabled(true);
+				
 		}
 		
 	}
 
 	public void exportToDraw() {
+		if(model.getShapes().isEmpty()) {
+			JOptionPane.showMessageDialog(new JFrame(), "Crtez je prazan!", "Greška", JOptionPane.WARNING_MESSAGE);
+
+		}
+		else
+		{
 		ArrayList<Object> objectFromDraw=new ArrayList<Object>();
 		objectFromDraw.add(model.getShapes());
 		ExportManager exportManager=new ExportManager(new SaveToDrawFile());
 		String path=FileHelp.showFileDialogSave("drwg");
 		if(path!=null) {
 			exportManager.export(objectFromDraw, path);
+		}
 		}
 	}
 
@@ -780,6 +784,7 @@ public class DrawingController implements PropertyChangeListener{
 			
 			mainFrame.repaint();
 			
+
 	}
 		
 	}
@@ -788,26 +793,39 @@ public class DrawingController implements PropertyChangeListener{
 		
 		
 		try {
-			/*
-			if(model.getLogs().isEmpty())
-				return;*/
-			String line=lineNumberReader.readLine();
-		
-		
-			CommandManager commandManager=new CommandManager();
-			Command command=commandManager.parse(line,model,mainFrame);
-		
-			if(line.contains("Execute"))
-			{	
-			execute(command);
 			
+			String line=lineNumberReader.readLine();
+			CommandManager commandManager=new CommandManager();
+			Command command=commandManager.parse(line,model);
+			
+             if(line.contains("Redo:Execute")) {
+				
+				redo();
+			}
+             else if(line.contains("Execute"))
+			{	
+			   execute(command);
+			System.out.println(model.getSelectedShapes());
+			System.out.println(model.getSelectedShape());
+			System.out.println(model.getShapes());
 			
 			}
-			if(line.contains("Unexecute"))
+			else if(line.contains("Unexecute"))
 			{
-			undo();
+			    undo();
+			}
+			
+			else
+			{
+				DrawingModel.getInstanceLazy().log("Info:",line);
 			}
 			mainFrame.repaint();
+			if(lineNumberReader.getLineNumber()+1>model.getLogs().size()-1)
+			{
+				
+				mainFrame.tglbtnExecuteLog.setEnabled(false);
+				return;
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

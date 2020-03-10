@@ -28,7 +28,7 @@ public class DlgCircle extends JDialog {
 	private JTextField txtCenterY;
 	private JTextField txtRadius;
 	private Color interCol=Color.MAGENTA;
-	private Color exterCol=Color.CYAN;
+	private Color exterCol=Color.BLUE;
 	private boolean ok;
 	
 	/**
@@ -89,6 +89,7 @@ public class DlgCircle extends JDialog {
 		txtRadius.setColumns(10);
 		
 		JButton btnInteriorColor = new JButton("Interior color");
+		btnInteriorColor.setBackground(interCol);
 		btnInteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				interCol=JColorChooser.showDialog(null, "Odaberite boju unutrasnjosti kruga", null);
@@ -97,6 +98,7 @@ public class DlgCircle extends JDialog {
 		});
 		
 		JButton btnExteriorColor = new JButton("Exterior color");
+		btnExteriorColor.setBackground(exterCol);
 		btnExteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exterCol=JColorChooser.showDialog(null, "Odaberite boju ivica kruga", null);

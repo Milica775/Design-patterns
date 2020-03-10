@@ -29,7 +29,7 @@ public class DlgRectangle extends JDialog {
 	private JTextField txtHeight;
 	private JTextField txtWidth;
 	private Color interCol=Color.MAGENTA;
-	private Color exterCol=Color.CYAN;
+	private Color exterCol=Color.BLACK;
 	private boolean ok;
 	
 
@@ -94,6 +94,7 @@ public class DlgRectangle extends JDialog {
 		txtWidth.setColumns(10);
 		
 		JButton btnInteriorColor = new JButton("Interior color");
+	    btnInteriorColor.setBackground(interCol);
 		btnInteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				interCol=JColorChooser.showDialog(null, "Odaberite boju unutrasnjosti pravougaonika", null);
@@ -102,6 +103,7 @@ public class DlgRectangle extends JDialog {
 		});
 		
 		JButton btnExteriorColor = new JButton("Exterior color");
+		btnExteriorColor.setBackground(exterCol);
 		btnExteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exterCol=JColorChooser.showDialog(null, "Odaberite boju ivica pravougaonika", null);

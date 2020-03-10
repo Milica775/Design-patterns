@@ -1,8 +1,4 @@
 package command;
-
-
-
-
 import drawing.DrawingModel;
 import drawing.Point;
 
@@ -10,6 +6,7 @@ public class CmdAddPoint implements Command {
 	
 	private Point point;
 	private DrawingModel drawModel;
+	
 
 	public CmdAddPoint(Point point, DrawingModel model)
 	{
@@ -19,14 +16,16 @@ public class CmdAddPoint implements Command {
 
 	@Override
 	public void execute() {
-		drawModel.add(point);
-		drawModel.log("Execute : Add Point" , point.toString() + "\r\n");
+		drawModel.add(point);		
+		DrawingModel.getInstanceLazy().log("Execute : Add Point" , point.toString() + "\r\n");
+		
+		
 	}
 
 	@Override
 	public void unexecute() {
 		drawModel.remove(point);
-		drawModel.log("Unexecute : Add Point" , point.toString() + "\r\n");
+		DrawingModel.getInstanceLazy().log("Unexecute : Add Point" , point.toString() + "\r\n");
 		
 	}
 

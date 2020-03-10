@@ -118,7 +118,19 @@ public class Circle extends AreaShape implements Movable,Cloneable {
 		}		
 		return circle;
 	}
-	
+	public boolean equals(Object obj){
+	if(obj instanceof Circle){
+		Circle c=(Circle) obj;
+		if(center.getX()==c.getCenter().getX() && c.getCenter().getY()==c.getCenter().getY() && radius==c.getRadius()
+			 && getOuterColor().equals(c.getOuterColor()) && getInnerColor().equals(c.getInnerColor()))
+			return true;
+		else
+			return false;
+	}
+	else 
+		return false;
+	}
+
 	
 
 	

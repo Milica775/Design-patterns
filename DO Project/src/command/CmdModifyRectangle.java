@@ -9,12 +9,12 @@ public class CmdModifyRectangle implements Command {
 	private Rectangle oldValue;
 	private Rectangle newValue;
 	private Rectangle originalValue = new Rectangle();
-	private DrawingModel model;
 	
-	public CmdModifyRectangle(Rectangle oldValue, Rectangle newValue,DrawingModel model) {
+	
+	public CmdModifyRectangle(Rectangle oldValue, Rectangle newValue) {
 		this.oldValue = oldValue;
 		this.newValue = newValue;
-		this.model=model;
+		
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class CmdModifyRectangle implements Command {
 		}
 		oldValue.setOuterColor(newValue.getOuterColor());
 		oldValue.setInnerColor(newValue.getInnerColor());
-		model.log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+		DrawingModel.getInstanceLazy().log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
 
 	}
 
@@ -62,7 +62,7 @@ public class CmdModifyRectangle implements Command {
 		}
 		oldValue.setOuterColor(originalValue.getOuterColor());
 		oldValue.setInnerColor(originalValue.getInnerColor());
-		model.log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+		DrawingModel.getInstanceLazy().log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
 
 	}
 

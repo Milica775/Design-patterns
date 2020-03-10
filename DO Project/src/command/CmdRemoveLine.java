@@ -17,14 +17,14 @@ public class CmdRemoveLine implements Command{
 		@Override
 		public void execute() {
 			drawModel.remove(line);
-			drawModel.log("Execute : Remove Line" , line.toString() + "\r\n");
+			DrawingModel.getInstanceLazy().log("Execute : Remove Line" , line.toString() + "\r\n");
 
 		}
 
 		@Override
 		public void unexecute() {
 			drawModel.add(line);
-			drawModel.log("Unexecute : Remove Line" , line.toString() + "\r\n");
+			DrawingModel.getInstanceLazy().log("Unexecute : Remove Line" , line.toString() + "\r\n");
 
 			
 		}

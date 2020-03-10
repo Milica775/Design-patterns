@@ -29,7 +29,7 @@ public class DlgDonut extends JDialog {
 	private JTextField txtRadius;
 	private JTextField txtInnerRadius;
 	private Color interCol=Color.MAGENTA;
-	private Color exterCol=Color.CYAN;
+	private Color exterCol=Color.BLUE;
 	private boolean ok;
 	
 	/**
@@ -94,6 +94,7 @@ public class DlgDonut extends JDialog {
 		txtInnerRadius.setColumns(10);
 		
 		JButton btnInteriorColor = new JButton("Interior color");
+		btnInteriorColor.setBackground(interCol);
 		btnInteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				interCol=JColorChooser.showDialog(null, "Odaberite boju unutrasnjosti kruga sa rupom", null);
@@ -102,6 +103,7 @@ public class DlgDonut extends JDialog {
 		});
 		
 		JButton btnExteriorColor = new JButton("Exterior color");
+		btnExteriorColor.setBackground(exterCol);
 		btnExteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exterCol=JColorChooser.showDialog(null, "Odaberite boju ivica kruga sa rupom", null);

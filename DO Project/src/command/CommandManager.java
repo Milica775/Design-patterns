@@ -1,13 +1,9 @@
 package command;
-
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.HashMap;
-
 import drawing.Circle;
 import drawing.Donut;
 import drawing.DrawingModel;
-import drawing.FrmDrawing;
 import drawing.Line;
 import drawing.Point;
 import drawing.Rectangle;
@@ -16,176 +12,172 @@ import hexagon.HexagonAdapter;
 
 public class CommandManager {
 
-	public Command parse(String command, DrawingModel model,FrmDrawing frame) {
-		
+	public Command parse(String command, DrawingModel model) {
+   
 		String type=parseCommand(command);
-		
-		if(!type.contains("Modify"))
-		{
-		Shape shape=buildShape(command);
-	
-		int index=model.getIndexOfShape(shape);
-	
-		
-		
-		
 		
 		if(type.contains("Add")) {
 			
+			return createAddCommand(buildShape(command),model);
+		}
+		else if(type.contains("Remove")) {
 			
+			return createRemoveCommand(buildShape(command),model);
+		}
 		
-			
-			if(type.contains("Point")) {
-				
-				return new CmdAddPoint((Point) shape,model);
-							
-			}
-            if(type.contains("Line")) {
-				
-				
-				return new CmdAddLine((Line) shape,model);
-								
-			}	
-            if(type.contains("Rectangle")) {
-				
-			
-				return new CmdAddRectangle((Rectangle) shape,model);		
-			}
-            if(type.contains("Circle")) {
-				
-				
-				return new CmdAddCircle((Circle) shape,model);
-							
-			}
-             if(type.contains("Donut")) {
-			
-				return new CmdAddDonut((Donut) shape,model);
-								
-			}
-             if(type.contains("Hexagon")) {
- 				
- 				
- 				return new CmdAddHexagon((HexagonAdapter) shape,model);
- 								
- 			}
-		}
-		if(type.contains("Selection")) {
+		else if(type.contains("Bring To Front")) {
 			
 			
-			//samo sa ovim radi ali nema smisla
-			//model.add(shape);
-			return new CmdSelection(shape,model,frame);
+			return new CmdBringToFront(model,buildShape(command));
 			
 		}
-		if(type.contains("Bring To Front")) {
+		else if(type.contains("Bring To Back")) {
 			
 			
-			return new CmdBringToFront(model,shape,index);
-			
-		}
-		if(type.contains("Bring To Back")) {
-			
-			
-			return new CmdBringToBack(model,shape,index);
+			return new CmdBringToBack(model,buildShape(command));
 			
 		}
-        if(type.contains("To Back")) {
+		else if(type.contains("To Back")) {
         	
-        	return new CmdToBack(model,shape,index);
+        	return new CmdToBack(model,buildShape(command));
 			
 		}
-        if(type.contains("To Front")) {
+		else if(type.contains("To Front")) {
 			
-        	return new CmdToFront(model,shape,index);
+        	return new CmdToFront(model,buildShape(command));
 		}
-        
-		if(type.contains("Remove")) {
-		
-			
-			if(type.contains("Point")) {
-				
-				
-				
-				return new CmdRemovePoint((Point) shape,model);
-							
-			}
-            if(type.contains("Line")) {
-				
-				
-				return new CmdRemoveLine((Line) shape,model);
-								
-			}	
-            if(type.contains("Rectangle")) {
-				
-				
-				return new CmdRemoveRectangle((Rectangle) shape,model);		
-			}
-            if(type.contains("Circle")) {
-				
-			
-				return new CmdRemoveCircle((Circle) shape,model);
-							
-			}
-             if(type.contains("Donut")) {
-				
-			
-				return new CmdRemoveDonut((Donut) shape,model);
-								
-			}
-             if(type.contains("Hexagon")) {
- 				
-     			
- 				return new CmdRemoveHexagon((HexagonAdapter) shape,model);
- 								
- 			}
-            
+        else if(type.contains("Modify")) {
+            String s= command.split("->")[0];		
+    		String s1=command.split("->")[1]; 		
+    		Shape old=buildShape(s);
+    		int i=model.getIndexOfShape(old);
+    		System.out.println(i);
+    		Shape oldShape=model.get(i);
+			return createModifyCommand(oldShape,s1);
 		}
-		}
-		if(type.contains("Modify")) {
-			String s= command.split("->")[0];
-    		String s1=command.split("->")[1];
-    		
-    		Shape oldShape=buildShape(s);
-    		Shape newShape;
-    		
-        	if(type.contains("Point")) {
-        		newShape=buildPoint(s1);
-        		
-        		//model.add(newShape);
-        		return new CmdModifyPoint((Point)oldShape,(Point)newShape,model);
-        	}
-        	if(type.contains("Line")) {
-        		newShape=buildLine(s1);
-        	
-        		return new CmdModifyLine((Line)oldShape,(Line)newShape,model);
-        	}
-        	if(type.contains("Rectangle")) {
-        		newShape=buildRectangle(s1);
-        	
-        		return new CmdModifyRectangle((Rectangle)oldShape,(Rectangle)newShape,model);
-        	}
-        	if(type.contains("Circle")) {
-        		newShape=buildCircle(s1);
-        		
-        		return new CmdModifyCircle((Circle)oldShape,(Circle)newShape,model);
-        	}
-        	if(type.contains("Donut")) {
-        		newShape=buildDonut(s1);
-        		
-        		return new CmdModifyDonut((Donut)oldShape,(Donut)newShape,model);
-        	}
-        	if(type.contains("Hexagon")) {
-        		newShape=buildHexagon(s1);
-        	
-        		return new CmdModifyHexagon((HexagonAdapter)oldShape,(HexagonAdapter)newShape,model);
-        	}
-        }
 		return null;
 	}
-	
-	
+		
+	private Command createModifyCommand(Shape oldShape, String s1) {
+		Shape newShape;
+		
+		if(oldShape instanceof Point) {
+    		
+    		newShape=buildPoint(s1);
+    		return new CmdModifyPoint((Point)oldShape,(Point)newShape);
+    	}
+    	if(oldShape instanceof Line) {
+    	
+    		newShape=buildLine(s1);
+    		return new CmdModifyLine((Line)oldShape,(Line)newShape);
+    	}
+    	if(oldShape instanceof Rectangle) {
+    	
+    		newShape=buildRectangle(s1);
+
+    		return new CmdModifyRectangle((Rectangle)oldShape,(Rectangle)newShape);
+    	}
+        if(oldShape instanceof Donut) {
+    		
+    		newShape=buildDonut(s1);
+
+    		return new CmdModifyDonut((Donut)oldShape,(Donut)newShape);
+    	}
+    	if(oldShape instanceof Circle) {
+    		
+    		newShape=buildCircle(s1);
+
+    		return new CmdModifyCircle((Circle)oldShape,(Circle)newShape);
+    	}
+    	if(oldShape instanceof HexagonAdapter) {
+    		
+    		newShape=buildHexagon(s1);
+    		return new CmdModifyHexagon((HexagonAdapter)oldShape,(HexagonAdapter)newShape);
+    	}
+		return null;
+	}
+
+	private Command createRemoveCommand(Shape shape, DrawingModel model) {
+
+		if(shape instanceof Point) {
+			
+			return new CmdRemovePoint((Point) shape,model);
+						
+		}
+        if(shape instanceof Line) {
+			
+			
+			return new CmdRemoveLine((Line) shape,model);
+							
+		}	
+        if(shape instanceof Rectangle) {
+			
+		
+			return new CmdRemoveRectangle((Rectangle) shape,model);		
+		}
+        if(shape instanceof Donut) {
+    		
+			return new CmdRemoveDonut((Donut) shape,model);
+							
+		}
+        if(shape instanceof Circle) {
+			
+			
+			return new CmdRemoveCircle((Circle) shape,model);
+						
+		}
+        
+         if(shape instanceof HexagonAdapter) {
+				
+				
+				return new CmdRemoveHexagon((HexagonAdapter) shape,model);
+								
+			}
+         return null;
+				
+	}
 
 
+
+	private Command createAddCommand(Shape shape, DrawingModel model) {
+		
+		if(shape instanceof Point) {
+			
+			return new CmdAddPoint((Point) shape,model);
+						
+		}
+        if(shape instanceof Line) {
+			
+			
+			return new CmdAddLine((Line) shape,model);
+							
+		}	
+        if(shape instanceof Rectangle) {
+			
+		
+			return new CmdAddRectangle((Rectangle) shape,model);		
+		}
+        if(shape instanceof Donut) {
+    		
+			return new CmdAddDonut((Donut) shape,model);
+							
+		}
+        if(shape instanceof Circle) {
+			
+			
+			return new CmdAddCircle((Circle) shape,model);
+						
+		}
+        
+         if(shape instanceof HexagonAdapter) {
+				
+				
+				return new CmdAddHexagon((HexagonAdapter) shape,model);
+								
+			}
+         return null;
+		
+	}
 
 
 
@@ -195,11 +187,7 @@ public class CommandManager {
 	}
 
 
-
-
-
-
-
+	
 	private Shape buildShape(String command) {
 		
 		Shape shape = null;
@@ -330,7 +318,6 @@ public class CommandManager {
 		}
 		return null;
 	}
-	
 
 	public HashMap<String,String> parseShape(String command){
 		HashMap<String,String> helpMap=new HashMap<String,String>();

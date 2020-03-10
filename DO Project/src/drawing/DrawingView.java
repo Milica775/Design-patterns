@@ -20,4 +20,6 @@ public class DrawingView extends JPanel {
 		//repaint();
 	}
 
+		
+	
 }

@@ -113,7 +113,17 @@ public class Line extends Shape implements Movable,Cloneable {
 		Line line = new Line(this.startPoint, endPoint, getOuterColor());		
 		return line;
 	}
-
+	public boolean equals(Object obj){
+		if(obj instanceof Line){
+			Line l=(Line) obj;
+			if(startPoint.getX()==l.getStartPoint().getX() && startPoint.getY()==l.getStartPoint().getY() && endPoint.getX()==l.getEndPoint().getX() && endPoint.getY()==l.getEndPoint().getY() && getOuterColor().equals(l.getOuterColor()))
+				return true;
+			else
+				return false;
+		}
+		else 
+			return false;
+	}
 	
 	
 

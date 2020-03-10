@@ -35,20 +35,8 @@ public class FrmDrawing extends JFrame  {
 	
 	private DrawingController controller;
 	private DrawingView view=new DrawingView();
+	//da li moze da bude ovdje??
 	private static DefaultListModel<String> dlm=new DefaultListModel<>();
-
-	
-	
-   
-
-
-	public static DefaultListModel<String> getDlm() {
-		return dlm;
-	}
-
-	public void setDlm(DefaultListModel<String> dlm) {
-		this.dlm = dlm;
-	}
 
 	private JPanel contentPane;
 	JToggleButton tglbtnPoint;
@@ -86,7 +74,7 @@ public class FrmDrawing extends JFrame  {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		contentPane.setBackground(Color.gray);
 		
-
+	
 		
 		ButtonGroup buttonGroup=new ButtonGroup();
 		
@@ -99,6 +87,7 @@ public class FrmDrawing extends JFrame  {
 				controller.mouseClicked(e);
 			}
 		});
+		
 		
 		toolBar_1 = new JToolBar(JToolBar.VERTICAL);
 		contentPane.add(toolBar_1, BorderLayout.WEST);
@@ -221,6 +210,7 @@ public class FrmDrawing extends JFrame  {
 		toolBar_1.add(tglbtnExecuteLog);
 		
 		tglbtnInnerColor = new JButton("Inner Color");
+		tglbtnInnerColor.setBackground(Color.MAGENTA);
 		tglbtnInnerColor.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -230,6 +220,7 @@ public class FrmDrawing extends JFrame  {
 		toolBar_1.add(tglbtnInnerColor);
 		
 		tglbtnOuterColor = new JButton("Outer Color");
+		tglbtnOuterColor.setBackground(Color.BLUE);
 		tglbtnOuterColor.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -388,8 +379,18 @@ public class FrmDrawing extends JFrame  {
 			return tglbtnBringToFront.isSelected();
 	}
 	
+	public boolean getTglbtnRedo() {
+		return tglbtnRedo.isSelected();
+	}
 	
+	
+	public static DefaultListModel<String> getDlm() {
+		return dlm;
+	}
 
+	public void setDlm(DefaultListModel<String> dlm) {
+		this.dlm = dlm;
+	}
 
 	
 

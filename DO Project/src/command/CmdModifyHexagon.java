@@ -9,12 +9,12 @@ public class CmdModifyHexagon implements Command{
 	private HexagonAdapter oldValue;
 	private HexagonAdapter newValue;
 	private HexagonAdapter originalValue = new HexagonAdapter();
-	private DrawingModel model;
+
 	
-	public CmdModifyHexagon(HexagonAdapter oldValue, HexagonAdapter newValue,DrawingModel model) {
+	public CmdModifyHexagon(HexagonAdapter oldValue, HexagonAdapter newValue) {
 		this.oldValue = oldValue;
 		this.newValue = newValue;
-		this.model=model;
+		
 	}
 
 
@@ -31,7 +31,7 @@ public class CmdModifyHexagon implements Command{
 		}
 		oldValue.setOuterColor(newValue.getOuterColor());
 		oldValue.setInterColor(newValue.getInterColor());
-		model.log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+		DrawingModel.getInstanceLazy().log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
 
 	}
 
@@ -48,7 +48,7 @@ public class CmdModifyHexagon implements Command{
 		
 		oldValue.setOuterColor(originalValue.getOuterColor());
 		oldValue.setInterColor(originalValue.getInterColor());
-		model.log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue);
+		DrawingModel.getInstanceLazy().log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
 
 	}
 

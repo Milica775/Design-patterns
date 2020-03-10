@@ -28,7 +28,7 @@ public class DlgPoint extends JDialog {
 	private JTextField txtY;
 
 	private boolean ok;
-	private Color col=Color.green;
+	private Color col=Color.BLUE;
 	/**
 	 * Launch the application.
 	 */
@@ -86,10 +86,15 @@ public class DlgPoint extends JDialog {
 		txtY.setColumns(10);
 		
 		JButton btnColor = new JButton("Color");
+		btnColor.setBackground(col);
 		btnColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				col=JColorChooser.showDialog(null, "Odaberite boju tacke", null);
+				if(col!=null)
+				{
 				btnColor.setBackground(col);
+				}
+				
 			
 			}
 		});

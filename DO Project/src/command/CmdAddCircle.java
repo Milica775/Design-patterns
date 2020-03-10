@@ -18,14 +18,14 @@ public class CmdAddCircle implements Command{
 	@Override
 	public void execute() {
 		drawModel.add(circle);
-		drawModel.log("Execute : Add Circle" , circle.toString() + "\r\n");		
+		DrawingModel.getInstanceLazy().log("Execute : Add Circle" , circle.toString() + "\r\n");		
 		
 	}
 
 	@Override
 	public void unexecute() {
 		drawModel.remove(circle);
-		drawModel.log("Unexecute : Add Circle" , circle.toString() + "\r\n");		
+		DrawingModel.getInstanceLazy().log("Unexecute : Add Circle" , circle.toString() + "\r\n");		
 
 	}
 

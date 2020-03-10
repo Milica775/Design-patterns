@@ -18,14 +18,14 @@ public class CmdAddDonut implements Command {
 	@Override
 	public void execute() {
 		drawModel.add(donut);
-		drawModel.log("Execute : Add Donut" , donut.toString() + "\r\n");		
+		DrawingModel.getInstanceLazy().log("Execute : Add Donut" , donut.toString() + "\r\n");		
 		
 	}
 
 	@Override
 	public void unexecute() {
 		drawModel.remove(donut);
-		drawModel.log("Unexecute : Add Donut" , donut.toString() + "\r\n");		
+		DrawingModel.getInstanceLazy().log("Unexecute : Add Donut" , donut.toString() + "\r\n");		
 
 	}
 
