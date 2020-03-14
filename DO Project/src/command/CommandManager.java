@@ -1,14 +1,15 @@
 package command;
 import java.awt.Color;
 import java.util.HashMap;
-import drawing.Circle;
-import drawing.Donut;
-import drawing.DrawingModel;
-import drawing.Line;
-import drawing.Point;
-import drawing.Rectangle;
-import drawing.Shape;
-import hexagon.HexagonAdapter;
+
+import mvc.DrawingModel;
+import shapes.Circle;
+import shapes.Donut;
+import shapes.Line;
+import shapes.Point;
+import shapes.Rectangle;
+import shapes.Shape;
+import shapes.HexagonAdapter;
 
 public class CommandManager {
 

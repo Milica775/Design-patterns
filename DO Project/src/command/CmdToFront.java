@@ -2,9 +2,10 @@ package command;
 
 import java.util.Collections;
 
-import drawing.DrawingModel;
-import drawing.Line;
-import drawing.Shape;
+
+import mvc.DrawingModel;
+import shapes.Line;
+import shapes.Shape;
 
 public class CmdToFront implements Command {
 	
@@ -35,7 +36,10 @@ public class CmdToFront implements Command {
 
 	@Override
 	public void unexecute() {
+		if(index!=0)
+		{
 		Collections.swap(drawModel.getShapes(), index-1, index);
+		}
 		DrawingModel.getInstanceLazy().log("Unexecute : To Front",s.toString()+ "\r\n");
 
 	}

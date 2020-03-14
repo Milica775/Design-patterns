@@ -1,8 +1,8 @@
 package command;
 
-import drawing.DrawingModel;
-import drawing.Line;
-import drawing.Shape;
+import mvc.DrawingModel;
+import shapes.Line;
+import shapes.Shape;
 
 public class CmdBringToFront implements Command{
 	

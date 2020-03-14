@@ -1,7 +1,7 @@
 package command;
 
-import drawing.DrawingModel;
-import drawing.Point;
+import mvc.DrawingModel;
+import shapes.Point;
 
 public class CmdModifyPoint implements Command {
 	

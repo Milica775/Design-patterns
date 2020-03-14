@@ -1,7 +1,7 @@
 package command;
 
-import drawing.DrawingModel;
-import drawing.Shape;
+import mvc.DrawingModel;
+import shapes.Shape;
 
 public class CmdBringToBack implements Command{
 	

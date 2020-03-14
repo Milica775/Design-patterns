@@ -1,7 +1,7 @@
 package command;
 
-import drawing.Donut;
-import drawing.DrawingModel;
+import mvc.DrawingModel;
+import shapes.Donut;
 
 public class CmdRemoveDonut implements Command {
 

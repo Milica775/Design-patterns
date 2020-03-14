@@ -1,8 +1,7 @@
 package command;
 
-import drawing.DrawingModel;
-import drawing.Line;
-import drawing.Point;
+import mvc.DrawingModel;
+import shapes.Line;
 
 public class CmdModifyLine implements Command {
 	

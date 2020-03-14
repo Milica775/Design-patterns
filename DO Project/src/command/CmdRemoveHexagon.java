@@ -1,7 +1,7 @@
 package command;
 
-import drawing.DrawingModel;
-import hexagon.HexagonAdapter;
+import mvc.DrawingModel;
+import shapes.HexagonAdapter;
 
 public class CmdRemoveHexagon implements Command{
 

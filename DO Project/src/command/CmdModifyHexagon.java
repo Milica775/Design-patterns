@@ -1,8 +1,8 @@
 package command;
 
-import drawing.Circle;
-import drawing.DrawingModel;
-import hexagon.HexagonAdapter;
+
+import mvc.DrawingModel;
+import shapes.HexagonAdapter;
 
 public class CmdModifyHexagon implements Command{
 	

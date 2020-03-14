@@ -1,7 +1,7 @@
 package command;
 
-import drawing.Circle;
-import drawing.DrawingModel;
+import mvc.DrawingModel;
+import shapes.Circle;
 
 public class CmdRemoveCircle implements Command{
 		

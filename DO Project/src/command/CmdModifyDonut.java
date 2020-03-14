@@ -1,8 +1,8 @@
 package command;
 
-import drawing.Circle;
-import drawing.Donut;
-import drawing.DrawingModel;
+import mvc.DrawingModel;
+import shapes.Circle;
+import shapes.Donut;
 
 public class CmdModifyDonut implements Command {
 	

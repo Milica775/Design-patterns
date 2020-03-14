@@ -2,9 +2,10 @@ package command;
 
 import java.util.Collections;
 
-import drawing.DrawingModel;
-import drawing.Line;
-import drawing.Shape;
+
+import mvc.DrawingModel;
+import shapes.Line;
+import shapes.Shape;
 
 public class CmdToBack implements Command {
 	
@@ -35,9 +36,12 @@ public class CmdToBack implements Command {
 
 	@Override
 	public void unexecute() {
+		if(index!=drawModel.getShapes().size()-1)
+		{
 		Collections.swap(drawModel.getShapes(), index+1, index);
+		}
 		DrawingModel.getInstanceLazy().log("Unexecute : To Back"+" " + s.getClass().getSimpleName(),s.toString() + "\r\n");
-
+		
 	}
 
 }

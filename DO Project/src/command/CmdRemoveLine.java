@@ -1,7 +1,7 @@
 package command;
 
-import drawing.DrawingModel;
-import drawing.Line;
+import mvc.DrawingModel;
+import shapes.Line;
 
 public class CmdRemoveLine implements Command{
 		

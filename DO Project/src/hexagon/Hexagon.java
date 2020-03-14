@@ -8,7 +8,7 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.io.Serializable;
 
-import drawing.Circle;
+import shapes.Circle;
 
 public class Hexagon implements Serializable
 {

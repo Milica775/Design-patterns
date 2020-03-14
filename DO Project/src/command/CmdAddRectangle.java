@@ -1,8 +1,7 @@
 package command;
 
-import drawing.DrawingModel;
-
-import drawing.Rectangle;
+import mvc.DrawingModel;
+import shapes.Rectangle;
 
 public class CmdAddRectangle implements Command {
 	
