@@ -25,7 +25,7 @@ public class DrawingModel {
 		propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 	
-	//PropertyChangeListener
+	
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 		propertyChangeSupport.addPropertyChangeListener(pcl);
 	}
@@ -34,7 +34,6 @@ public class DrawingModel {
 		propertyChangeSupport.removePropertyChangeListener(pcl);
 	}
 	
-	//Add/remove Shape
 	public void add(Shape s) {
 		shapes.add(s);
 	}
@@ -42,7 +41,7 @@ public class DrawingModel {
 		shapes.remove(s);
 	}
 	
-	//Get/set shapes
+
 	public List<Shape> getShapes() {
 		return shapes;
 	}
@@ -50,7 +49,7 @@ public class DrawingModel {
 		this.shapes = shapes;
 	}
 	
-	//get/set selectedShape
+
 	public Shape getSelectedShape() {
     for (Shape s : shapes) {
 			
@@ -77,7 +76,7 @@ public class DrawingModel {
 		
 	}
 
-	//Get/set logs
+
 	public List<String> getLogs() {
 		return logs;
 	}
@@ -86,7 +85,6 @@ public class DrawingModel {
 		this.logs = logs;
 	}
 	
-	//get/set CommandStack
 	public Stack<Command> getCommandStack() {
 		return commandStack;
 	}
@@ -102,7 +100,7 @@ public class DrawingModel {
 		this.commandStack = commandStack;
 	}
 	
-	//get/set UndoRedoPointer
+
 	
 	public void setUndoRedoPointer(int undoRedoPointer) {
 	propertyChangeSupport.firePropertyChange("undoRedo",this.undoRedoPointer,undoRedoPointer);
@@ -114,7 +112,7 @@ public class DrawingModel {
 		return this.undoRedoPointer;
 	}
 
-	//get/set selectedShapes
+
 	public List<Shape> getSelectedShapes() {
 		return selectedShapes;
 
@@ -125,7 +123,7 @@ public class DrawingModel {
 		this.selectedShapes=selectedShapes;
 	}
 	
-    //getIndex
+
 	public int getSelectedShapeIndex() {
 		int listSize = shapes.size() - 1;
 		for (int i = 0; i <= listSize; i++) {
@@ -174,6 +172,16 @@ public class DrawingModel {
 	public String peek() {
 		return logs.get(logs.size()-1);
 	}
+	
+	public void removeAllSelection() {
+		for(Shape s:shapes) {
+			s.setSelected(false);
+			selectedShapes.remove(s);
+			propertyChangeSupport.firePropertyChange("selectedShapes", selectedShapes,s);
+
+		}
+		
+	}
 
 	public void setSelection(Shape shape,boolean select) {		
 		      shape.setSelected(select);
@@ -192,15 +200,7 @@ public class DrawingModel {
 
 	
 
-	public void removeAllSelection() {
-		for(Shape s:shapes) {
-			s.setSelected(false);
-			selectedShapes.remove(s);
-			propertyChangeSupport.firePropertyChange("selectedShapes", selectedShapes,s);
-
-		}
-		
-	}
+	
 
 	
 
