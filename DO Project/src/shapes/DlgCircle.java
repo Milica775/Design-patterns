@@ -94,7 +94,7 @@ public class DlgCircle extends JDialog {
 		btnInteriorColor.setBackground(interCol);
 		btnInteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				interCol=JColorChooser.showDialog(null, "Odaberite boju unutrasnjosti kruga", null);
+				interCol=JColorChooser.showDialog(null, "Choose a inner color!", null);
 			    btnInteriorColor.setBackground(interCol);
 			}
 		});
@@ -103,7 +103,7 @@ public class DlgCircle extends JDialog {
 		btnExteriorColor.setBackground(exterCol);
 		btnExteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				exterCol=JColorChooser.showDialog(null, "Odaberite boju ivica kruga", null);
+				exterCol=JColorChooser.showDialog(null, "Choose a outer color!", null);
 			    btnExteriorColor.setBackground(exterCol);
 			}
 		});

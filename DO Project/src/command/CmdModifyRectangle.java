@@ -39,6 +39,7 @@ public class CmdModifyRectangle implements Command {
 		}
 		oldValue.setOuterColor(newValue.getOuterColor());
 		oldValue.setInnerColor(newValue.getInnerColor());
+		//oldValue.setSelected(newValue.isSelected());
 		DrawingModel.getInstanceLazy().log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
 
 	}
@@ -62,6 +63,7 @@ public class CmdModifyRectangle implements Command {
 		}
 		oldValue.setOuterColor(originalValue.getOuterColor());
 		oldValue.setInnerColor(originalValue.getInnerColor());
+		//oldValue.setSelected(originalValue.isSelected());
 		DrawingModel.getInstanceLazy().log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
 
 	}

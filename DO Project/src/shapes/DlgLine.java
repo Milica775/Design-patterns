@@ -118,7 +118,7 @@ public class DlgLine extends JDialog {
 		btnColor.setBackground(col);
 		btnColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				col=JColorChooser.showDialog(null, "Odaberite boju linije", null);	
+				col=JColorChooser.showDialog(null, "Choose a color!", null);	
 				btnColor.setBackground(col);
 
 			}

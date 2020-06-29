@@ -9,19 +9,22 @@ public class DrawingApp {
 		
 		DrawingModel model=new DrawingModel();
 		FrmDrawing frame=new FrmDrawing();
+		frame.getView().setModel(model);
 		
 		DrawingController controller=new DrawingController(model,frame);
+		frame.setController(controller);
 		
+
+		
+		frame.setBounds(70, 70, 750, 500);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
 		model.addPropertyChangeListener(controller);
-		frame.getView().setModel(model);
+	
 		frame.setController(controller);
 	
 
 	
-		frame.setBounds(500, 500, 750, 500);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-
 	}
 
 }

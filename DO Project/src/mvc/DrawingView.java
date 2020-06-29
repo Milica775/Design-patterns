@@ -1,6 +1,7 @@
 package mvc;
 
 import java.awt.Graphics;
+
 import java.util.ListIterator;
 
 import javax.swing.JPanel;
@@ -18,6 +19,7 @@ public class DrawingView extends JPanel {
 		ListIterator<Shape> it=model.getShapes().listIterator();
 		while(it.hasNext()) {
 			it.next().draw(g);
+		
 		}
 		
 	}

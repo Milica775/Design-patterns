@@ -67,7 +67,8 @@ public class FrmDrawing extends JFrame  {
 
 
 	public FrmDrawing() {
-		setTitle("Milica Despotovic IT 08-2017");		
+		
+        setTitle("Milica Despotoviæ IT08-2017");
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -76,10 +77,10 @@ public class FrmDrawing extends JFrame  {
 		
 	
 		
-		ButtonGroup buttonGroup=new ButtonGroup();
 		
-		JToolBar toolBar = new JToolBar();
-		contentPane.add(toolBar, BorderLayout.NORTH);
+	
+		
+		ButtonGroup buttonGroup=new ButtonGroup();
 		
 		view.addMouseListener(new MouseAdapter() {
 			@Override
@@ -87,10 +88,15 @@ public class FrmDrawing extends JFrame  {
 				controller.mouseClicked(e);
 			}
 		});
+		getContentPane().add(view, BorderLayout.CENTER);
+		
+		JToolBar toolBar = new JToolBar();
+		getContentPane().add(toolBar, BorderLayout.NORTH);
+		
 		
 		
 		toolBar_1 = new JToolBar(JToolBar.VERTICAL);
-		contentPane.add(toolBar_1, BorderLayout.WEST);
+		getContentPane().add(toolBar_1, BorderLayout.WEST);
 		
 		btnUndo = new JButton("Undo");
 		btnUndo.setEnabled(false);
@@ -235,7 +241,7 @@ public class FrmDrawing extends JFrame  {
 		
 		
 		
-		contentPane.add(view, BorderLayout.CENTER);
+		
 		
 		tglbtnPoint=new JToggleButton("Point");
 		
@@ -301,7 +307,7 @@ public class FrmDrawing extends JFrame  {
 		buttonGroup.add(btnDelete);
 		
 		scrollPane = new JScrollPane();
-		contentPane.add(scrollPane, BorderLayout.EAST);
+		getContentPane().add(scrollPane, BorderLayout.EAST);
 		JList list = new JList();
 		
 		list.setModel(dlm);
@@ -312,10 +318,6 @@ public class FrmDrawing extends JFrame  {
 	}
 	public DrawingView getView() {
 		return view;
-	}
-
-	public void setView(DrawingView view) {
-		this.view = view;
 	}
 
 	public void setController(DrawingController controller2) {

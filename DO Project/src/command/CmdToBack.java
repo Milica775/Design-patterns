@@ -29,6 +29,8 @@ public class CmdToBack implements Command {
 		if(index!=0)
 		{
 		Collections.swap(drawModel.getShapes(), index-1, index);
+		System.out.println("exec:to back"+drawModel.getShapes());
+
 		}
 		DrawingModel.getInstanceLazy().log("Execute : To Back"+" " + s.getClass().getSimpleName(),s.toString() + "\r\n");
 
@@ -38,7 +40,9 @@ public class CmdToBack implements Command {
 	public void unexecute() {
 		if(index!=drawModel.getShapes().size()-1)
 		{
-		Collections.swap(drawModel.getShapes(), index+1, index);
+		Collections.swap(drawModel.getShapes(), index, index-1);
+		System.out.println("exec:to back"+drawModel.getShapes());
+
 		}
 		DrawingModel.getInstanceLazy().log("Unexecute : To Back"+" " + s.getClass().getSimpleName(),s.toString() + "\r\n");
 		

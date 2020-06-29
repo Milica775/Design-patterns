@@ -3,7 +3,7 @@ package shapes;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Line extends Shape implements Movable,Cloneable {
+public class Line extends Shape{
 	
 	private Point startPoint;
 	private Point endPoint;
@@ -86,10 +86,14 @@ public class Line extends Shape implements Movable,Cloneable {
 		return  "(" + "StartPointX=" + startPoint.getX() + "," + "StartPointY=" + startPoint.getY()
 		+ "," +"EndPointX=" + endPoint.getX() + "," + "EndPointY=" + endPoint.getY() + "," + "Color="+Integer.toString(getOuterColor().getRGB()) + ")";
 	}
+	
 	public Shape clone() {			
-		Line line = new Line(this.startPoint, endPoint, getOuterColor());		
+		Line line = new Line(this.startPoint, endPoint, getOuterColor());
+		line.setSelected(this.isSelected());
 		return line;
 	}
+	
+	
 	public boolean equals(Object obj){
 		if(obj instanceof Line){
 			Line l=(Line) obj;

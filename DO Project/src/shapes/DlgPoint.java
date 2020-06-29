@@ -90,7 +90,7 @@ public class DlgPoint extends JDialog {
 		btnColor.setBackground(col);
 		btnColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				col=JColorChooser.showDialog(null, "Odaberite boju tacke", null);
+				col=JColorChooser.showDialog(null, "Choose a color!", null);
 				if(col!=null)
 				{
 				btnColor.setBackground(col);

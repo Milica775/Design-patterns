@@ -54,6 +54,7 @@ public class CommandManager {
     		int i=model.getIndexOfShape(old);
     		System.out.println(i);
     		Shape oldShape=model.get(i);
+    		
 			return createModifyCommand(oldShape,s1);
 		}
 		return null;
@@ -182,14 +183,14 @@ public class CommandManager {
 
 
 
-	private String parseCommand(String command) {
+	public String parseCommand(String command) {
 		return command.split("\\(")[0];
 		
 	}
 
 
 	
-	private Shape buildShape(String command) {
+	public Shape buildShape(String command) {
 		
 		Shape shape = null;
 		String type=parseCommand(command);
@@ -246,7 +247,7 @@ public class CommandManager {
 		
 		
 	}
-	private Line buildLine(String command) {
+	public Line buildLine(String command) {
 		HashMap<String,String> parseLine=parseShape(command);
 		int startPointX=Integer.parseInt(parseLine.get("StartPointX"));
 		int startPointY=Integer.parseInt(parseLine.get("StartPointY"));
@@ -257,7 +258,7 @@ public class CommandManager {
 		
 	}
 	
-	private Rectangle buildRectangle(String command) {
+	public Rectangle buildRectangle(String command) {
 		HashMap<String,String> parseRectangle=parseShape(command);
 		int upperLeftPointX=Integer.parseInt(parseRectangle.get("UpperLeftPointX"));
 		int upperLeftPointY=Integer.parseInt(parseRectangle.get("UpperLeftPointY"));
@@ -273,7 +274,7 @@ public class CommandManager {
 		}
 		return null;
 	}
-	private Circle buildCircle(String command) {
+	public Circle buildCircle(String command) {
 		HashMap<String,String> parseCircle=parseShape(command);
 		int centerX=Integer.parseInt(parseCircle.get("CenterX"));
 		int centerY=Integer.parseInt(parseCircle.get("CenterY"));
@@ -288,7 +289,7 @@ public class CommandManager {
 		}
 		return null;
 	}
-	private Donut buildDonut(String command) {
+	public Donut buildDonut(String command) {
 		HashMap<String,String> parseDonut=parseShape(command);
 		int centerX=Integer.parseInt(parseDonut.get("CenterX"));
 		int centerY=Integer.parseInt(parseDonut.get("CenterY"));
@@ -304,7 +305,7 @@ public class CommandManager {
 		}
 		return null;
 	}
-	private HexagonAdapter buildHexagon(String command) {
+	public HexagonAdapter buildHexagon(String command) {
 		HashMap<String,String> parseHex=parseShape(command);
 		int X=Integer.parseInt(parseHex.get("x"));
 		int Y=Integer.parseInt(parseHex.get("y"));

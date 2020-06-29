@@ -24,6 +24,7 @@ public class CmdModifyLine implements Command {
 		oldValue.setStartPoint(newValue.getStartPoint());
 		oldValue.setEndPoint(newValue.getEndPoint());
 		oldValue.setOuterColor(newValue.getOuterColor());
+		//oldValue.setSelected(newValue.isSelected());
 		DrawingModel.getInstanceLazy().log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
 
 		
@@ -34,6 +35,7 @@ public class CmdModifyLine implements Command {
 		oldValue.setStartPoint(originalValue.getStartPoint());
 		oldValue.setEndPoint(originalValue.getEndPoint());
 		oldValue.setOuterColor(originalValue.getOuterColor());
+		//oldValue.setSelected(originalValue.isSelected());
 		DrawingModel.getInstanceLazy().log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
 
 	}

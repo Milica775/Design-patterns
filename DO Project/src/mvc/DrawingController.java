@@ -792,7 +792,8 @@ public class DrawingController implements PropertyChangeListener{
 
 	public void executeLog() {
 		
-		
+		 System.out.println("lnr"+lineNumberReader.getLineNumber());
+		 System.out.println("size"+model.getLogs().size()-1);
 		try {
 			
 			String line=lineNumberReader.readLine();
@@ -806,9 +807,7 @@ public class DrawingController implements PropertyChangeListener{
              else if(line.contains("Execute"))
 			{	
 			   execute(command);
-			System.out.println(model.getSelectedShapes());
-			System.out.println(model.getSelectedShape());
-			System.out.println(model.getShapes());
+			
 			
 			}
 			else if(line.contains("Unexecute"))

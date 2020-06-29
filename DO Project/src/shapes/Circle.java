@@ -2,9 +2,10 @@ package shapes;
 
 import java.awt.Color;
 
+
 import java.awt.Graphics;
 
-public class Circle extends AreaShape implements Movable,Cloneable {
+public class Circle extends AreaShape{
 	
 	private Point center;
 	private int radius;
@@ -88,12 +89,14 @@ public class Circle extends AreaShape implements Movable,Cloneable {
 		Circle circle= null;
 		try {
 			circle = new Circle(this.center, radius, getInnerColor(),getOuterColor());
+			circle.setSelected(this.isSelected());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 		return circle;
 	}
+	
 	public boolean equals(Object obj){
 	if(obj instanceof Circle){
 		Circle c=(Circle) obj;

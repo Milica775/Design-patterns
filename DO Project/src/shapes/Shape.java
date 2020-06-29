@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.io.Serializable;
 
-public abstract class Shape implements Serializable{
+public abstract class Shape implements Serializable,Movable,Cloneable{
 	
 	private boolean selected;
 	private Color outerColor;

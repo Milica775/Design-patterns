@@ -6,21 +6,24 @@ import shapes.AreaShape;
 import shapes.Point;
 import shapes.Shape;
 
-public class HexagonAdapter extends AreaShape implements Cloneable{
+public class HexagonAdapter extends AreaShape{
 	
 	private Hexagon hexagon;
+
 	
 	public HexagonAdapter() {
 		
 	}
 	
-	public HexagonAdapter(int xx,int yy,int rr) {
+	public HexagonAdapter(int xx,int yy,int rr) throws Exception{
 		hexagon=new Hexagon(xx,yy,rr);
 	    }
-	public HexagonAdapter(int xx,int yy,int rr,Color areaColor, Color borderColor) {
+	
+	public HexagonAdapter(int xx,int yy,int rr,Color areaColor, Color borderColor) throws Exception {
     	this(xx,yy,rr);
-    	hexagon.setAreaColor(areaColor);
-    	hexagon.setBorderColor(borderColor);
+    	setInterColor(areaColor);
+    	setOuterColor(borderColor);
+  
     	
     }
 	@Override
@@ -43,6 +46,7 @@ public class HexagonAdapter extends AreaShape implements Cloneable{
 		HexagonAdapter hex= null;
 		try {
 			hex = new HexagonAdapter(this.getX(), this.getY(), this.getRadius(),this.getInterColor(),this.getOuterColor());
+			hex.setSelected(this.isSelected());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -73,13 +77,12 @@ public class HexagonAdapter extends AreaShape implements Cloneable{
 	public Color getOuterColor() {
 		return hexagon.getBorderColor();
 	}
+	
 	public void setInterColor(Color interColor) {
 		this.hexagon.setAreaColor(interColor);
-		super.setInnerColor(interColor);
 	}
 	public void setOuterColor(Color outerColor) {
 		this.hexagon.setBorderColor(outerColor);
-		super.setOuterColor(outerColor);
 	}
     public void setSelected(boolean selected)
     {
@@ -105,6 +108,7 @@ public class HexagonAdapter extends AreaShape implements Cloneable{
     }
     public void setCenterX(int x) {
        this.hexagon.setX(x);
+       
     }
     public void setCenterY(int y) {
         this.hexagon.setY(y);
@@ -112,5 +116,17 @@ public class HexagonAdapter extends AreaShape implements Cloneable{
     public void setRadius(int r) {
         this.hexagon.setR(r);
      }
+
+	@Override
+	public void moveOn(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void moveBy(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

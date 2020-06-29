@@ -22,6 +22,7 @@ public class CmdModifyPoint implements Command {
 	public void execute() {
 		
 		originalValue=(Point) oldValue.clone();
+		
 		oldValue.setX(newValue.getX());
 		oldValue.setY(newValue.getY());
 		oldValue.setOuterColor(newValue.getOuterColor());
@@ -35,6 +36,7 @@ public class CmdModifyPoint implements Command {
 		oldValue.setX(originalValue.getX());
 		oldValue.setY(originalValue.getY());
 		oldValue.setOuterColor(originalValue.getOuterColor());
+		//oldValue.setSelected(originalValue.isSelected());
 		DrawingModel.getInstanceLazy().log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
 
 	}

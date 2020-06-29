@@ -1,13 +1,13 @@
 package shapes;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Shape;
+import java.awt.Graphics;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.Graphics2D;
 
 
-public class Donut extends Circle  {
+public class Donut extends Circle {
 	
 	private int innerRadius;
 	
@@ -34,7 +34,7 @@ public class Donut extends Circle  {
 	
 	
 	public void draw(Graphics g) {
-	  
+		
 		Graphics2D gr = (Graphics2D)g;
 	    g.setColor(getOuterColor());	 
 		Ellipse2D e1 = new Ellipse2D.Double((this.getCenter().getX() - this.getInnerRadius()), (this.getCenter().getY() - this.getInnerRadius()), this.getInnerRadius()*2,this.innerRadius*2);		
@@ -75,6 +75,7 @@ public class Donut extends Circle  {
 		Donut donut= null;
 		try {
 			donut = new Donut(this.getCenter(), this.getRadius(),this.getInnerRadius(),this.getInnerColor(),this.getOuterColor());
+			donut.setSelected(this.isSelected());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

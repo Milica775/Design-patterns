@@ -2,9 +2,10 @@ package shapes;
 
 import java.awt.Color;
 
+
 import java.awt.Graphics;
 
-public class Point extends Shape implements Movable,Cloneable{
+public class Point extends Shape{
 	
 	private int x;
 	private int y;
@@ -45,13 +46,14 @@ public class Point extends Shape implements Movable,Cloneable{
 
 	@Override
 	public void draw(Graphics g) {
-		
+	
 		g.setColor(getOuterColor());		
 		g.drawLine(this.x-2, this.y, this.x+2, this.y);
 		g.drawLine(this.x, this.y-2, this.x, this.y+2);
-	
+	    System.out.println("2");
 		
-		if (isSelected()) {
+		if (this.isSelected()) {
+			
 			g.setColor(Color.RED);
 			g.drawRect(this.x-3, this.y-3, 6, 6);		
 		}
@@ -65,9 +67,8 @@ public class Point extends Shape implements Movable,Cloneable{
 		point.setSelected(this.isSelected());
 		return point;
 	}
+	
 
-	
-	
 	
 	@Override
 	public void moveOn(int x, int y) {

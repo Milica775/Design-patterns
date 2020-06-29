@@ -3,7 +3,7 @@ package shapes;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Rectangle extends AreaShape implements Movable,Cloneable{
+public class Rectangle extends AreaShape{
 	
 	private Point upperLeftPoint;
 	private int width;
@@ -95,6 +95,7 @@ public class Rectangle extends AreaShape implements Movable,Cloneable{
 		Rectangle rectangle = null;
 		try {
 			rectangle = new Rectangle(this.upperLeftPoint, height,width, getInnerColor(),getOuterColor());
+			rectangle.setSelected(this.isSelected());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
