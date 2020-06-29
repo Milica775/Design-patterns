@@ -173,15 +173,6 @@ public class DrawingModel {
 		return logs.get(logs.size()-1);
 	}
 	
-	public void removeAllSelection() {
-		for(Shape s:shapes) {
-			s.setSelected(false);
-			selectedShapes.remove(s);
-			propertyChangeSupport.firePropertyChange("selectedShapes", selectedShapes,s);
-
-		}
-		
-	}
 
 	public void setSelection(Shape shape,boolean select) {		
 		      shape.setSelected(select);
@@ -196,6 +187,17 @@ public class DrawingModel {
 
 		propertyChangeSupport.firePropertyChange("selectedShapes", selectedShapes,shape);
         
+	}
+	
+
+	public void removeAllSelection() {
+		for(Shape s:shapes) {
+			s.setSelected(false);
+			selectedShapes.remove(s);
+			propertyChangeSupport.firePropertyChange("selectedShapes", selectedShapes,s);
+
+		}
+		
 	}
 
 	
