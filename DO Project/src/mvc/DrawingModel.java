@@ -19,6 +19,7 @@ public class DrawingModel {
 	private Stack<Command> redoStack = new Stack<>();
 	private PropertyChangeSupport propertyChangeSupport;
 	
+	
 	public DrawingModel() {
 		propertyChangeSupport = new PropertyChangeSupport(this);
 	}
