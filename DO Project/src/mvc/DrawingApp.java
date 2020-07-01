@@ -10,6 +10,7 @@ public class DrawingApp {
 		DrawingModel model=new DrawingModel();
 		FrmDrawing frame=new FrmDrawing();
 		frame.getView().setModel(model);
+	
 		
 		DrawingController controller=new DrawingController(model,frame);
 		frame.setController(controller);
