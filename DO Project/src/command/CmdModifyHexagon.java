@@ -31,8 +31,6 @@ public class CmdModifyHexagon implements Command{
 		}
 		oldValue.setOuterColor(newValue.getOuterColor());
 		oldValue.setInterColor(newValue.getInterColor());
-		//oldValue.setSelected(newValue.isSelected());
-		DrawingModel.getInstanceLazy().log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
 
 	}
 
@@ -49,8 +47,13 @@ public class CmdModifyHexagon implements Command{
 		
 		oldValue.setOuterColor(originalValue.getOuterColor());
 		oldValue.setInterColor(originalValue.getInterColor());
-		//oldValue.setSelected(originalValue.isSelected());
-		DrawingModel.getInstanceLazy().log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
+
+	}
+
+
+	@Override
+	public String commandToString() {
+		return ("Modify" + " " + originalValue.getClass().getSimpleName() + originalValue+"->"+newValue+ "\r\n");		
 
 	}
 

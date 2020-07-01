@@ -29,9 +29,7 @@ public class CmdToFront implements Command {
 		if(index!=drawModel.getShapes().size()-1)
 		{
 		Collections.swap(drawModel.getShapes(), index+1, index);
-		System.out.println("exec:to front"+drawModel.getShapes());
 		}
-		DrawingModel.getInstanceLazy().log("Execute : To Front"+" " + s.getClass().getSimpleName(),s.toString() + "\r\n");
 
 		
 	}
@@ -41,11 +39,16 @@ public class CmdToFront implements Command {
 		if(index!=0)
 		{
 		Collections.swap(drawModel.getShapes(), index, index+1);
-		System.out.println("unexec:to front"+drawModel.getShapes());
 
 		}
-		DrawingModel.getInstanceLazy().log("Unexecute : To Front"+" " + s.getClass().getSimpleName(),s.toString()+ "\r\n");
 
+	}
+
+
+	@Override
+	public String commandToString() {
+		return ("To Front"+" " + s.getClass().getSimpleName() + s.toString()+"\r\n");		
+	
 	}
 
 }

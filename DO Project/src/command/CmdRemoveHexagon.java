@@ -17,14 +17,18 @@ public class CmdRemoveHexagon implements Command{
 	@Override
 	public void execute() {
 		drawModel.remove(hex);
-		DrawingModel.getInstanceLazy().log("Execute : Remove Hexagon" , hex.toString() + "\r\n");		
 	}
 
 	@Override
 	public void unexecute() {
 		drawModel.add(hex);
-		DrawingModel.getInstanceLazy().log("Unexecute : Remove Hexagon" , hex.toString() + "\r\n");		
 
+	}
+
+	@Override
+	public String commandToString() {
+		return ("Remove Hexagon" + hex.toString() + "\r\n");
+		
 	}
 
 }

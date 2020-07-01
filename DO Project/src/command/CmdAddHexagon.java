@@ -17,14 +17,18 @@ public class CmdAddHexagon implements Command {
 	@Override
 	public void execute() {
 		drawModel.add(hex);
-		DrawingModel.getInstanceLazy().log("Execute : Add Hexagon" , hex.toString() + "\r\n");		
 	}
 
 	@Override
 	public void unexecute() {
 		drawModel.remove(hex);
-		DrawingModel.getInstanceLazy().log("Unexecute : Add Hexagon" , hex.toString() + "\r\n");		
 
+	}
+
+	@Override
+	public String commandToString() {
+		return ( "Add Hexagon" + hex.toString() + "\r\n");
+		
 	}
 
 }

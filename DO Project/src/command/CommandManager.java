@@ -12,6 +12,7 @@ import shapes.Shape;
 import shapes.HexagonAdapter;
 
 public class CommandManager {
+	
 
 	public Command parse(String command, DrawingModel model) {
    
@@ -23,41 +24,52 @@ public class CommandManager {
 		}
 		else if(type.contains("Remove")) {
 			
-			return createRemoveCommand(buildShape(command),model);
+			
+
+			return createRemoveCommand(model.getSelectedShape(),model);	
+			
+			
+			//return createRemoveCommand(buildShape(command),model);
 		}
 		
 		else if(type.contains("Bring To Front")) {
 			
-			
-			return new CmdBringToFront(model,buildShape(command));
+			return new CmdBringToFront(model,model.getSelectedShape());
+			//return new CmdBringToFront(model,buildShape(command));
 			
 		}
 		else if(type.contains("Bring To Back")) {
 			
-			
-			return new CmdBringToBack(model,buildShape(command));
+			return new CmdBringToBack(model,model.getSelectedShape());
+			//return new CmdBringToBack(model,buildShape(command));
 			
 		}
 		else if(type.contains("To Back")) {
-        	
-        	return new CmdToBack(model,buildShape(command));
+			
+			return new CmdToBack(model,model.getSelectedShape());			
+        	//return new CmdToBack(model,buildShape(command));
 			
 		}
 		else if(type.contains("To Front")) {
 			
-        	return new CmdToFront(model,buildShape(command));
+			return new CmdToFront(model,model.getSelectedShape());			
+        	//return new CmdToFront(model,buildShape(command));
 		}
         else if(type.contains("Modify")) {
-            String s= command.split("->")[0];		
-    		String s1=command.split("->")[1]; 		
-    		Shape old=buildShape(s);
+        	
+    		String s1=command.split("->")[1]; 	
+    		Shape oldShape=model.getSelectedShape();
+    		
+    		// String s= command.split("->")[0];	
+    		/*Shape old=buildShape(s);
     		int i=model.getIndexOfShape(old);
-    		System.out.println(i);
-    		Shape oldShape=model.get(i);
+    		Shape oldShape=model.get(i);*/
     		
 			return createModifyCommand(oldShape,s1);
 		}
+
 		return null;
+
 	}
 		
 	private Command createModifyCommand(Shape oldShape, String s1) {
@@ -76,19 +88,16 @@ public class CommandManager {
     	if(oldShape instanceof Rectangle) {
     	
     		newShape=buildRectangle(s1);
-
     		return new CmdModifyRectangle((Rectangle)oldShape,(Rectangle)newShape);
     	}
         if(oldShape instanceof Donut) {
     		
     		newShape=buildDonut(s1);
-
     		return new CmdModifyDonut((Donut)oldShape,(Donut)newShape);
     	}
     	if(oldShape instanceof Circle) {
     		
     		newShape=buildCircle(s1);
-
     		return new CmdModifyCircle((Circle)oldShape,(Circle)newShape);
     	}
     	if(oldShape instanceof HexagonAdapter) {
@@ -176,7 +185,7 @@ public class CommandManager {
 				
 				return new CmdAddHexagon((HexagonAdapter) shape,model);
 								
-			}
+		}
          return null;
 		
 	}
@@ -197,6 +206,7 @@ public class CommandManager {
 		if(type.contains("Point")) {
 			
 			shape=buildPoint(command);
+			
 			
 						
 		}
@@ -229,6 +239,7 @@ public class CommandManager {
 				
 								
 			}
+        // shape.setSelected(shape.isSelected());
          return shape;
 	}
 

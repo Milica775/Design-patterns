@@ -24,6 +24,7 @@ public abstract class Shape implements Serializable,Movable,Cloneable{
 	}
 
 	public void setSelected(boolean selected) {
+ 
 		this.selected = selected;
 	}
 	

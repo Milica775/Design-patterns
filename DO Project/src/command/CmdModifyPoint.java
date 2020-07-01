@@ -1,6 +1,4 @@
 package command;
-
-import mvc.DrawingModel;
 import shapes.Point;
 
 public class CmdModifyPoint implements Command {
@@ -8,7 +6,7 @@ public class CmdModifyPoint implements Command {
 	private Point oldValue;
 	private Point newValue;
 	private Point originalValue = new Point();
-	
+
 
 	
 	public CmdModifyPoint(Point oldValue, Point newValue) {
@@ -22,12 +20,11 @@ public class CmdModifyPoint implements Command {
 	public void execute() {
 		
 		originalValue=(Point) oldValue.clone();
-		
 		oldValue.setX(newValue.getX());
 		oldValue.setY(newValue.getY());
 		oldValue.setOuterColor(newValue.getOuterColor());
-		//oldValue.setSelected(newValue.isSelected());
-		DrawingModel.getInstanceLazy().log("Execute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
+		//zbog redo
+		//oldValue.setSelected(true);
 
 	}
 
@@ -36,9 +33,14 @@ public class CmdModifyPoint implements Command {
 		oldValue.setX(originalValue.getX());
 		oldValue.setY(originalValue.getY());
 		oldValue.setOuterColor(originalValue.getOuterColor());
-		//oldValue.setSelected(originalValue.isSelected());
-		DrawingModel.getInstanceLazy().log("Unexecute : Modify" + " " + originalValue.getClass().getSimpleName(), originalValue+"->"+newValue+ "\r\n");
+		//ako treba da se ukloni selekcija
+	    //oldValue.setSelected(false);
 
+	}
+
+	@Override
+	public String commandToString() {
+		return ("Modify" + " " + originalValue.getClass().getSimpleName() + originalValue+"->"+newValue+ "\r\n");		
 	}
 
 	

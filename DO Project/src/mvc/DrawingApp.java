@@ -20,9 +20,7 @@ public class DrawingApp {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		model.addPropertyChangeListener(controller);
-	
-		frame.setController(controller);
-	
+
 
 	
 	}

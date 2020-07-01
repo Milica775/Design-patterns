@@ -50,7 +50,7 @@ public class Point extends Shape{
 		g.setColor(getOuterColor());		
 		g.drawLine(this.x-2, this.y, this.x+2, this.y);
 		g.drawLine(this.x, this.y-2, this.x, this.y+2);
-	    System.out.println("2");
+	  
 		
 		if (this.isSelected()) {
 			

@@ -11,8 +11,8 @@ public class ExportManager implements Export {
 	}
 
 	@Override
-	public void export(ArrayList<Object> data, String path) {
-		export.export(data, path);
+	public void export(ArrayList<Object> helpList, String path) {
+		export.export(helpList, path);
 		
 	}
 

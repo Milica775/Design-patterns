@@ -24,8 +24,8 @@ public class SaveToLogFile implements Export {
 	    
 		
 			byte [] toBytes = null;
-			for(String logs:(ArrayList<String>) data.get(0)) {
-			toBytes=logs.getBytes();
+			for(Object logs: data) {
+			toBytes=((String) logs).getBytes();
 			
 			try {
 				Path convertPath=Paths.get(path); //jer mi je path string, sljedeca metoda prima path

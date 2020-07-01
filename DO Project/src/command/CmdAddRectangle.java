@@ -18,14 +18,19 @@ public class CmdAddRectangle implements Command {
 	@Override
 	public void execute() {
 		drawModel.add(rectangle);
-		DrawingModel.getInstanceLazy().log("Execute : Add Rectangle" , rectangle.toString() + "\r\n");		
 		
 	}
 
 	@Override
 	public void unexecute() {
 		drawModel.remove(rectangle);
-		DrawingModel.getInstanceLazy().log("Unexecute : Add Rectangle" , rectangle.toString() + "\r\n");		
+
+	}
+
+
+	@Override
+	public String commandToString() {
+		return ( "Add Rectangle" + rectangle.toString() + "\r\n");
 
 	}
 

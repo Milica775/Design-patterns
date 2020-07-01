@@ -18,15 +18,20 @@ public class CmdRemoveCircle implements Command{
 		@Override
 		public void execute() {
 			drawModel.remove(circle);
-			DrawingModel.getInstanceLazy().log("Execute : Remove Circle" , circle.toString() + "\r\n");
 
 		}
 
 		@Override
 		public void unexecute() {
 			drawModel.add(circle);
-			DrawingModel.getInstanceLazy().log("Unexecute : Remove Circle" , circle.toString() + "\r\n");
 
+			
+		}
+
+
+		@Override
+		public String commandToString() {
+			return ("Remove Circle" + circle.toString() + "\r\n");
 			
 		}
 

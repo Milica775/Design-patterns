@@ -18,7 +18,6 @@ public class CmdRemoveRectangle implements Command {
 		@Override
 		public void execute() {
 			drawModel.remove(rectangle);
-			DrawingModel.getInstanceLazy().log("Execute : Remove Rectangle" , rectangle.toString() + "\r\n");
 
 			
 		}
@@ -26,9 +25,15 @@ public class CmdRemoveRectangle implements Command {
 		@Override
 		public void unexecute() {
 			drawModel.add(rectangle);
-			DrawingModel.getInstanceLazy().log("Unexecute : Remove Rectangle" , rectangle.toString() + "\r\n");
 
 			
+		}
+
+
+		@Override
+		public String commandToString() {
+			return ("Remove Rectangle" + rectangle.toString() + "\r\n");
+
 		}
 
 

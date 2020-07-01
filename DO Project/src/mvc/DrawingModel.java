@@ -1,10 +1,8 @@
 package mvc;
 import java.util.List;
-
 import java.util.Stack;
 import command.Command;
 import shapes.Shape;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -19,7 +17,6 @@ public class DrawingModel {
 	private int undoRedoPointer=-1;
 	private Stack<Command> redoStack = new Stack<>();
 	private PropertyChangeSupport propertyChangeSupport;
-	private static DrawingModel instanceLazy;
 	
 	public DrawingModel() {
 		propertyChangeSupport = new PropertyChangeSupport(this);
@@ -38,7 +35,9 @@ public class DrawingModel {
 		shapes.add(s);
 	}
 	public void remove(Shape s) {
+		setSelection(s,false);
 		shapes.remove(s);
+		
 	}
 	
 
@@ -63,19 +62,7 @@ public class DrawingModel {
 		return selectedShape;
 	}
 
-	public void setSelectedShape(Shape selectedShape) {
-      for (Shape s : shapes) {
-			
-			if (s.equals(selectedShape)) {
-			
-				selectedShape=s;
-				
-			}
-		}
-		
-		
-	}
-
+	
 
 	public List<String> getLogs() {
 		return logs;
@@ -124,15 +111,6 @@ public class DrawingModel {
 	}
 	
 
-	public int getSelectedShapeIndex() {
-		int listSize = shapes.size() - 1;
-		for (int i = 0; i <= listSize; i++) {
-			if (shapes.get(i) != null && shapes.get(i).isSelected()) {
-				return i;
-			}
-		}
-		return -1;
-	}
 	public int getIndexOfShape(Shape s) {
 		
 		int listSize = shapes.size() - 1;
@@ -151,32 +129,9 @@ public class DrawingModel {
 	
 
 	
-	public static DrawingModel getInstanceLazy() {
-		if (instanceLazy == null) {
-			synchronized(DrawingModel.class) {
-				if (instanceLazy == null) {
-					instanceLazy = new DrawingModel();
-				}
-			}
-		}
-		return instanceLazy;
-	}
-
-	
-	public void log(String s,String ss) {
-		FrmDrawing.getDlm().addElement(s+ss);
-		logs.add(s+ss);
-	}
-
-	
-	public String peek() {
-		return logs.get(logs.size()-1);
-	}
-	
-
 	public void setSelection(Shape shape,boolean select) {		
 		      shape.setSelected(select);
-		      
+		     
 		if(select) {	
 			
 		selectedShapes.add(shape);

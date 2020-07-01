@@ -35,8 +35,7 @@ public class FrmDrawing extends JFrame  {
 	
 	private DrawingController controller;
 	private DrawingView view=new DrawingView();
-	//da li moze da bude ovdje??
-	private static DefaultListModel<String> dlm=new DefaultListModel<>();
+	private DefaultListModel<String> dlm=new DefaultListModel<>();
 
 	private JPanel contentPane;
 	private JToggleButton tglbtnPoint;
@@ -74,7 +73,6 @@ public class FrmDrawing extends JFrame  {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		contentPane.setBackground(Color.gray);
-		
 	
 		
 		
@@ -82,21 +80,28 @@ public class FrmDrawing extends JFrame  {
 		
 		ButtonGroup buttonGroup=new ButtonGroup();
 		
+		JToolBar toolBar = new JToolBar();
+	
+
+		contentPane.add(view, BorderLayout.CENTER);
+		
+
 		view.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				controller.mouseClicked(e);
 			}
 		});
-		getContentPane().add(view, BorderLayout.CENTER);
-		
-		JToolBar toolBar = new JToolBar();
 		getContentPane().add(toolBar, BorderLayout.NORTH);
+
+
 		
+        		
 		
 		
 		toolBar_1 = new JToolBar(JToolBar.VERTICAL);
 		getContentPane().add(toolBar_1, BorderLayout.WEST);
+		
 		
 		btnUndo = new JButton("Undo");
 		btnUndo.setEnabled(false);
@@ -269,11 +274,7 @@ public class FrmDrawing extends JFrame  {
 		buttonGroup.add(tglbtnHexagon);
 		
 		tglbtnSelection = new JToggleButton("Selection");
-		tglbtnSelection.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				controller.clickSelect(e);
-			}
-		});
+		
 	
 		toolBar.add(tglbtnSelection);
 		buttonGroup.add(tglbtnSelection);
@@ -511,7 +512,7 @@ public class FrmDrawing extends JFrame  {
 		this.tglbtnSelection = tglbtnSelection;
 	}
 
-	public static DefaultListModel<String> getDlm() {
+	public DefaultListModel<String> getDlm() {
 		return dlm;
 	}
 

@@ -16,7 +16,6 @@ public class CmdRemovePoint implements Command {
 
 		@Override
 		public void execute() {
-			DrawingModel.getInstanceLazy().log("Execute : Remove Point" , point.toString() + "\r\n");
 			drawModel.remove(point);
            
 			
@@ -25,8 +24,13 @@ public class CmdRemovePoint implements Command {
 		@Override
 		public void unexecute() {
 			drawModel.add(point);
-			DrawingModel.getInstanceLazy().log("Unexecute : Remove Point" , point.toString() + "\r\n");
 
+		}
+
+		@Override
+		public String commandToString() {
+			return ("Remove Point" + point.toString()+"\r\n");
+			
 		}
 
 	

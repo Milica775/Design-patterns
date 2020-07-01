@@ -17,7 +17,6 @@ public class CmdRemoveDonut implements Command {
 		@Override
 		public void execute() {
 			drawModel.remove(donut);
-			DrawingModel.getInstanceLazy().log("Execute : Remove Donut" , donut.toString() + "\r\n");
 
 			
 		}
@@ -25,8 +24,13 @@ public class CmdRemoveDonut implements Command {
 		@Override
 		public void unexecute() {
 			drawModel.add(donut);
-			DrawingModel.getInstanceLazy().log("Unexecute : Remove Donut" , donut.toString() + "\r\n");
 
+		}
+
+		@Override
+		public String commandToString() {
+			return ("Remove Donut" + donut.toString() + "\r\n");
+			
 		}
 
 		

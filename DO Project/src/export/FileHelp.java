@@ -1,15 +1,7 @@
 package export;
-
-import java.awt.Component;
 import java.io.File;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.filechooser.FileSystemView;
 
 public class FileHelp {
 	
