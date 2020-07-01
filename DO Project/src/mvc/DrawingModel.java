@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class DrawingModel {
 	
 	private List<Shape> shapes=new ArrayList<Shape>();
+	
 	private List<Shape> selectedShapes=new ArrayList<Shape>();
 	private List<String> logs=new ArrayList<String>();
 	private Shape selectedShape;
