@@ -3,8 +3,9 @@ package command;
 import java.util.Collections;
 
 
+
 import mvc.DrawingModel;
-import shapes.Line;
+
 import shapes.Shape;
 
 public class CmdToFront implements Command {
@@ -36,7 +37,7 @@ public class CmdToFront implements Command {
 
 	@Override
 	public void unexecute() {
-		if(index!=0)
+		if(index!=drawModel.getShapes().size()-1)
 		{
 		Collections.swap(drawModel.getShapes(), index, index+1);
 

@@ -27,8 +27,8 @@ public class DlgHexagon extends JDialog {
 	private JTextField txtCenterX;
 	private JTextField txtCenterY;
 	private JTextField txtRadius;
-	private Color interCol=Color.MAGENTA;
-	private Color exterCol=Color.BLUE;
+	private Color interCol;
+	private Color exterCol;
 	private boolean ok;
 	private JButton btnInteriorColor; 
 	private JButton btnExteriorColor;

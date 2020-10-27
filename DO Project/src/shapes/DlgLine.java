@@ -29,7 +29,7 @@ public class DlgLine extends JDialog {
 	private JTextField txtEndPointX;
 	private JTextField txtEndPointY;
 	private JButton btnColor;
-	private Color col=Color.BLUE;
+	private Color col;
 	private boolean ok;
 	
 	

@@ -1,7 +1,7 @@
 package command;
 import java.awt.Color;
-import java.util.HashMap;
 
+import java.util.HashMap;
 import mvc.DrawingModel;
 import shapes.Circle;
 import shapes.Donut;
@@ -20,51 +20,40 @@ public class CommandManager {
 		
 		if(type.contains("Add")) {
 			
-			return createAddCommand(buildShape(command),model);
+			return new CmdAdd(buildShape(command),model);
 		}
 		else if(type.contains("Remove")) {
 			
 			
-
-			return createRemoveCommand(model.getSelectedShape(),model);	
+			return new CmdRemove(model.getSelectedShapes(),model);
+             
+             
 			
-			
-			//return createRemoveCommand(buildShape(command),model);
 		}
 		
 		else if(type.contains("Bring To Front")) {
 			
 			return new CmdBringToFront(model,model.getSelectedShape());
-			//return new CmdBringToFront(model,buildShape(command));
 			
 		}
 		else if(type.contains("Bring To Back")) {
 			
 			return new CmdBringToBack(model,model.getSelectedShape());
-			//return new CmdBringToBack(model,buildShape(command));
 			
 		}
 		else if(type.contains("To Back")) {
 			
 			return new CmdToBack(model,model.getSelectedShape());			
-        	//return new CmdToBack(model,buildShape(command));
 			
 		}
 		else if(type.contains("To Front")) {
 			
 			return new CmdToFront(model,model.getSelectedShape());			
-        	//return new CmdToFront(model,buildShape(command));
 		}
         else if(type.contains("Modify")) {
         	
     		String s1=command.split("->")[1]; 	
-    		Shape oldShape=model.getSelectedShape();
-    		
-    		// String s= command.split("->")[0];	
-    		/*Shape old=buildShape(s);
-    		int i=model.getIndexOfShape(old);
-    		Shape oldShape=model.get(i);*/
-    		
+    		Shape oldShape=model.getSelectedShape(); 		
 			return createModifyCommand(oldShape,s1);
 		}
 
@@ -107,90 +96,6 @@ public class CommandManager {
     	}
 		return null;
 	}
-
-	private Command createRemoveCommand(Shape shape, DrawingModel model) {
-
-		if(shape instanceof Point) {
-			
-			return new CmdRemovePoint((Point) shape,model);
-						
-		}
-        if(shape instanceof Line) {
-			
-			
-			return new CmdRemoveLine((Line) shape,model);
-							
-		}	
-        if(shape instanceof Rectangle) {
-			
-		
-			return new CmdRemoveRectangle((Rectangle) shape,model);		
-		}
-        if(shape instanceof Donut) {
-    		
-			return new CmdRemoveDonut((Donut) shape,model);
-							
-		}
-        if(shape instanceof Circle) {
-			
-			
-			return new CmdRemoveCircle((Circle) shape,model);
-						
-		}
-        
-         if(shape instanceof HexagonAdapter) {
-				
-				
-				return new CmdRemoveHexagon((HexagonAdapter) shape,model);
-								
-			}
-         return null;
-				
-	}
-
-
-
-	private Command createAddCommand(Shape shape, DrawingModel model) {
-		
-		if(shape instanceof Point) {
-			
-			return new CmdAddPoint((Point) shape,model);
-						
-		}
-        if(shape instanceof Line) {
-			
-			
-			return new CmdAddLine((Line) shape,model);
-							
-		}	
-        if(shape instanceof Rectangle) {
-			
-		
-			return new CmdAddRectangle((Rectangle) shape,model);		
-		}
-        if(shape instanceof Donut) {
-    		
-			return new CmdAddDonut((Donut) shape,model);
-							
-		}
-        if(shape instanceof Circle) {
-			
-			
-			return new CmdAddCircle((Circle) shape,model);
-						
-		}
-        
-         if(shape instanceof HexagonAdapter) {
-				
-				
-				return new CmdAddHexagon((HexagonAdapter) shape,model);
-								
-		}
-         return null;
-		
-	}
-
-
 
 	public String parseCommand(String command) {
 		return command.split("\\(")[0];
@@ -239,7 +144,7 @@ public class CommandManager {
 				
 								
 			}
-        // shape.setSelected(shape.isSelected());
+        
          return shape;
 	}
 

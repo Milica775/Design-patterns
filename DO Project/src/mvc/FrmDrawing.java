@@ -30,6 +30,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.Font;
 
 public class FrmDrawing extends JFrame  {
 	
@@ -104,6 +105,7 @@ public class FrmDrawing extends JFrame  {
 		
 		
 		btnUndo = new JButton("Undo");
+		btnUndo.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnUndo.setEnabled(false);
 		btnUndo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -120,6 +122,7 @@ public class FrmDrawing extends JFrame  {
 		
 		
 		btnRedo = new JButton("Redo");
+		btnRedo.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnRedo.setEnabled(false);
 		btnRedo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -130,6 +133,7 @@ public class FrmDrawing extends JFrame  {
 		toolBar_1.add(btnRedo);
 		
 		btnToback = new JButton("To Back");
+		btnToback.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnToback.setEnabled(false);
 		btnToback.addMouseListener(new MouseAdapter() {
 			@Override
@@ -141,6 +145,7 @@ public class FrmDrawing extends JFrame  {
 		toolBar_1.add(btnToback);
 		
 		btnTofront = new JButton("To Front");
+		btnTofront.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnTofront.setEnabled(false);
 		btnTofront.addMouseListener(new MouseAdapter() {
 			@Override
@@ -152,6 +157,7 @@ public class FrmDrawing extends JFrame  {
 		toolBar_1.add(btnTofront);
 		
 		btnBringToFront = new JButton("Bring To Front");
+		btnBringToFront.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnBringToFront.setEnabled(false);
 		btnBringToFront.addMouseListener(new MouseAdapter() {
 			@Override
@@ -163,6 +169,7 @@ public class FrmDrawing extends JFrame  {
 		toolBar_1.add(btnBringToFront);
 		
 		btnBringToBack = new JButton("Bring To Back");
+		btnBringToBack.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnBringToBack.setEnabled(false);
 		btnBringToBack.addMouseListener(new MouseAdapter() {
 			@Override
@@ -174,6 +181,7 @@ public class FrmDrawing extends JFrame  {
 		toolBar_1.add(btnBringToBack);
 		
 		btnExportToLog = new JButton("Export To Log");
+		btnExportToLog.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnExportToLog.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -183,6 +191,7 @@ public class FrmDrawing extends JFrame  {
 		toolBar_1.add(btnExportToLog);
 		
 		btnImportFromLog = new JButton("Import From Log");
+		btnImportFromLog.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnImportFromLog.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -192,6 +201,7 @@ public class FrmDrawing extends JFrame  {
 		toolBar_1.add(btnImportFromLog);
 		
 		btnExportToDrawFile = new JButton("Export To Draw File");
+		btnExportToDrawFile.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnExportToDrawFile.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -201,6 +211,7 @@ public class FrmDrawing extends JFrame  {
 		toolBar_1.add(btnExportToDrawFile);
 		
 		btnImportFromDraw = new JButton("Import From Draw ");
+		btnImportFromDraw.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnImportFromDraw.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -211,6 +222,7 @@ public class FrmDrawing extends JFrame  {
 	
 		
 		btnExecuteLog = new JButton("Execute log");
+		btnExecuteLog.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnExecuteLog.setEnabled(false);
 		btnExecuteLog.addMouseListener(new MouseAdapter() {
 			@Override
@@ -221,17 +233,20 @@ public class FrmDrawing extends JFrame  {
 		toolBar_1.add(btnExecuteLog);
 		
 		btnInnerColor = new JButton("Inner Color");
-		btnInnerColor.setBackground(Color.MAGENTA);
+		btnInnerColor.setFont(new Font("Tahoma", Font.BOLD, 10));
+		btnInnerColor.setBackground(Color.WHITE);
 		btnInnerColor.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				controller.addInnerColor();
 			}
 		});
+		
 		toolBar_1.add(btnInnerColor);
 		
 		btnOuterColor = new JButton("Outer Color");
-		btnOuterColor.setBackground(Color.BLUE);
+		btnOuterColor.setFont(new Font("Tahoma", Font.BOLD, 10));
+		btnOuterColor.setBackground(Color.BLACK);
 		btnOuterColor.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -249,37 +264,51 @@ public class FrmDrawing extends JFrame  {
 		
 		
 		tglbtnPoint=new JToggleButton("Point");
-		
+		tglbtnPoint.setFont(new Font("Tahoma", Font.BOLD, 10));
 		
 		toolBar.add(tglbtnPoint);
 		buttonGroup.add(tglbtnPoint);
 		
 		tglbtnLine = new JToggleButton("Line");
+		tglbtnLine.setFont(new Font("Tahoma", Font.BOLD, 10));
+
 		toolBar.add(tglbtnLine);
 		buttonGroup.add(tglbtnLine);
+	
+
 		tglbtnRectangle = new JToggleButton("Rectangle");
+		tglbtnRectangle.setFont(new Font("Tahoma", Font.BOLD, 10));
+		
+
 	toolBar.add(tglbtnRectangle);
 		buttonGroup.add(tglbtnRectangle);
+	
+
 		
 		tglbtnCircle = new JToggleButton("Circle");
+		tglbtnCircle.setFont(new Font("Tahoma", Font.BOLD, 10));
 		toolBar.add(tglbtnCircle);
 		buttonGroup.add(tglbtnCircle);
 		
 		tglbtnDonut = new JToggleButton("Donut");
+		tglbtnDonut.setFont(new Font("Tahoma", Font.BOLD, 10));
 		toolBar.add(tglbtnDonut);
 		buttonGroup.add(tglbtnDonut);
 		
 		tglbtnHexagon = new JToggleButton("Hexagon");
+		tglbtnHexagon.setFont(new Font("Tahoma", Font.BOLD, 10));
 		toolBar.add(tglbtnHexagon);
 		buttonGroup.add(tglbtnHexagon);
 		
 		tglbtnSelection = new JToggleButton("Selection");
+		tglbtnSelection.setFont(new Font("Tahoma", Font.BOLD, 10));
 		
 	
 		toolBar.add(tglbtnSelection);
 		buttonGroup.add(tglbtnSelection);
 		
 		btnModify = new JButton("Modify");
+		btnModify.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnModify.setEnabled(false);
 		btnModify.addMouseListener(new MouseAdapter() {
 			@Override
@@ -295,6 +324,7 @@ public class FrmDrawing extends JFrame  {
 		buttonGroup.add(btnModify);
 		
 		btnDelete = new JButton("Delete");	
+		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnDelete.setEnabled(false);
 		btnDelete.addMouseListener(new MouseAdapter() {
 			@Override

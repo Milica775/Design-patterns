@@ -29,7 +29,7 @@ public class DlgPoint extends JDialog {
 	private JButton btnColor;
 
 	private boolean ok;
-	private Color col=Color.BLUE;
+	private Color col;
 	/**
 	 * Launch the application.
 	 */
@@ -90,11 +90,10 @@ public class DlgPoint extends JDialog {
 		btnColor.setBackground(col);
 		btnColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				col=JColorChooser.showDialog(null, "Choose a color!", null);
-				if(col!=null)
-				{
+				col=JColorChooser.showDialog(null, "Choose a color!", col);
+				
 				btnColor.setBackground(col);
-				}
+				
 				
 			
 			}
@@ -158,6 +157,7 @@ public class DlgPoint extends JDialog {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						setOk(false);
 				        dispose();
 					}
 				});

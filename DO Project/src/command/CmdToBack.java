@@ -3,8 +3,9 @@ package command;
 import java.util.Collections;
 
 
+
 import mvc.DrawingModel;
-import shapes.Line;
+
 import shapes.Shape;
 
 public class CmdToBack implements Command {
@@ -36,7 +37,8 @@ public class CmdToBack implements Command {
 
 	@Override
 	public void unexecute() {
-		if(index!=drawModel.getShapes().size()-1)
+
+		if(index!=0)
 		{
 		Collections.swap(drawModel.getShapes(), index, index-1);
 

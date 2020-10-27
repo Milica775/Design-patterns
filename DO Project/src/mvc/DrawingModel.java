@@ -6,6 +6,7 @@ import shapes.Shape;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Deque;
 
 public class DrawingModel {
 	
@@ -16,7 +17,6 @@ public class DrawingModel {
 	private Shape selectedShape;
 	private Stack<Command> commandStack = new Stack<>();
 	private int undoRedoPointer=-1;
-	private Stack<Command> redoStack = new Stack<>();
 	private PropertyChangeSupport propertyChangeSupport;
 	
 	
@@ -77,25 +77,20 @@ public class DrawingModel {
 	public Stack<Command> getCommandStack() {
 		return commandStack;
 	}
-	public Stack<Command> getRedoStack() {
-		return redoStack;
-	}
-
-	public void setRedoStack(Stack<Command> redoStack) {
-		this.redoStack = redoStack;
-	}
+	
 
 	public void setCommandStack(Stack<Command> commandStack) {
 		this.commandStack = commandStack;
 	}
 	
 
-	
+
 	public void setUndoRedoPointer(int undoRedoPointer) {
 	propertyChangeSupport.firePropertyChange("undoRedo",this.undoRedoPointer,undoRedoPointer);
 	this.undoRedoPointer = undoRedoPointer;
       
 	}
+	
 	
 	public int getUndoRedoPointer() {
 		return this.undoRedoPointer;

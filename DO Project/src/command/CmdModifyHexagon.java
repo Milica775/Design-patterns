@@ -1,7 +1,7 @@
 package command;
 
 
-import mvc.DrawingModel;
+
 import shapes.HexagonAdapter;
 
 public class CmdModifyHexagon implements Command{

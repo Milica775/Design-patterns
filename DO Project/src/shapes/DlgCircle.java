@@ -10,6 +10,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import mvc.FrmDrawing;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -27,8 +30,8 @@ public class DlgCircle extends JDialog {
 	private JTextField txtCenterX;
 	private JTextField txtCenterY;
 	private JTextField txtRadius;
-	private Color interCol=Color.MAGENTA;
-	private Color exterCol=Color.BLUE;
+	private Color interCol;
+	private Color exterCol;
 	private boolean ok;
 	private JButton btnInteriorColor; 
 	private JButton btnExteriorColor;
@@ -91,19 +94,24 @@ public class DlgCircle extends JDialog {
 		txtRadius.setColumns(10);
 		
 		btnInteriorColor = new JButton("Interior color");
+	
+
+
 		btnInteriorColor.setBackground(interCol);
 		btnInteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				interCol=JColorChooser.showDialog(null, "Choose a inner color!", null);
+				interCol=JColorChooser.showDialog(null, "Choose a inner color!", interCol);	
 			    btnInteriorColor.setBackground(interCol);
+				
 			}
 		});
 		
 		btnExteriorColor = new JButton("Exterior color");
 		btnExteriorColor.setBackground(exterCol);
+
 		btnExteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				exterCol=JColorChooser.showDialog(null, "Choose a outer color!", null);
+				exterCol=JColorChooser.showDialog(null, "Choose a outer color!", exterCol);
 			    btnExteriorColor.setBackground(exterCol);
 			}
 		});

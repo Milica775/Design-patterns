@@ -28,8 +28,8 @@ public class DlgRectangle extends JDialog {
 	private JTextField txtUpperLeftPointY;
 	private JTextField txtHeight;
 	private JTextField txtWidth;
-	private Color interCol=Color.MAGENTA;
-	private Color exterCol=Color.BLACK;
+	private Color interCol;
+	private Color exterCol;
 	private boolean ok;
 	private JButton btnInteriorColor; 
 	private JButton btnExteriorColor;
@@ -99,7 +99,7 @@ public class DlgRectangle extends JDialog {
 	    btnInteriorColor.setBackground(interCol);
 		btnInteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				interCol=JColorChooser.showDialog(null, "Choose a inner color!", null);
+				interCol=JColorChooser.showDialog(null, "Choose a inner color!", interCol);
 				btnInteriorColor.setBackground(interCol);
 			}
 		});
@@ -108,7 +108,7 @@ public class DlgRectangle extends JDialog {
 		btnExteriorColor.setBackground(exterCol);
 		btnExteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				exterCol=JColorChooser.showDialog(null, "Choose a outer color!", null);
+				exterCol=JColorChooser.showDialog(null, "Choose a outer color!",exterCol);
 				btnExteriorColor.setBackground(exterCol);
 			}
 		});
@@ -193,6 +193,7 @@ public class DlgRectangle extends JDialog {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						setOk(false);
 						dispose();
 					}
 				});

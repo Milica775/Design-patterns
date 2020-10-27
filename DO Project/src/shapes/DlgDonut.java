@@ -28,8 +28,8 @@ public class DlgDonut extends JDialog {
 	private JTextField txtCenterY;
 	private JTextField txtRadius;
 	private JTextField txtInnerRadius;
-	private Color interCol=Color.MAGENTA;
-	private Color exterCol=Color.BLUE;
+	private Color interCol=Color.WHITE;
+	private Color exterCol=Color.BLACK;
 	private boolean ok;
 	private JButton btnInteriorColor; 
 	private JButton btnExteriorColor;
@@ -100,7 +100,7 @@ public class DlgDonut extends JDialog {
 		btnInteriorColor.setBackground(interCol);
 		btnInteriorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				interCol=JColorChooser.showDialog(null, "Choose a inner color!", null);
+				interCol=JColorChooser.showDialog(null, "Choose a inner color!", interCol);
 			    btnInteriorColor.setBackground(interCol);
 			}
 		});

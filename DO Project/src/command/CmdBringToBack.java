@@ -1,5 +1,4 @@
 package command;
-
 import mvc.DrawingModel;
 import shapes.Shape;
 
@@ -20,19 +19,12 @@ public class CmdBringToBack implements Command{
 		index=drawModel.getIndexOfShape(selectedShape);
 	  drawModel.getShapes().remove(selectedShape);
 	  drawModel.getShapes().add(0, selectedShape);
-		//selectedShape.setSelected(true);
-
-
 	}
 
 	@Override
 	public void unexecute() {
 		drawModel.getShapes().remove(0);
-		drawModel.getShapes().add(index, selectedShape);
-		//selectedShape.setSelected(false);
-
-
-		
+		drawModel.getShapes().add(index, selectedShape);	
 	}
 
 	@Override
