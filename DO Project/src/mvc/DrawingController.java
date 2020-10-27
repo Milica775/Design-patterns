@@ -1,8 +1,6 @@
 package mvc;
 
 import java.awt.Color;
-
-import java.awt.event.ItemEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -12,15 +10,12 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import command.CmdAddCircle;
-import command.CmdAddDonut;
-import command.CmdAddHexagon;
-import command.CmdAddLine;
-import command.CmdAddPoint;
-import command.CmdAddRectangle;
+
+import command.CmdAdd;
 import command.CmdBringToBack;
 import command.CmdBringToFront;
 import command.CmdModifyCircle;
@@ -29,12 +24,7 @@ import command.CmdModifyHexagon;
 import command.CmdModifyLine;
 import command.CmdModifyPoint;
 import command.CmdModifyRectangle;
-import command.CmdRemoveCircle;
-import command.CmdRemoveDonut;
-import command.CmdRemoveHexagon;
-import command.CmdRemoveLine;
-import command.CmdRemovePoint;
-import command.CmdRemoveRectangle;
+import command.CmdRemove;
 import command.CmdToBack;
 import command.CmdToFront;
 import command.Command;
@@ -43,46 +33,48 @@ import export.ExportManager;
 import export.FileHelp;
 import export.SaveToDrawFile;
 import export.SaveToLogFile;
-import shapes.DlgHexagon;
-import shapes.HexagonAdapter;
 import importt.ImportManager;
 import importt.OpenDrawFile;
 import importt.OpenLogFile;
 import shapes.Circle;
 import shapes.DlgCircle;
 import shapes.DlgDonut;
+import shapes.DlgHexagon;
 import shapes.DlgLine;
 import shapes.DlgPoint;
 import shapes.DlgRectangle;
 import shapes.Donut;
+import shapes.HexagonAdapter;
 import shapes.Line;
 import shapes.Point;
 import shapes.Rectangle;
 import shapes.Shape;
 
-public class DrawingController implements PropertyChangeListener{
-	
+public class DrawingController implements PropertyChangeListener {
 	
 	private DrawingModel model;
 	private FrmDrawing mainFrame;	
 	private LineNumberReader lineNumberReader;
 	private Point startPoint;
-
+	private int undoRedoPointer=-1;
+	private Color colInner=Color.WHITE;
+	private Color colOuter=Color.BLACK;
 	
-	public DrawingController(DrawingModel model2, FrmDrawing frame2) {
-		model=model2;
-		mainFrame=frame2;
-		
+	
+	public DrawingController(DrawingModel model1, FrmDrawing frame1) {
+		model=model1;
+		mainFrame=frame1;	
 	}
 
 	public void mouseClicked(MouseEvent e) {
 		 
 		Command cmdAdd = null;
+	
 				
 		if(mainFrame.getTglbtnSelection()) {
 			
 				boolean notFoundShape=true;
-				Point p=new Point(e.getX(),e.getY()); //koordinate klika
+				Point p=new Point(e.getX(),e.getY());
 				Iterator <Shape> it=model.getShapes().iterator();
 				while(it.hasNext()) {
 					Shape shape=it.next();
@@ -92,44 +84,47 @@ public class DrawingController implements PropertyChangeListener{
 						
 					if( !shape.isSelected())
 					{
-						model.setSelection(shape,true);
-						DrawingModel.getInstanceLazy().log("Selection", shape.toString()+ "\r\n");
-
+						model.setSelection(shape,true);	
+						 String commandString="Selection" + " " + shape.getClass().getSimpleName() + shape.toString()+ "\r\n";
+						 mainFrame.getDlm().addElement(commandString);
+						 model.getLogs().add(commandString);
 					}
 					else 
 					{
-						model.setSelection(shape,false);	
-
+						model.setSelection(shape,false);
+						 String commandString="Unselection" + " " + shape.getClass().getSimpleName() + shape.toString()+ "\r\n";
+						 mainFrame.getDlm().addElement(commandString);
+						 model.getLogs().add(commandString);
 					}
 					}			
 				}
 				if(notFoundShape) {
 				
 					model.removeAllSelection();
+					 String commandString="Unselected all shapes" + "\r\n";
+					 mainFrame.getDlm().addElement(commandString);
+					 model.getLogs().add(commandString);
 				}
 				
 		}
+		
 		 if(mainFrame.getTglbtnPoint()) {
 			 
 			Point p=new Point(e.getX(),e.getY()); //klik	
 			DlgPoint dlgP=new DlgPoint();
 			dlgP.getBtnColor().setVisible(false);
-			dlgP.setTxtXEditable(false); //onemogucavam izmjenu
+			dlgP.setTxtXEditable(false); 
 			dlgP.setTxtYEditable(false);
 			dlgP.setTxtX(Integer.toString(p.getX()));
 			dlgP.setTxtY(Integer.toString(p.getY()));
 			dlgP.setVisible(true);
 			if(dlgP.isOk())
 			{
-			p.setOuterColor(mainFrame.getBtnOuterColor().getBackground());
-			    cmdAdd=new CmdAddPoint(p,model);
-			
-			    execute(cmdAdd);
-
-			    
-			   
-			
-		}
+			p.setOuterColor(colOuter);
+			     cmdAdd=new CmdAdd(p,model);
+			    deleteElementsAfterPointer(undoRedoPointer);
+				  execute(cmdAdd);			  		
+		  }
 		}
 			else if(mainFrame.getTglbtnLine()) {
 			
@@ -144,6 +139,7 @@ public class DrawingController implements PropertyChangeListener{
 				dlgL.getBtnColor().setVisible(false);
 				dlgL.setTxtStartPointXEditable(false);
 				dlgL.setTxtStartPointYEditable(false);
+				
 				dlgL.setTxtEndPointXEditable(false);
 				dlgL.setTxtEndPointYEditable(false);		
 				dlgL.setTxtStartPointX(Integer.toString(l.getStartPoint().getX()));
@@ -153,11 +149,12 @@ public class DrawingController implements PropertyChangeListener{
 				dlgL.setVisible(true);
 			if(dlgL.isOk())
 			{
-				l.setOuterColor(mainFrame.getBtnOuterColor().getBackground());
-				 cmdAdd=new CmdAddLine(l,model);
-				 execute(cmdAdd);
-				   
-			    startPoint=null;
+				l.setOuterColor(colOuter);
+			     cmdAdd=new CmdAdd(l,model);
+				 deleteElementsAfterPointer(undoRedoPointer);
+				  execute(cmdAdd);
+				  startPoint=null;
+			  
 			}
 			    }
 		}
@@ -177,14 +174,16 @@ public class DrawingController implements PropertyChangeListener{
 			    int h=Integer.parseInt(dlgR.getTxtHeight());
 			    int w=Integer.parseInt(dlgR.getTxtWidth());
 			    Rectangle r=new Rectangle(pp,h,w);
-				r.setOuterColor(mainFrame.getBtnOuterColor().getBackground());
-				r.setInnerColor(mainFrame.getBtnInnerColor().getBackground());
+				r.setOuterColor(colOuter);
+				r.setInnerColor(colInner);
+			    cmdAdd=new CmdAdd(r,model);
 
-			    cmdAdd=new CmdAddRectangle(r,model);
-			    execute(cmdAdd);
-			  
+			    deleteElementsAfterPointer(undoRedoPointer);
+				  execute(cmdAdd);
+			   
 			   
 			}
+			
 			}
 			catch(NumberFormatException ex)
 			{
@@ -211,11 +210,14 @@ public class DrawingController implements PropertyChangeListener{
 			{
 				int radius=Integer.parseInt(dlgC.getTxtRadius());
 				Circle c=new Circle(center,radius);
-				c.setOuterColor(mainFrame.getBtnOuterColor().getBackground());
-				c.setInnerColor(mainFrame.getBtnInnerColor().getBackground());
-				 cmdAdd=new CmdAddCircle(c,model);
-				 execute(cmdAdd);
-			
+				c.setOuterColor(colOuter);
+				c.setInnerColor(colInner);
+				
+				 cmdAdd=new CmdAdd(c,model);
+
+				deleteElementsAfterPointer(undoRedoPointer);
+				  execute(cmdAdd);
+				
 			}
 			}
 			catch(NumberFormatException ex)
@@ -245,10 +247,14 @@ public class DrawingController implements PropertyChangeListener{
 				int innerRadius=Integer.parseInt(dlgD.getTxtInnerRadius());
 				int radius=Integer.parseInt(dlgD.getTxtRadius());
 				Donut d=new Donut(center,radius,innerRadius);
-				d.setOuterColor(mainFrame.getBtnOuterColor().getBackground());
-				d.setInnerColor(mainFrame.getBtnInnerColor().getBackground());
-				cmdAdd=new CmdAddDonut(d,model);
-				execute(cmdAdd);
+				d.setOuterColor(colOuter);
+				d.setInnerColor(colInner);
+				cmdAdd=new CmdAdd(d,model);
+			 
+
+				 deleteElementsAfterPointer(undoRedoPointer);
+				  execute(cmdAdd);
+				
 				   
 			}
 			}
@@ -279,11 +285,21 @@ public class DrawingController implements PropertyChangeListener{
 
 			if(dlgH.isOk())
 		{
+              
+				int radius=Integer.parseInt(dlgH.getTxtRadius());		
+				HexagonAdapter h = null;
+				try {
+					h = new HexagonAdapter(center.getX(),center.getY(),radius,colInner,colOuter);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}			
+				
+				cmdAdd=new CmdAdd(h,model);
+			     
 
-				int radius=Integer.parseInt(dlgH.getTxtRadius());			
-				HexagonAdapter h=new HexagonAdapter(center.getX(),center.getY(),radius,mainFrame.getBtnOuterColor().getBackground(),mainFrame.getBtnInnerColor().getBackground());			
-				cmdAdd=new CmdAddHexagon(h,model);
-				execute(cmdAdd);
+				deleteElementsAfterPointer(undoRedoPointer);
+				  execute(cmdAdd);
 		
 		}
 			}
@@ -300,13 +316,14 @@ public class DrawingController implements PropertyChangeListener{
 		
 		}
 		
+		
+		
 		//kad stavim getView prikazuje i dijaloge
 		if(model.getShapes()!=null)	
 			mainFrame.repaint();
+	
 		
 		
-		
-			
 }			
 
 
@@ -326,7 +343,8 @@ public class DrawingController implements PropertyChangeListener{
 				DlgPoint dp=new DlgPoint();
 				dp.setTxtX(Integer.toString(((Point) modifyShape).getX()));
 				dp.setTxtY(Integer.toString(((Point) modifyShape).getY()));
-				dp.setCol(((Point) modifyShape).getOuterColor());
+				dp.setCol(( (Point) modifyShape).getOuterColor());
+				dp.getBtnColor().setBackground(dp.getCol());
 				dp.setVisible(true);
 				try 
 				{	
@@ -336,8 +354,10 @@ public class DrawingController implements PropertyChangeListener{
 				          ((Point) newState).setX(Integer.parseInt(dp.getTxtX()));
 				          ((Point) newState).setY(Integer.parseInt(dp.getTxtY()));
 				          ((Point) newState).setOuterColor(dp.getCol());
+
 				          cmdModify=new CmdModifyPoint((Point)modifyShape,(Point)newState);
-				          
+						  execute(cmdModify);
+
 				          mainFrame.repaint();          
 				}
 				}
@@ -355,7 +375,8 @@ public class DrawingController implements PropertyChangeListener{
 				dl.setTxtStartPointY(Integer.toString(((Line)modifyShape).getStartPoint().getY()));
 				dl.setTxtEndPointX(Integer.toString(((Line)modifyShape).getEndPoint().getX()));
 				dl.setTxtEndPointY(Integer.toString(((Line)modifyShape).getEndPoint().getY()));
-				dl.setCol(((Line)modifyShape).getOuterColor());
+				dl.setCol(( (Line) modifyShape).getOuterColor());
+				dl.getBtnColor().setBackground(dl.getCol());
 				dl.setVisible(true);
 				//u ovom dijelu otvara dijalog i prikazuje vrijednosti koje kupi sa panela
 				try
@@ -368,8 +389,10 @@ public class DrawingController implements PropertyChangeListener{
 						((Line) newState).setStartPoint(new Point((Integer.parseInt(dl.getTxtStartPointX())),(Integer.parseInt(dl.getTxtStartPointY()))));
 						((Line) newState).setEndPoint(new Point((Integer.parseInt(dl.getTxtEndPointX())),(Integer.parseInt(dl.getTxtEndPointY()))));
 						((Line) newState).setOuterColor(dl.getCol());
+
 				          cmdModify=new CmdModifyLine((Line)modifyShape,(Line)newState);
-				         
+						  execute(cmdModify);
+
 				          mainFrame.repaint();
 					}
 				}
@@ -385,11 +408,14 @@ public class DrawingController implements PropertyChangeListener{
 				dr.setTxtUpperLeftPointY(Integer.toString(((Rectangle)modifyShape).getUpperLeftPoint().getY()));
 				dr.setTxtWidth(Integer.toString(((Rectangle)modifyShape).getWidth()));
 				dr.setTxtHeight(Integer.toString(((Rectangle)modifyShape).getHeight()));
-				dr.setInterCol(((Rectangle)modifyShape).getInnerColor());
-				dr.setExterCol(((Rectangle)modifyShape).getOuterColor());
+				dr.setInterCol(( (Rectangle) modifyShape).getInnerColor());
+				dr.setExterCol(modifyShape.getOuterColor());
+				dr.getBtnInteriorColor().setBackground(dr.getInterCol());
+				dr.getBtnExteriorColor().setBackground(dr.getExterCol());
 				dr.setVisible(true);
 				try
 				{
+
 					if(dr.isOk())
 					{
 						newState=new Rectangle();
@@ -397,9 +423,10 @@ public class DrawingController implements PropertyChangeListener{
 						((Rectangle)newState).setHeight(Integer.parseInt(dr.getTxtHeight()));
 						((Rectangle)newState).setWidth(Integer.parseInt(dr.getTxtWidth()));
 						((Rectangle)newState).setOuterColor(dr.getExterCol());
-						((Rectangle)newState).setInnerColor(dr.getInterCol());				          
-			          cmdModify=new CmdModifyRectangle((Rectangle)modifyShape,(Rectangle)newState);
+						((Rectangle)newState).setInnerColor(dr.getInterCol());	
 
+			          cmdModify=new CmdModifyRectangle((Rectangle)modifyShape,(Rectangle)newState);
+					  execute(cmdModify);
 				          mainFrame.repaint();
 					}
 				}
@@ -420,8 +447,10 @@ public class DrawingController implements PropertyChangeListener{
 				dd.setTxtCenterY(Integer.toString(((Donut)modifyShape).getCenter().getY()));
 				dd.setTxtRadius(Integer.toString(((Donut)modifyShape).getRadius()));
 				dd.setTxtInnerRadius(Integer.toString(((Donut)modifyShape).getInnerRadius()));
-				dd.setInterCol((((Donut)modifyShape).getInnerColor()));
-				dd.setExterCol((((Donut)modifyShape).getOuterColor()));
+				dd.setInterCol(( (Donut) modifyShape).getInnerColor());
+				dd.setExterCol(modifyShape.getOuterColor());
+				dd.getBtnInteriorColor().setBackground(dd.getInterCol());
+				dd.getBtnExteriorColor().setBackground(dd.getExterCol());
 				dd.setVisible(true);
 			
 				try
@@ -434,9 +463,11 @@ public class DrawingController implements PropertyChangeListener{
 						((Donut)newState).setInnerRadius(Integer.parseInt(dd.getTxtInnerRadius()));		
 						((Donut)newState).setInnerColor(dd.getInterCol());
 						((Donut)newState).setOuterColor(dd.getExterCol());
+
 				
 				
 				          cmdModify=new CmdModifyDonut((Donut)modifyShape,(Donut)newState);
+						  execute(cmdModify);
 
 				          mainFrame.repaint();
 					}
@@ -458,8 +489,10 @@ public class DrawingController implements PropertyChangeListener{
 				dc.setTxtCenterX(Integer.toString(((Circle)modifyShape).getCenter().getX()));
 				dc.setTxtCenterY(Integer.toString(((Circle)modifyShape).getCenter().getY()));
 				dc.setTxtRadius(Integer.toString(((Circle)modifyShape).getRadius()));
-				dc.setInterCol(((Circle)modifyShape).getInnerColor());
-				dc.setExterCol(((Circle)modifyShape).getOuterColor());
+				dc.setInterCol(( (Circle) modifyShape).getInnerColor());
+				dc.setExterCol(modifyShape.getOuterColor());
+				dc.getBtnInteriorColor().setBackground(dc.getInterCol());
+				dc.getBtnExteriorColor().setBackground(dc.getExterCol());
 				dc.setVisible(true);
 				try
 				{
@@ -470,9 +503,12 @@ public class DrawingController implements PropertyChangeListener{
 						((Circle)newState).setRadius(Integer.parseInt(dc.getTxtRadius()));
 						((Circle)newState).setOuterColor(dc.getExterCol());
 						((Circle)newState).setInnerColor(dc.getInterCol());
+
 				          cmdModify=new CmdModifyCircle((Circle)modifyShape,(Circle)newState);
+						  execute(cmdModify);
 
 				          mainFrame.repaint();
+					
 					}
 				}
 				catch(NumberFormatException ex)
@@ -496,7 +532,8 @@ public class DrawingController implements PropertyChangeListener{
 			dh.setTxtRadius(Integer.toString((((HexagonAdapter)modifyShape).getRadius())));
 			dh.setInterCol((((HexagonAdapter)modifyShape).getInterColor()));
 			dh.setExterCol((((HexagonAdapter)modifyShape).getOuterColor()));
-		
+			dh.getBtnInteriorColor().setBackground(dh.getInterCol());
+			dh.getBtnExteriorColor().setBackground(dh.getExterCol());
 			dh.setVisible(true);
 			try
 			{
@@ -512,10 +549,13 @@ public class DrawingController implements PropertyChangeListener{
 					  int radius=Integer.parseInt(dh.getTxtRadius());
 					  Color cO=dh.getExterCol();
 					  Color cI=dh.getInterCol();
+
 					  newState=new HexagonAdapter(x,y,radius,cI,cO);
+
 					  
 				          cmdModify=new CmdModifyHexagon((HexagonAdapter)modifyShape,(HexagonAdapter)newState);
-				          
+						  execute(cmdModify);
+
 				          mainFrame.repaint();
 				}
 			}
@@ -528,7 +568,7 @@ public class DrawingController implements PropertyChangeListener{
 				JOptionPane.showMessageDialog(new JFrame(), "Radius must be positive!", "Error", JOptionPane.WARNING_MESSAGE);
 			}
 		}
-			  execute(cmdModify);
+
 			
 	 
 	
@@ -536,81 +576,45 @@ public class DrawingController implements PropertyChangeListener{
 		
 	}
 
-	public void mouseClickedDelete(MouseEvent e) {	
+	public void mouseClickedDelete(MouseEvent e) {
 		if (model.getSelectedShapes().size() == 0)
 			return;
+		
 		ArrayList<Shape> shapesForDelete=new ArrayList<Shape>();
 		for(Shape s: model.getSelectedShapes()) {
 			shapesForDelete.add(s);
 			
 		}
-			Command cmdRmv = null;
-			
+		
 		int answer=JOptionPane.showConfirmDialog(new JFrame(), "Are you sure you want to delete shapes?", "Delete", JOptionPane.YES_NO_OPTION);
+		
 		if( answer==JOptionPane.YES_OPTION)
 		{
-			for (Shape deleteShape : shapesForDelete) {
-				
-
-			if(deleteShape instanceof Point)
-			{
-				cmdRmv=new CmdRemovePoint((Point)deleteShape,model);
-			}
-			else if(deleteShape instanceof Line)
-			{
-				cmdRmv=new CmdRemoveLine((Line)deleteShape,model);
-				
-			}
-			else if(deleteShape instanceof Rectangle)
-			{
-				 cmdRmv=new CmdRemoveRectangle((Rectangle)deleteShape,model);
-				
-			}
-			else if(deleteShape instanceof Donut)
-			{
-				cmdRmv=new CmdRemoveDonut((Donut)deleteShape,model);
-	
-			}
-			else if(deleteShape instanceof Circle)
-			{
-				cmdRmv=new CmdRemoveCircle((Circle)deleteShape,model);
-				
-			}
-			
-			else if(deleteShape instanceof HexagonAdapter)
-			{
-				cmdRmv=new CmdRemoveHexagon((HexagonAdapter)deleteShape,model);
-	
-			}
-			
-
-			
-			execute(cmdRmv);
-			model.setSelection(deleteShape, false);
-					
-			}
-			
-			mainFrame.repaint();
-			
-			
-		
-            
-
+		CmdRemove command=new CmdRemove(shapesForDelete,model);
+		execute(command);
+		mainFrame.repaint();
 		}
-		
-		
-		
-		
-
 		
   }
 	public void execute(Command command) {
-		 deleteElementsAfterPointer(model.getUndoRedoPointer());
-		    command.execute();
-		    model.getCommandStack().push(command);
-		    model.setUndoRedoPointer(model.getUndoRedoPointer()+1);
+		
+		   if(undoRedoPointer < model.getCommandStack().size()-1)
+		   {
+			   undoRedoPointer=model.getCommandStack().size()-1;
+		   }
+		  	     
+		    command.execute();	    
+		    model.getCommandStack().push(command);	   
+		    model.setUndoRedoPointer(this.undoRedoPointer+1);
+		    String commandString="Execute:"+command.commandToString();
+			 mainFrame.getDlm().addElement(commandString);
+			 model.getLogs().add(commandString);
+
+	
+		  
 		    
 	}
+	
 	public void deleteElementsAfterPointer(int undoRedoPointer)
 	{
 	    if(model.getCommandStack().size()<1)
@@ -624,29 +628,41 @@ public class DrawingController implements PropertyChangeListener{
 	
 	public void undo() {
 
-		if(model.getUndoRedoPointer()<=-1)
+		if(undoRedoPointer<-1)
 	        return;
-	
+
 		Command command = model.getCommandStack().get(model.getUndoRedoPointer());		
 	    command.unexecute();
-	    model.setUndoRedoPointer(model.getUndoRedoPointer()-1);
+	    model.setUndoRedoPointer(model.getUndoRedoPointer()-1);     
+	    String commandString="Unexecute:"+command.commandToString();
+		 mainFrame.getDlm().addElement(commandString);
+		 model.getLogs().add(commandString);	   
+         
 		mainFrame.repaint();
+      
+
 	
 	
 	}
 
 	public void redo() {
 		
-		    if(model.getUndoRedoPointer() == model.getCommandStack().size() - 1)
-		        return;
-		    model.setUndoRedoPointer(model.getUndoRedoPointer()+1);
-		    Command command = model.getCommandStack().get(model.getUndoRedoPointer());
-		    DrawingModel.getInstanceLazy().log("Redo:","");
+	
 
-		    command.execute();
+	    if(model.getUndoRedoPointer() == model.getCommandStack().size() - 1)
+	        return;
+	    
+	    model.setUndoRedoPointer(model.getUndoRedoPointer()+1);
+	   Command command = model.getCommandStack().get(model.getUndoRedoPointer());
+		    command.execute();	
+		    String commandString="Redo:"+command.commandToString();
+			 mainFrame.getDlm().addElement(commandString);
+			 model.getLogs().add(commandString);
+
+		  
 
 		    mainFrame.repaint();
-			
+		
 		
 	}
 	
@@ -664,9 +680,9 @@ public class DrawingController implements PropertyChangeListener{
 
 		}
 		if(evt.getPropertyName().equals("undoRedo")) {
-			
-			mainFrame.getBtnUndo().setEnabled(model.getUndoRedoPointer()>-1);
-			mainFrame.getBtnRedo().setEnabled(model.getUndoRedoPointer()<model.getCommandStack().size()-1);
+			this.undoRedoPointer=(int)evt.getNewValue();
+			mainFrame.getBtnUndo().setEnabled(undoRedoPointer>-1);
+			mainFrame.getBtnRedo().setEnabled(undoRedoPointer<model.getCommandStack().size()-1);
 		}
 		
 			
@@ -681,10 +697,10 @@ public class DrawingController implements PropertyChangeListener{
 		Shape s=model.getSelectedShape();
 	
 
-		System.out.println(model.getSelectedShapeIndex());
+	
 		CmdBringToFront cmdBToF=new CmdBringToFront(model,s);
 		execute(cmdBToF);
-		System.out.println(model.getSelectedShapeIndex());
+		mainFrame.repaint();
 		
 	}
 
@@ -694,10 +710,9 @@ public class DrawingController implements PropertyChangeListener{
 		Shape s=model.getSelectedShape();
 		
 
-		System.out.println(model.getSelectedShapeIndex());
 		CmdBringToBack cmdBToB=new CmdBringToBack(model,s);
 		execute(cmdBToB);
-		System.out.println(model.getSelectedShapeIndex());
+		mainFrame.repaint();
 		
 	}
 
@@ -706,27 +721,26 @@ public class DrawingController implements PropertyChangeListener{
 			return;
 		Shape s=model.getSelectedShape();
 		
-		System.out.println(model.getSelectedShapeIndex());
 		CmdToBack cmdToB=new CmdToBack(model,s);
 		execute(cmdToB);
-		System.out.println(model.getSelectedShapeIndex());		
+		mainFrame.repaint();
 	}
 
 	public void toFront() {
+		
 		if (model.getSelectedShapes().size() != 1)
 			return;
 		Shape s=model.getSelectedShape();
-		
 		CmdToFront cmdToF=new CmdToFront(model,s);
 		execute(cmdToF);
-		System.out.println(model.getSelectedShapeIndex());
+		mainFrame.repaint();
 		
 	}
 
 	public void exportToLog() {
 		
 		ArrayList<Object> helpList=new ArrayList<Object>();
-		helpList.add(DrawingModel.getInstanceLazy().getLogs());
+		helpList.addAll(model.getLogs());
 		ExportManager exportManager=new ExportManager(new SaveToLogFile());
 		String path=FileHelp.showFileDialogSave("log");
 		if(path!=null) {
@@ -738,21 +752,20 @@ public class DrawingController implements PropertyChangeListener{
 		
 		ImportManager importManager=new ImportManager(new OpenLogFile());
 		String path=FileHelp.showFileDialogOpen("log");
+		
 		if(path!=null) {
 			ArrayList<Object> log=importManager.importLogDraw(path);
 			
 			try {
 				lineNumberReader=new LineNumberReader(new FileReader(path));
-			
+				mainFrame.getDlm().addElement("Exported from file:"+path);
+				
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			model.log("Imported log file from:", path);
-			mainFrame.getBtnExecuteLog().setEnabled(true);
-				
-		}
-		
+			mainFrame.getBtnExecuteLog().setEnabled(true);		
+		}		
 	}
 
 	public void exportToDraw() {
@@ -772,14 +785,12 @@ public class DrawingController implements PropertyChangeListener{
 		}
 	}
 
-	public void importFromDraw() {
-		
+	public void importFromDraw() {	
 		ImportManager importManager=new ImportManager(new OpenDrawFile());
 		String path=FileHelp.showFileDialogOpen("drwg");
 		if(path!=null) {
 			ArrayList<Object> log=importManager.importLogDraw(path);
-			for (Shape s : (ArrayList<Shape>) log.get(0)) {
-				
+			for (Shape s : (ArrayList<Shape>) log.get(0)) {			
 				model.add(s);
 			}
 			
@@ -791,92 +802,93 @@ public class DrawingController implements PropertyChangeListener{
 	}
 
 	public void executeLog() {
-		
-		 System.out.println("lnr"+lineNumberReader.getLineNumber());
-		 System.out.println("size"+model.getLogs().size()-1);
 		try {
-			
-			String line=lineNumberReader.readLine();
+		
+		   String line=lineNumberReader.readLine();
+			if(line==null)
+			{				
+				mainFrame.getBtnExecuteLog().setEnabled(false);
+				return;
+			}
+	
 			CommandManager commandManager=new CommandManager();
 			Command command=commandManager.parse(line,model);
 			
-             if(line.contains("Redo:Execute")) {
+			
+			if(line.contains("Redo")) {
 				
 				redo();
 			}
+			
              else if(line.contains("Execute"))
-			{	
-			   execute(command);
-			
-			
+            	 
+			{    
+            	 
+            	 execute(command);
+         
+
 			}
 			else if(line.contains("Unexecute"))
 			{
 			    undo();
 			}
+			else if(line.contains("Unselected all shapes"))
+			{
+				mainFrame.getDlm().addElement(line);
+				model.removeAllSelection();
+			}
+			else if(line.contains("Unselect"))
+			{
+				mainFrame.getDlm().addElement(line);
+				Shape selectShape= commandManager.buildShape(line);
+				int i=model.getIndexOfShape(selectShape);
+	    		Shape oldShape=model.get(i);
+			    model.setSelection(oldShape, false);
+			}
 			
 			else
 			{
-				DrawingModel.getInstanceLazy().log("Info:",line);
+			
+				while(line.contains("Selection"))
+				{ 
+					
+					mainFrame.getDlm().addElement(line);
+					Shape selectShape= commandManager.buildShape(line);
+					int i=model.getIndexOfShape(selectShape);
+		    		Shape oldShape=model.get(i);
+				    model.setSelection(oldShape, true);
+				    lineNumberReader.mark(0);
+					line=lineNumberReader.readLine();
+
+				}	
+				lineNumberReader.reset();
 			}
+			
+			
 			mainFrame.repaint();
-			if(lineNumberReader.getLineNumber()+1>model.getLogs().size()-1)
-			{
-				
-				mainFrame.getBtnExecuteLog().setEnabled(false);
-				return;
-			}
+			
+		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	    
-			
-			
-	
-		
-		
+	    	
 	}
-
+	
 	public void addOuterColor() {
-		Color colorForButton=JColorChooser.showDialog(null, "Odaberite boju!", mainFrame.getBtnOuterColor().getBackground());
-		if(colorForButton!=null) {
-		mainFrame.getBtnOuterColor().setBackground(colorForButton);
+		
+		colOuter=JColorChooser.showDialog(null, "Choose a color!", colOuter);
+		if(colOuter!=null) {
+		mainFrame.getBtnOuterColor().setBackground(colOuter);
 		}
-		else
-		{
-			mainFrame.getBtnOuterColor().setBackground(mainFrame.getBtnOuterColor().getBackground());
-		}
+	}	
 	
-	}
 	public void addInnerColor() {
-		Color colorForButton=JColorChooser.showDialog(null, "Odaberite boju!", mainFrame.getBtnInnerColor().getBackground());
-		if(colorForButton!=null) {
-			mainFrame.getBtnInnerColor().setBackground(colorForButton);
-			}
-			else
-			{
-				mainFrame.getBtnInnerColor().setBackground(mainFrame.getBtnInnerColor().getBackground());
-			}
-	}
-
-	public void clickSelect(ItemEvent e) {
-		if(e.getStateChange()==ItemEvent.DESELECTED) {
 		
-			model.removeAllSelection();
-			mainFrame.repaint();
-			
-		}
+		colInner=JColorChooser.showDialog(null, "Choose a color!", colInner);
+		if(colInner!=null) {
+			mainFrame.getBtnInnerColor().setBackground(colInner);
+			}
 	}
 
-	
 }
-	
-	
-	
-	
-		
-	
-		
-	
-
